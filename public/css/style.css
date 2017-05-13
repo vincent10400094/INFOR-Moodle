@@ -1,0 +1,81 @@
+.grey {
+    color: #777;
+}
+
+#login{
+  margin-top:30px;
+}
+
+/* Footer */
+#footer{
+    background:#333333;
+    color:#ffffff;
+    text-align:center;
+    padding:30px;
+    margin-top:30px;
+    width: 100%;
+}
+
+body, html{
+    height: 100%;
+}
+
+#custom-btn {
+    background-color: #fff!important;
+    color: #777;
+}
+
+.radio {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.img-circle {
+    border-radius: 100%;
+    display: block;
+    width: 56px;
+    height: 56px;
+    vertical-align: middle;
+    overflow: hidden;
+}
+
+.file-btn {
+    margin: 0px;
+    font-size: 5px;
+}
+
+#check {
+    padding: 8px;
+}
+
+#check-item {
+    padding-left: 15px;
+}
+
+#wrap {
+  min-height: 100%;
+  height: auto;
+  margin: 0 auto -120px;
+  padding: 0 0 120px;
+}
+
+#searchbar {
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#D2D2D2), to(#D2D2D2)), -webkit-gradient(linear, left top, left bottom, from(#D2D2D2), to(#D2D2D2));
+  background-image: -webkit-linear-gradient(#009688, #009688), -webkit-linear-gradient(#009688, #009688);
+  background-image: -o-linear-gradient(#009688, #009688), -o-linear-gradient(#009688, #009688);
+  background-image: linear-gradient(#009688, #009688), linear-gradient(#D2D2D2, #D2D2D2);
+}
+
+.modal-dialog {
+  /*position:absolute;*/
+  top:5% !important;
+}
+
+.btn-group.btn-group-raised, .btn-group-vertical.btn-group-raised {
+    height: 50px;
+    box-shadow: 0 8px 17px 0 rgba(0, 0, 0, 0.1), 0 6px 20px 0 rgba(0, 0, 0, 0.1);
+}
+
+span.check::after {
+    margin-top: 10px;
+}

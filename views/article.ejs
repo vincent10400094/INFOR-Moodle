@@ -1,0 +1,115 @@
+<%- include header %>
+<section id="main">
+   <div class="container">
+      <div class="row">
+         <div class="col-md-10 col-md-offset-1">
+            <div>
+               <h1><%= post.title %></h1>
+               <p class="lead">by <a href="/user/<%= post.name %>"><%= post.name %></a></p>
+               <!-- <hr><span>tags：</span>
+               <% post.tags.forEach(function(tag, index){ %>
+               <% if(tag){  %>
+               <span><a href="/tags/<%= tag %>"><%= tag %></a></span>
+               <% } %>
+               <% }) %> -->
+            </div>
+            <hr>
+            <div class="well">
+                <% if ( user && (user.name == post.name) ) { %>
+                <span> <a class="edit" href="/edit/<%= post.name %>/<%= post.time.day %>/<%= post.title %>">編輯</a></span>
+                <span> <a class="edit" href="/remove/<%= post.name %>/<%= post.time.day %>/<%= post.title %>">刪除</a></span>
+                <% } %>
+                <% var flag = 1 ; %>
+                <% if ( user && (user.name != post.name) ) { %>
+                    <% if ( ( post.reprint_info.reprint_from.name != null ) && ( user.name == post.reprint_info.reprint_from.name ) ){ %>
+                        <% flag = 0 ; %>
+                    <% } %>
+                    <% if( (post.reprint_info.reprint_to != null) ){ %>
+                        <% post.reprint_info.reprint_to.forEach( function(reprint_to, index) { %>
+                            <% if (user.name == reprint_to.name){ %>
+                                    <% flag = 0 ; %>
+                            <% } %>
+                        <% }) %>
+                    <% } %>
+                <% }else{ %>
+                    <% flag = 0 ; %>
+                <% } %>
+                <% if(flag){ %>
+                    <span> <a class="edit" href="/reprint/<%= post.name %>/<%= post.time.day %>/<%= post.title %>">轉載</a></span>
+                <% } %>
+                <span class="grey" style="float:right;margin-bottom:5px;">瀏覽次數：<%= post.pv %></span>
+                <hr>
+                <% if(post.post){ %>
+                    <p><%- post.post %></p>
+                <% }else{ %>
+                    <p>空空如也</p>
+                <% } %>
+
+                <% post.tags.forEach(function(tag, index){ %>
+                <% if(tag){  %>
+                <b><span><a href="/tags/<%= tag %>" style="padding-right:5px;">#<%= tag %></a></span></b>
+                <% } %>
+                <% }) %>
+
+                <hr>
+
+                  <% if(post.starname.indexOf(user.name) == -1 || post.starname.length ==0 ){  %>
+                    <!-- <button type="button" class="btn btn-default btn-lg" onclick="star('<%= post.name %>','<%= post.time.day %>','<%= post.title %>','<%= user.name %>',1)">
+                    </button> -->
+                    <a href="#" onclick="star('<%= post.name %>','<%= post.time.day %>','<%= post.title %>','<%= user.name %>',1)" id="fakeButton">Like</a>
+                  <% }else{ %>
+                      <a href="#" onclick="star('<%= post.name %>','<%= post.time.day %>','<%= post.title %>','<%= user.name %>',-1)" id="fakeButton">Unlike</a>
+                    <!-- <button type="button" class="btn btn-default btn-lg" onclick="star('<%= post.name %>','<%= post.time.day %>','<%= post.title %>','<%= user.name %>',-1)">
+                    </button> -->
+                  <% } %>
+                  <% if(post.starname.length > 0){ %>
+                      <span class="glyphicon glyphicon-thumbs-up grey" style="padding-left:5px;font-size:5px;"></span><%= post.star %>
+                  <% } %>
+
+            </div>
+
+            <!-- <p><span class="glyphicon glyphicon-time"></span> Posted on <%= post.time.date %></p> -->
+
+         </div>
+         <div class="col-md-5 col-md-offset-1">
+             <div class="well">
+                 <h4>附件</h4>
+                 <hr>
+                 <% if(post.file.length > 1){ %>
+                     <div class="media">
+                         <% post.file.forEach(function(file, index){ %>
+                             <% if(file){  %>
+                                 <div class="media-left media-middle">
+                                     <img src="/icon/<%= file.split('.')[file.split('.').length - 1].toLowerCase() %>.png" onerror="this.src='/icon/file.png'" style="height:35px;width:auto;padding-right:10px;">
+                                 </div>
+                                 <div class="media-body media-middle">
+                                     <%= file %>
+                                 </div>
+                                 <div class="media-right media-middle">
+                                     <a href="/files/<%= file %>" download class="btn btn-default glyphicon glyphicon-download-alt file-btn"></a>
+                                     <a href="/files/<%= file %>" class="btn btn-default fa fa-eye file-btn" target="_blank"></a>
+                                 </div>
+                                 <br>
+                             <% } %>
+                         <% }) %>
+                     </div>
+                 <% }else{ %>
+                    <p>無附件</p>
+                 <% } %>
+             </div>
+         </div>
+         <div class="col-md-5">
+             <div class="well">
+                 <h4>時間</h4>
+                 <hr>
+                 <p>發布：<%= post.time.date.toLocaleTimeString("TW",{year: "numeric", month: "numeric", day: "numeric", hour12: "true"}) %></p>
+             </div>
+         </div>
+          <%- include comment %>
+      </div>
+
+   </div>
+
+</section>
+
+<%- include footer %>
