@@ -1,5 +1,5 @@
-# INFOR-Academic-Master-Cultivation
-INFOR 學業養成
+# INFOR-Moodle
+INFOR 木豆
 
 ## Usage
 install modules required
