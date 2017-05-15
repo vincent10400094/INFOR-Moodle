@@ -20,6 +20,7 @@
                                 <!-- form裡面的東西排版時，要小心別移到form外面，不然儲存時就會找不到name -->
 
                                 <div class="form-group" style="margin-top:10px;">
+                                    <!-- 這是大標題的textarea ，為了明顯加了strong -->
                                     <strong><textarea id="title-edit<%= index %>" name="post" rows="1" class="form-control" style="overflow:hidden;width:80%;height:auto;" onfocus="sectionFocus(<%= index %>)"> <%= doc.post.test[ index ] %> </textarea></strong>
                                 </div>
 
@@ -30,6 +31,7 @@
                                 <div class="form-group" style="margin-top:10px;">
                                     <% var option = doc.post.choice[index][i]; %>
                                     <div class="form-group" style="margin-top:10px;">
+                                        <!-- 這是小標題的textarea -->
                                         <textarea id="title-edit<%= index %>" name="TextInform" rows="1" class="form-control" style="overflow:hidden;width:60%;height:auto;" onfocus="sectionFocus(<%= index %>)"> <%= doc.TextInform[ index ][i] %> </textarea>
                                         <% console.log("TextInform: "+doc.TextInform[index][i]) %>
                                     </div>
