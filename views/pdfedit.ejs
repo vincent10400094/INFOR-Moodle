@@ -33,7 +33,6 @@
                                     <div class="form-group" style="margin-top:10px;">
                                         <!-- 這是小標題的textarea -->
                                         <textarea id="title-edit<%= index %>" name="TextInform" rows="1" class="form-control" style="overflow:hidden;width:60%;height:auto;" onfocus="sectionFocus(<%= index %>)"> <%= doc.TextInform[ index ][i] %> </textarea>
-                                        <% console.log("TextInform: "+doc.TextInform[index][i]) %>
                                     </div>
                                     <% Object.keys(option).forEach(function(key,optionindex) { %>
                                         <!-- optionindex代表題組裡的每一小題 -->
@@ -48,9 +47,9 @@
                                                     <% var ans_flag = doc.ans[index][i].indexOf(key) %>
                                                         <!-- 用indexOf()檢查，有的話ans_flag就是key的index，否則是-1 -->
                                                         <% if( ans_flag > -1 ){ %>
-                                                            <input type="radio" name="radio<%= key %>" value="<%= key %>" id="<%= sum %>" checked="checked">
+                                                            <input type="radio" name="radio<%= i %>" value="<%= key %>" id="<%= sum %>" checked="checked">
                                                         <% }else{ %>
-                                                            <input type="radio" name="radio<%= key %>" value="<%= key %>" id="<%= sum %>" >
+                                                            <input type="radio" name="radio<%= i %>" value="<%= key %>" id="<%= sum %>" >
                                                         <% } %>
                                                     <textarea name="<%= key %>" class="form-control" rows="1" style="margin-bottom:0px;" id="optionedit<%= sum %><%= key %>" onClick="this.setSelectionRange(0, this.value.length)" style="padding-top:0px;"> <%= doc.post.choice[ index ][i][key] %> </textarea>
                                                     <h4 style="margin:0px" onclick="editOption(<%= sum %><%= key %>)" id="option<%= sum %><%= key %>"><%= doc.post.choice[ index ][i][key] %></h4>
@@ -71,9 +70,9 @@
                                                     <% var ans_flag = doc.ans[index][i].indexOf(key) %>
                                                         <!-- 用indexOf()檢查，有的話ans_flag就是key的index，否則是-1 -->
                                                         <% if( ans_flag > -1 ){ %>
-                                                            <input type="checkbox" style="padding-right:5px" name="checkbox<%= key %>" value="<%= key %>" checked="checked" id="<%= sum %>">
+                                                            <input type="checkbox" style="padding-right:5px" name="checkbox<%= i %>" value="<%= key %>" checked="checked" id="<%= sum %>">
                                                         <% }else{ %>
-                                                            <input type="checkbox" style="padding-right:5px" name="checkbox<%= key %>" value="<%= key %>" id="<%= sum %>">
+                                                            <input type="checkbox" style="padding-right:5px" name="checkbox<%= i %>" value="<%= key %>" id="<%= sum %>">
                                                         <% } %>
 
                                                     <span id="check-item">
@@ -125,6 +124,7 @@
                     <hr>
                     <% }) %>
                 </div>
+                <a class="btn btn-raised btn-default" href="/Ansform/<%= doc.name %>">匯出考卷</a>
             </div>
         </div>
     </div>

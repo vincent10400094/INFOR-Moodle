@@ -168,6 +168,7 @@ function convert(type, name, index, sum) {
   location.reload(true);
 }
 
+
 function sectionFocus(id) {
   var containerId = '#container' + id.toString();
   var btnGrouptId = '#btn-group-' + id.toString();

@@ -478,6 +478,27 @@ router.post('/testsave', function(req, res) {
   });
 });
 
+router.get('/Ansform/:txtname', checkLogin);
+router.get('/Ansform/:txtname', function(req, res) {
+
+  Txt.get(req.params.txtname, function(err, doc) {
+    if (err) {
+      console.log("err: " + err);
+      req.flash('error', err);
+      return res.redirect('/');
+    }
+    //console.log("doc: " + doc);
+    res.render('form', {
+      title: doc.name,
+      doc: doc,
+      sum: 1,
+      user: req.session.user,
+      success: req.flash('success').toString(),
+      error: req.flash('error').toString()
+    });
+  });
+});
+
 router.get('/tags/:tag', function(req, res) {
 
   Post.getTag(req.params.tag, function(err, posts) {
@@ -610,6 +631,7 @@ router.get('/test/:txtname', function(req, res) {
       req.flash('error', err);
       return res.redirect('/');
     }
+    //console.log(doc);
     res.render('pdfedit', {
       title: doc.name,
       doc: doc,
@@ -621,22 +643,28 @@ router.get('/test/:txtname', function(req, res) {
   });
 });
 
-// router.post('/test/:txtname', checkLogin);
-// router.post('/test/:txtname', function(req, res) {
-//
-//   Txt.compare(req.params.txtname, req.body, function(err, error_ans) {
-//     console.log(error_ans);
-//   })
-//
-//   res.render('/', {
-//     title: doc.name,
-//     doc: doc,
-//     user: req.session.user,
-//     success: req.flash('success').toString(),
-//     error: req.flash('error').toString()
-//   });
-//
-// });
+router.post('/Ansform/:txtname', checkLogin);
+router.post('/Ansform/:txtname', function(req, res) {
+  console.log(req.body);
+  Txt.compare(req.params.txtname, req.body, function(err, error_ans, small_array, big_array, ans_allsum, doc) {
+    //console.log(error_ans);
+
+    res.render('correct', {
+      title: doc.name,
+      doc: doc,
+      small_array: small_array,
+      big_array: big_array,
+      error_ans: error_ans,
+      ans_allsum: ans_allsum,
+      isok: [],
+      user: req.session.user,
+      success: req.flash('success').toString(),
+      error: req.flash('error').toString()
+    });
+  })
+});
+
+
 router.get('/search', checkLogin);
 router.get('/search', function(req, res) {
 
