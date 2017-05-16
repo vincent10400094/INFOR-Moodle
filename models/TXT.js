@@ -304,9 +304,9 @@ TXT.compare = function(filename, user_ans, callback) {
       }
     }
 
-    console.log("回答的答案: " + result);
-    console.log("正確答案: " + correct_ans);
-    console.log("錯的題數: " + user_error_ans);
+    // console.log("回答的答案(result): " + result);
+    // console.log("正確答案(correct_ans): " + correct_ans);
+    // console.log("錯的題號(user_error_ans): " + user_error_ans);
 
     var newresult = [];
     var newcorrect_ans = [];
@@ -317,60 +317,105 @@ TXT.compare = function(filename, user_ans, callback) {
         newresult.push(split);
       } else {
         var split = result[i].match(/\d/g)[0];
-        newresult.push(split);
+        newresult.push([split]);
       }
       if (correct_ans[i].length > 1) {
         var split_ans = correct_ans[i].match(/\d/g);
         newcorrect_ans.push(split_ans);
       } else {
         var split_ans = correct_ans[i].match(/\d/g)[0];
-        newcorrect_ans.push(split_ans);
+        newcorrect_ans.push([split_ans]);
       }
     }
-    console.log("newResult: " + JSON.stringify(newresult));
-    console.log("newcorrect_ans: " + JSON.stringify(newcorrect_ans));
-    // var final = [];
-    // for (var i = 0; i < newresult.length; i++) {
-    //   if (newcorrect_ans.indexOf(newresult[i]) > -1) {
-    //     continue;
-    //   }
-    //   else {
-    //
-    //   }
-    // }
+    //console.log("newResult: " + JSON.stringify(newresult));
+    //console.log("newcorrect_ans: " + JSON.stringify(newcorrect_ans));
+
+    var error_index = [];
+
+    for (var i = 0; i < newcorrect_ans.length; i++) {
+      if (newcorrect_ans[i].length > 1) {
+        error_index.push([]);
+      } else {
+        error_index.push([""]);
+      }
+    }
+    for (var i = 0; i < newcorrect_ans.length; i++) {
+      var flag = true;
+      if (newcorrect_ans[i].length > 1) {
+        //先處理少寫的答案
+        for (var k = 0; k < newcorrect_ans[i].length; k++) {
+          var index = newresult[i].indexOf(newcorrect_ans[i][k]);
+          if (index == -1) {
+            flag = false;
+            error_index[i].push(newcorrect_ans[i][k]);
+          }
+        }
+        //在處理多寫的答案
+        for (var j = 0; j < newresult[i].length; j++) {
+          if (newresult[i].length > 1) {
+            var index = newcorrect_ans[i].indexOf(newresult[i][j]);
+            if (index == -1) {
+              flag = false;
+              error_index[i].push(newresult[i][j]);
+            }
+          } else {
+            var index = newcorrect_ans[i].indexOf(newresult[i][j]);
+            if (index == -1) {
+              flag = false;
+              error_index[i].push(newresult[i][j]);
+            }
+          }
+        }
+
+        if (flag) {
+          error_index[i].push("");
+        }
+      } else {
+        if (newcorrect_ans[i][0] !== newresult[i][0]) {
+          error_index[i] = newresult[i];
+        }
+      }
+    }
+    var newerror_index = [];
+    // console.log("tes.len: " + test[0].length);
+    for (var i = 0; i < error_index.length; i++) {
+      if (error_index[i][0].length > 0) {
+        newerror_index.push(error_index[i]);
+      }
+    }
+    //console.log("err_index: " + JSON.stringify(error_index));
+    //console.log("newerr_index: " + JSON.stringify(newerror_index));
     var allsum_array = []; //每個大題的小題數的陣列
     var big_array = []; //錯在第幾大題
     var small_array = []; //第幾大題裡的第幾小題
     for (var i = 0; i < doc.choice.length; i++) {
       allsum_array.push(doc.choice[i].length);
     }
-    console.log("每個大題裡的小題數: " + allsum_array);
-    user_error_ans.forEach(function(error_index) {
-      var allsum = 1; //allsum代表目前題數  error_index是錯誤題號
-      for (var i = 1; i < (allsum_array.length + 1); i++) {
-        //i是第幾大題
-        //console.log("error_index: " + error_index);
+    console.log("每個大題裡的小題數(allsum_array): " + allsum_array);
 
-        if (error_index == 1) {
-          big_array.push(i);
-          small_array.push(0);
-          break;
-        } else if (error_index <= allsum) {
-          big_array.push(i);
-          var sum = allsum - error_index;
-          var final = (allsum_array[i - 1] - sum - 1);
-          small_array.push(final);
-          break;
-        } else {
-          allsum = allsum + allsum_array[i];
-        //console.log(allsum);
-        }
+    user_error_ans.forEach(function(error_sum) {
+      var allsum = 0;
+      var check_i = 0;
+      while (error_sum <= allsum) {
+        console.log("error_sum: " + error_sum);
+        console.log("allsum: " + allsum);
+        allsum = allsum + allsum_array[check_i];
+        check_i = check_i + 1;
+      }
+      if (error_sum == 1) {
+        big_array.push(check_i);
+        small_array.push(0);
+      } else {
+        big_array.push(check_i);
+        var sum = allsum - error_sum;
+        var final = (allsum_array[check_i] - sum - 1);
+        small_array.push(final);
       }
     })
 
     console.log("big_array: " + big_array);
     console.log("small_array: " + small_array);
-    callback(null, user_error_ans, small_array, big_array, allsum_array, doc);
+    callback(null, user_error_ans, small_array, big_array, allsum_array, newerror_index, doc);
   });
 }
 

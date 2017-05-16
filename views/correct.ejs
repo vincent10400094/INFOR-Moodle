@@ -11,11 +11,8 @@
 
                     <div class="col-md-13 col-md-offset-0" id="container" style="padding:25px 45px 5px 45px"  >
 
-
-
                                 <!-- form裡面的東西排版時，要小心別移到form外面，不然儲存時就會找不到name -->
                                 <% error_ans.forEach(function(ans_index, index){ %>
-                                    <% console.log(doc.post.test[ big_array[index]-1 ]); %>
                                     <form  method="post" id="form">
                                         <fieldset style="margin-bottom:25px;">
 
@@ -47,7 +44,11 @@
 
                                             <div class="radio radio-primary" style="margin:0px 0px 0px 0px">
                                                 <label style="width:100%;">
+                                                    <% if( small_array[index]== i && error_index[index][0] == key ){ %>
                                                     <h4 style="margin:0px ;color: red"  ><%= doc.post.choice[ index ][i][key] %></h4>
+                                                    <% }else{ %>
+                                                        <h4 style="margin:0px ;color: green"  ><%= doc.post.choice[ index ][i][key] %></h4>
+                                                        <% } %>
                                                 </label>
                                             </div>
                                         </div>
