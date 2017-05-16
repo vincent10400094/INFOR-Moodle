@@ -304,9 +304,9 @@ TXT.compare = function(filename, user_ans, callback) {
       }
     }
 
-    // console.log("回答的答案(result): " + result);
-    // console.log("正確答案(correct_ans): " + correct_ans);
-    // console.log("錯的題號(user_error_ans): " + user_error_ans);
+    console.log("回答的答案(result): " + result);
+    console.log("正確答案(correct_ans): " + correct_ans);
+    console.log("錯的題號(user_error_ans): " + user_error_ans);
 
     var newresult = [];
     var newcorrect_ans = [];
@@ -391,14 +391,14 @@ TXT.compare = function(filename, user_ans, callback) {
     for (var i = 0; i < doc.choice.length; i++) {
       allsum_array.push(doc.choice[i].length);
     }
-    console.log("每個大題裡的小題數(allsum_array): " + allsum_array);
+    //console.log("每個大題裡的小題數(allsum_array): " + allsum_array);
 
     user_error_ans.forEach(function(error_sum) {
       var allsum = 0;
       var check_i = 0;
-      while (error_sum <= allsum) {
-        console.log("error_sum: " + error_sum);
-        console.log("allsum: " + allsum);
+      while (error_sum > allsum) {
+        // console.log("error_sum: " + error_sum);
+        // console.log("allsum: " + allsum);
         allsum = allsum + allsum_array[check_i];
         check_i = check_i + 1;
       }
@@ -408,7 +408,7 @@ TXT.compare = function(filename, user_ans, callback) {
       } else {
         big_array.push(check_i);
         var sum = allsum - error_sum;
-        var final = (allsum_array[check_i] - sum - 1);
+        var final = (allsum_array[check_i - 1] - sum - 1);
         small_array.push(final);
       }
     })
