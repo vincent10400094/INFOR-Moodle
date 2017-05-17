@@ -646,7 +646,7 @@ router.get('/test/:txtname', function(req, res) {
 router.post('/Ansform/:txtname', checkLogin);
 router.post('/Ansform/:txtname', function(req, res) {
   //console.log(req.body);
-  Txt.compare(req.params.txtname, req.body, function(err, error_ans, small_array, big_array, ans_allsum, error_index, doc) {
+  Txt.compare(req.params.txtname, req.body, function(err, error_ans, small_array, big_array, ans_allsum, error_index, correct_index, doc) {
     //console.log(error_ans);
 
     res.render('correct', {
@@ -656,6 +656,7 @@ router.post('/Ansform/:txtname', function(req, res) {
       big_array: big_array,
       error_ans: error_ans,
       error_index: error_index,
+      correct_index: correct_index,
       ans_allsum: ans_allsum,
       isok: [],
       user: req.session.user,

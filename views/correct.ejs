@@ -43,8 +43,11 @@
 
                                                     <% if( small_array[index]== i && (error_index[index].indexOf(key) > -1) ){ %>
                                                     <h4 style="margin:0px ;color: red"  ><%= doc.post.choice[ big_index-1 ][i][key] %></h4>
-                                                    <% }else{ %>
+
+                                                    <% }else if( small_array[index]== i && correct_index[index][0].length > 0 && (correct_index[index].indexOf(key) > -1)){ %>
                                                         <h4 style="margin:0px ;color: green"  ><%= doc.post.choice[ big_index-1 ][i][key] %></h4>
+                                                    <% }else{ %>
+                                                        <h4 style="margin:0px;"  ><%= doc.post.choice[ big_index-1 ][i][key] %></h4>
                                                         <% } %>
                                                 </label>
                                             </div>
