@@ -384,14 +384,14 @@ TXT.compare = function(filename, user_ans, callback) {
       }
     }
     //console.log("err_index: " + JSON.stringify(error_index));
-    //console.log("newerr_index: " + JSON.stringify(newerror_index));
+    console.log("newerr_index: " + JSON.stringify(newerror_index));
     var allsum_array = []; //每個大題的小題數的陣列
     var big_array = []; //錯在第幾大題
     var small_array = []; //第幾大題裡的第幾小題
     for (var i = 0; i < doc.choice.length; i++) {
       allsum_array.push(doc.choice[i].length);
     }
-    //console.log("每個大題裡的小題數(allsum_array): " + allsum_array);
+    console.log("每個大題裡的小題數(allsum_array): " + allsum_array);
 
     user_error_ans.forEach(function(error_sum) {
       var allsum = 0;
