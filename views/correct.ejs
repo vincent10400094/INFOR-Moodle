@@ -7,6 +7,7 @@
                     <div class="col-md-13 col-md-offset-0" style="margin-top:20px;margin-bottom:20px;margin-left:40px;">
                         <h1><%= title %>/錯誤題目: </h1>
                     </div>
+                    <div id="flot-placeholder1" style="width:450px;height:300px;margin:0 auto"></div>
 
                     <div class="col-md-13 col-md-offset-0" id="container" style="padding:25px 45px 5px 45px"  >
                                 <!-- form裡面的東西排版時，要小心別移到form外面，不然儲存時就會找不到name -->
@@ -22,7 +23,7 @@
                                         <%isok.push(big_index);%>
                                     <% } %>
                                 <hr>
-                                <% console.log(ans_allsum[big_index-1]) %>
+
                                 <% var i = small_array[index]; %>
                                     <!-- i代表每個題組裡的小題 -->
 
@@ -70,4 +71,8 @@
         </div>
     </div>
 </section>
+
 <%- include footer %>
+<script type="text/javascript">
+pie(<%= ans_allnumber - error_ans.length %>,<%= error_ans.length %>)
+</script>

@@ -426,10 +426,10 @@ TXT.compare = function(filename, user_ans, callback) {
         small_array.push(final);
       }
     })
-
+    var ans_sum = correct_ans.length; //ans_sum 是總小題數
     console.log("big_array: " + big_array);
     console.log("small_array: " + small_array);
-    callback(null, user_error_ans, small_array, big_array, allsum_array, newerror_index, newcorrect_index, doc);
+    callback(null, user_error_ans, small_array, big_array, allsum_array, newerror_index, newcorrect_index, ans_sum, doc);
   });
 }
 

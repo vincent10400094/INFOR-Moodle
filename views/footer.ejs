@@ -18,6 +18,40 @@ CKEDITOR.replace( 'editor1' );
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script type="text/javascript" src="/js/jquery-3.2.1.min.js"></script>
+<script type="text/javascript" src="/js/flot/jquery.flot.js"></script>
+<script type="text/javascript" src="/js/flot/jquery.flot.pie.js"></script>
+<script>
+//******* PIE CHART
+function pie(correct_number,error_number){
+
+
+var dataSet = [
+    { label: "答對", data: correct_number, color: "#00A36A" },
+    { label: "錯誤", data: error_number, color: "#DE000F" },
+];
+
+
+
+var options2 = {
+    series: {
+        pie: {
+            show: true,
+            innerRadius: 0.5,
+            label: {
+                show: true
+            }
+        }
+    }
+};
+
+$(document).ready(function () {
+
+    $.plot($("#flot-placeholder1"), dataSet, options2);
+});
+
+
+}
+</script>
 
 <script src="/js/bootstrap.min.js"></script>
 <script src="/js/material.js"></script>
