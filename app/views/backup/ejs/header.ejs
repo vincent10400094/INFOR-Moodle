@@ -1,37 +1,37 @@
 <!DOCTYPE html>
-<html>
-  <head>
-  	<meta charset="utf-8">
-    <title><%= title %></title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
-  </head>
-  <body>
-
-  <header>
-    <h1><%= title %></h1>
-    <p>Welcome to <%= title %></p>
-  </header>
-
-  <nav>
-  	    <span><a title="主頁" href="/">Home</a></span>
-        <span><a title="存檔" href="/archive">記錄</a></span>
-        <span><a title="標籤" href="/tags">標籤</a></span>
-  		<% if(user){ %>
-  		<span><a title="登出" href="/logout">登出</a></span>
-  		<span><a title="上傳" href="/upload">圖片上傳</a></span>
-        <span><a title="上傳" href="/pdfUpload">PDF上傳</a></span>
-  		<span><a title="發表" href="/post">發表</a></span>
-  		<% } else { %>
-  		<span><a title="登入" href="/login">登入</a></span>
-  		<span><a title="註冊" href="/signup">註冊</a></span>
-  		<% } %>
-      <span><form action="/search" method="GET"><input type="text" name="keyword" placeholder="SEARCH" class="search" /></form></span>
-  </nav>
-<article>
-<% if (success){ %>
-<div><%= success %></div>
-<% } %>
-
-<% if (error){ %>
-<div><%= error %></div>
-<% } %>
+<html lang="zh">
+   <head>
+      <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <title><%=title%></title>
+      <!-- Bootstrap core CSS -->
+      <!-- Material Design fonts -->
+      <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Roboto:300,400,500,700">
+      <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/icon?family=Material+Icons">
+      <!-- Bootstrap -->
+      <link rel="stylesheet" type="text/css" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+      <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+      <!-- Bootstrap Material Design -->
+      <link rel="stylesheet" type="text/css" href="/css/bootstrap-material-design.css">
+      <link rel="stylesheet" type="text/css" href="/css/ripples.min.css">
+      <link rel="stylesheet" type="text/css" href="/css/style.css">
+      <!-- <script src="https://cdn.ckeditor.com/4.6.1/standard/ckeditor.js"></script> -->
+      <script type="text/javascript" src="/ckeditor/ckeditor.js"></script>
+      <div id="wrap">
+      <nav class="navbar navbar-default">
+         <div class="container">
+            <div class="navbar-header">
+               <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+               <span class="sr-only">Toggle navigation</span>
+               <span class="icon-bar"></span>
+               <span class="icon-bar"></span>
+               <span class="icon-bar"></span>
+               </button>
+               <a class="navbar-brand" href="/">Home</a>
+            </div>
+            <%- include nav %>
+         </div>
+      </nav>
+      <header id="header">
+      </header>

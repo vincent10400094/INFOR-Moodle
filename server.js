@@ -1,3 +1,6 @@
+// Babel ES6/JSX Compiler
+require('babel-register');
+
 var express = require('express');
 var path = require('path');
 //var favicon = require('serve-favicon');
@@ -17,9 +20,15 @@ var settings = require('./setting');
 var flash = require('connect-flash');
 var multer = require('multer');
 var fs = require('fs');
+var _ = require('underscore');
 
 var debug = require('debug')('blog:server');
 var http = require('http');
+
+var React = require('react');
+var ReactDOM = require('react-dom/server');
+var Router = require('react-router');
+var routes = require('./app/routes');
 
 var accessLog = fs.createWriteStream('access.log', {
   flags: 'a'
@@ -84,38 +93,53 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use('/', index);
+// app.use('/', index);
+
+app.use(function(req, res) {
+  Router.match({ routes: routes.default, location: req.url }, function(err, redirectLocation, renderProps) {
+    if (err) {
+      res.status(500).send(err.message)
+    } else if (redirectLocation) {
+      res.status(302).redirect(redirectLocation.pathname + redirectLocation.search)
+    } else if (renderProps) {
+        console.log(renderProps);
+        console.log(Router.RoutingContext);
+        var html = ReactDOM.renderToString(React.createElement(Router.RoutingContext, renderProps))
+        res.render('index', html)
+    } else {
+      res.status(404).send('Page Not Found')
+    }
+  });
+});
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
-  var err = new Error('Not Found');
-  err.status = 404;
-  next(err);
-});
+// app.use(function(req, res, next) {
+//   var err = new Error('Not Found');
+//   err.status = 404;
+//   next(err);
+// });
 
 // error handler
-app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
-  res.locals.user = req.session.user;
-  res.locals.req = req;
-
-  // render the error page
-  res.status(err.status || 500);
-
-  if (err.status == 500) {
-    res.render('error', {
-      title: 'Oops',
-      code: err.status,
-    });
-  } else {
-    res.render('error', {
-      title: 'Not found',
-      code: err.status,
-    });
-  }
-  next();
-});
+// app.use(function(err, req, res, next) {
+//   res.locals.error = req.app.get('env') === 'development' ? err : {};
+//   res.locals.user = req.session.user;
+//   res.locals.req = req;
+//
+//   res.status(err.status || 500);
+//
+//   if (err.status == 500) {
+//     res.render('error', {
+//       title: 'Oops',
+//       code: err.status,
+//     });
+//   } else {
+//     res.render('error', {
+//       title: 'Not found',
+//       code: err.status,
+//     });
+//   }
+//   next();
+// });
 
 var port = normalizePort(process.env.PORT || '1209');
 app.set('port', port);

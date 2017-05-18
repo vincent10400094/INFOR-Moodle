@@ -1,7 +1,44 @@
-<%- include header  %>
-	<form method="post">
-		用戶名: <input type="text" name="name"><br/>
-		密碼: <input type="password" name="password"> <br/>
-		<input type="submit" value="登入">
-	</form>
-<%- include footer  %>
+<%- include header %>
+<section id="main">
+   <div class="container">
+      <div class="row">
+          <div class="col-md-4 col-md-offset-4 ">
+              <% if(error){ %>
+              <div class="alert alert-dismissible alert-danger">
+                 <button type="button" class="close" data-dismiss="alert">×</button>
+                 <%= error %>
+              </div>
+              <% } %>
+          </div>
+         <div class="col-md-4 col-md-offset-4">
+            <form class="form-horizontal well" id="login" method="post">
+               <fieldset>
+                  <legend>Login</legend>
+                  <div class="form-group">
+                     <!-- <label for="inputEmail" class="col-md-2 control-label">Username</label> -->
+                     <div class="col-md-12">
+                        <input type="text" class="form-control" id="inputUsername" placeholder="Username" name="name" autocomplete="off" autofocus="">
+                     </div>
+                  </div>
+                  <div class="form-group">
+                     <!-- <label for="inputPassword" class="col-md-2 control-label">Password</label> -->
+                     <div class="col-md-12">
+                        <input type="password" class="form-control" id="inputPassword" placeholder="Password" name="password" autocomplete="off">
+                     </div>
+                  </div>
+                   <p>Need an account ? <a href="/signup">Signup</a></p>
+                  <div class="form-group">
+                     <div class="col-md-12">
+                        <button type="submit" class="btn btn-default btn-block" value="login">Login</button>
+                     </div>
+                     <div class="col-md-12">
+                        <a href="/auth/facebook" class="btn btn-primary btn-block">Facebook</a>
+                     </div>
+                  </div>
+               </fieldset>
+            </form>
+         </div>
+      </div>
+   </div>
+</section>
+<%- include footer %>
