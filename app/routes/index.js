@@ -6,13 +6,13 @@ var multer = require('multer');
 var fs = require('fs');
 var passport = require('passport');
 var session = require('express-session');
-var settings = require('../setting');
+var settings = require('../../setting');
 var MongoStore = require('connect-mongo')(session);
-var User = require('../models/user');
-var Post = require('../models/post');
-var Txt = require('../models/TXT');
-var Comment = require('../models/comment');
-var Pdf = require('../pdfreader/parse');
+var User = require('../../models/user');
+var Post = require('../../models/post');
+var Txt = require('../../models/TXT');
+var Comment = require('../../models/comment');
+var Pdf = require('../../pdfreader/parse');
 
 
 

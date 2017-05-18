@@ -7,8 +7,8 @@
     "url": "https://github.com/vincent10400094/INFOR-Moodle"
   },
   "scripts": {
-    "start": "node ./app/bin/www",
-    "watch": "nodemon ./app/bin/www",
+    "start": "node server.js",
+    "watch": "nodemon server.js",
     "postinstall": "bower install && gulp build"
   },
   "babel": {

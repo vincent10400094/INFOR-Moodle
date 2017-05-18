@@ -5,7 +5,6 @@ INFOR 木豆
 install modules required
 ```
 $ npm install
-$ bower install 
 ```
 start(default port: 1209)
 ```
