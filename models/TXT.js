@@ -9,11 +9,13 @@ var mongoose = require('mongoose');
 
 var txtSchema = new mongoose.Schema({
   name: String,
+  username: String,
   post: Object,
   ans: Array,
   subject: String,
   choice: Array,
-  TextInform: Array
+  TextInform: Array,
+  UserRank: Array
 }, {
   collection: 'txt'
 });
@@ -253,7 +255,25 @@ TXT.get = function(name, callback) {
   });
 };
 
-TXT.compare = function(filename, user_ans, callback) {
+TXT.Rankget = function(name, callback) {
+  txtModel.findOne({
+    name: name
+  }, function(err, data) {
+    if (err) {
+      console.log(err);
+      return callback(err)
+    }
+
+    var userRank = data.UserRank;
+
+    userRank.sort(function(a, b) {
+      return b.correct - a.correct;
+    });
+    callback(null, userRank, data);
+  });
+};
+
+TXT.compare = function(filename, user_ans, username, callback) {
   txtModel.findOne({
     name: filename
   }, function(err, doc) {
@@ -427,6 +447,22 @@ TXT.compare = function(filename, user_ans, callback) {
       }
     })
     var ans_sum = correct_ans.length; //ans_sum 是總小題數
+    var userrank = {
+      username: username,
+      testsum: ans_sum,
+      correct: ans_sum - user_error_ans.length
+    }
+    txtModel.update({
+      "name": filename
+    }, {
+      $push: {
+        "UserRank": userrank,
+      }
+    }, function(err) {
+      if (err) {
+        return callback(err);
+      }
+    });
     console.log("big_array: " + big_array);
     console.log("small_array: " + small_array);
     callback(null, user_error_ans, small_array, big_array, allsum_array, newerror_index, newcorrect_index, ans_sum, doc);
@@ -889,7 +925,7 @@ TXT.removechoice = function(filename, index, allsum, callback) {
   });
 }
 
-TXT.newtest = function(filename, subject, callback) {
+TXT.newtest = function(filename, subject, username, callback) {
   var postData = {
     test: ["大標題\n"],
     choice: [[{
@@ -904,6 +940,7 @@ TXT.newtest = function(filename, subject, callback) {
   var newTextInform = [[["小標題"]]];
   var content = {
     name: filename,
+    username: username,
     post: postData,
     ans: newans,
     subject: subject,

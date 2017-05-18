@@ -3,22 +3,21 @@
 	    <div class="container">
 	        <div class="row">
 	            <div class="col-md-9 ">
-								<h3><%= title %></h3>
+								<h3><%= title %> / 排名</h3>
 									<table class="table table-striped table-hover ">
 										<thead>
 										  <tr>
 										    <th>#</th>
-										    <th>Title</th>
-											<th>出題者</th>
+										    <th>名字</th>
+											<th>答對數</th>
 										  </tr>
 										</thead>
 										<tbody>
-											<% docs.forEach(function(doc, index){  %>
+											<% docs.UserRank.forEach(function(doc, index){  %>
 											<tr class="success">
 												<td><%= index+1 %></td>
-												<td> <a href="/Ansform/<%= doc.name %>"> <%= doc.name %> </a></td>
-												<td><a href="/user/<%= doc.username %>"> <%= doc.username %> </a></td>
-												<td><a href="/rank/<%= doc.name %>" class="btn btn-raised btn-primary btn-xs"> 排行榜 </a></td>
+												<td> <a href="/test/<%= doc.name %>"> <%= doc.username %> </a></td>
+												<td><%= doc.correct %> / <%= doc.testsum %></td>
 											</tr>
 										</tbody>
 										<% }) %>

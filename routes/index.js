@@ -521,7 +521,7 @@ router.get('/tags/:tag', function(req, res) {
 router.post('/newtest', checkLogin);
 router.post('/newtest', function(req, res) {
 
-  Txt.newtest(req.body.title, req.body.subject, function(err, data) {
+  Txt.newtest(req.body.title, req.body.subject, req.session.user.name, function(err, data) {
     var url = encodeURI('/test/' + req.body.title);
     if (err) {
       console.log(err);
@@ -632,6 +632,46 @@ router.get('/test/:txtname', function(req, res) {
       return res.redirect('/');
     }
     //console.log(doc);
+    res.render('form', {
+      title: doc.name,
+      doc: doc,
+      sum: 1,
+      user: req.session.user,
+      success: req.flash('success').toString(),
+      error: req.flash('error').toString()
+    });
+  });
+});
+
+router.get('/rank/:txtname', checkLogin);
+router.get('/rank/:txtname', function(req, res) {
+
+  Txt.Rankget(req.params.txtname, function(err, userrank, doc) {
+    if (err) {
+      req.flash('error', err);
+      return res.redirect('/');
+    }
+    //console.log(doc);
+    res.render('TestRank', {
+      title: doc.name,
+      docs: doc,
+      userrank: userrank,
+      user: req.session.user,
+      success: req.flash('success').toString(),
+      error: req.flash('error').toString()
+    });
+  });
+});
+
+router.get('/pdfEditTest/:txtname', checkLogin);
+router.get('/pdfEditTest/:txtname', function(req, res) {
+
+  Txt.get(req.params.txtname, function(err, doc) {
+    if (err) {
+      req.flash('error', err);
+      return res.redirect('/');
+    }
+    //console.log(doc);
     res.render('pdfedit', {
       title: doc.name,
       doc: doc,
@@ -646,7 +686,7 @@ router.get('/test/:txtname', function(req, res) {
 router.post('/Ansform/:txtname', checkLogin);
 router.post('/Ansform/:txtname', function(req, res) {
   //console.log(req.body);
-  Txt.compare(req.params.txtname, req.body, function(err, error_ans, small_array, big_array, ans_allsum, error_index, correct_index, ans_allnumber, doc) {
+  Txt.compare(req.params.txtname, req.body, req.session.user.name, function(err, error_ans, small_array, big_array, ans_allsum, error_index, correct_index, ans_allnumber, doc) {
     //console.log(error_ans);
 
     res.render('correct', {

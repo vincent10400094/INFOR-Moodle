@@ -6,7 +6,9 @@
                 <div class="well" style="padding-left:0px;padding-right:0px;padding-bottom:0px;">
                     <div class="col-md-13 col-md-offset-0" style="margin-top:20px;margin-bottom:20px;margin-left:40px;">
                         <h1><%= doc.name %></h1>
-
+                        <% if(doc.username == user.name){ %>
+                            <h4><a href="/pdfEditTest/<%= doc.name %>">編輯此題本</a></h4>
+                        <% } %>
                     </div>
 
                     <div class="col-md-13 col-md-offset-0" id="container" style="padding:25px 45px 5px 45px"  >
