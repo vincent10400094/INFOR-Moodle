@@ -1,0 +1,10 @@
+{
+  "name": "infor-moodle",
+  "dependencies": {
+    "jquery": "^3.2.1",
+    "ckeditor": "^4.6.2",
+    "font-awesome": "font-awsome#^4.7.0",
+    "bootstrap-material-design": "^4.0.2",
+    "Flot": "flot#^0.8.3"
+  }
+}
