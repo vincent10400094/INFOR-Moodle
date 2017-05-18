@@ -447,10 +447,15 @@ TXT.compare = function(filename, user_ans, username, callback) {
       }
     })
     var ans_sum = correct_ans.length; //ans_sum 是總小題數
+    var date = new Date();
+
+    var time = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate();
+
     var userrank = {
       username: username,
       testsum: ans_sum,
-      correct: ans_sum - user_error_ans.length
+      correct: ans_sum - user_error_ans.length,
+      day: time
     }
     txtModel.update({
       "name": filename

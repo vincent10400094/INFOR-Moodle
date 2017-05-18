@@ -10,14 +10,16 @@
 										    <th>#</th>
 										    <th>名字</th>
 											<th>答對數</th>
+											<th>時間</th>
 										  </tr>
 										</thead>
 										<tbody>
-											<% docs.UserRank.forEach(function(doc, index){  %>
+											<% userrank.forEach(function(doc, index){  %>
 											<tr class="success">
 												<td><%= index+1 %></td>
-												<td> <a href="/test/<%= doc.name %>"> <%= doc.username %> </a></td>
+												<td> <a href="/user/<%= doc.username %>"> <%= doc.username %> </a></td>
 												<td><%= doc.correct %> / <%= doc.testsum %></td>
+												<td><%= doc.day %></td>
 											</tr>
 										</tbody>
 										<% }) %>
