@@ -13,4 +13,3 @@ access.log
 bower_components
 public/js/*.js
 public/js/*.map
-public/css/*.css
