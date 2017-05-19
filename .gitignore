@@ -11,5 +11,6 @@ access.log
 **/files
 .git/
 bower_components
-public/js/*
+public/js/*.js
+public/js/*.map
 public/css/*.css
