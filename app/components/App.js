@@ -6,8 +6,10 @@ class App extends React.Component {
   render() {
     return (
       <div>
-        <Navbar />
-        {this.props.children}
+        <div id='wrap'>
+            <Navbar />
+            {this.props.children}
+        </div>
         <Footer />
       </div>
     );
