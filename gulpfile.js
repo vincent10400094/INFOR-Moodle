@@ -114,9 +114,7 @@ gulp.task('browserify-watch', ['browserify-vendor'], function() {
  */
 gulp.task('styles', function() {
   return gulp.src([
-      'app/stylesheets/style.css',
-      'bower_components/bootstrap/dist/bootstrap.css',
-      'bower_components/bootstrap-material-design/dist/bootstrap-material-design.css'
+      'bower_components/bootstrap/dist/bootstrap.css'
   ]).pipe(concat('main.css'))
     .pipe(plumber())
     .pipe(autoprefixer())

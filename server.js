@@ -26,9 +26,10 @@ var debug = require('debug')('blog:server');
 var http = require('http');
 
 var React = require('react');
-var ReactDOM = require('react-dom/server');
-var Router = require('react-router');
+import { renderToString } from 'react-dom/server';
+import { match, RouterContext } from 'react-router'
 var routes = require('./app/routes');
+import NotFoundPage from './app/components/404';
 
 var accessLog = fs.createWriteStream('access.log', {
   flags: 'a'
@@ -95,22 +96,54 @@ app.use(passport.session());
 
 // app.use('/', index);
 
-app.use(function(req, res) {
-  Router.match({ routes: routes.default, location: req.url }, function(err, redirectLocation, renderProps) {
-    if (err) {
-      res.status(500).send(err.message)
-    } else if (redirectLocation) {
-      res.status(302).redirect(redirectLocation.pathname + redirectLocation.search)
-    } else if (renderProps) {
-        console.log(renderProps);
-        console.log(Router.RoutingContext);
-        var html = ReactDOM.renderToString(React.createElement(Router.RoutingContext, renderProps))
-        res.render('index', html)
-    } else {
-      res.status(404).send('Page Not Found')
+app.get('*', (req, res) => {
+  match(
+    { routes: routes.default, location: req.url },
+    (err, redirectLocation, renderProps) => {
+
+      // in case of error display the error message
+      if (err) {
+        return res.status(500).send(err.message);
+      }
+
+      // in case of redirect propagate the redirect to the browser
+      if (redirectLocation) {
+        return res.redirect(302, redirectLocation.pathname + redirectLocation.search);
+      }
+
+      // generate the React markup for the current route
+      let markup;
+      if (renderProps) {
+        // if the current route matched we have renderProps
+        markup = renderToString(<RouterContext {...renderProps}/>);
+      } else {
+        // otherwise we can render a 404 page
+        markup = renderToString(<NotFoundPage/>);
+        res.status(404);
+      }
+
+      // render the index template with the embedded React markup
+      return res.render('index', { markup });
     }
-  });
+  );
 });
+
+// app.use(function(req, res) {
+//   Router.match({ routes: routes.default, location: req.url }, function(err, redirectLocation, renderProps) {
+//     if (err) {
+//       res.status(500).send(err.message)
+//     } else if (redirectLocation) {
+//       res.status(302).redirect(redirectLocation.pathname + redirectLocation.search)
+//     } else if (renderProps) {
+//         console.log(renderProps);
+//         console.log(Router.RoutingContext);
+//         var html = ReactDOM.renderToString(React.createElement(Router.RoutingContext, renderProps))
+//         res.render('index', html)
+//     } else {
+//       res.status(404).send('Page Not Found')
+//     }
+//   });
+// });
 
 // catch 404 and forward to error handler
 // app.use(function(req, res, next) {
