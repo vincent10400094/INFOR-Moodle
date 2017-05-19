@@ -34,12 +34,8 @@ gulp.task('vendor', function() {
     'bower_components/tether/dist/js/tether.js',
     'bower_components/ckeditor/ckeditor.js',
     'bower_components/bootstrap/dist/js/bootstrap.js',
-    'bower_components/bootstrap-material-design/dist/bootstrap-material-design.iife.js',
     'bower_components/flot/jquery.flot.js',
-    'bower_components/flot/jquery.flot.pie.js',
-    'app/js/comment.js',
-    'app/js/formEdit.js',
-    'app/js/upload.js'
+    'bower_components/flot/jquery.flot.pie.js'
   ]).pipe(concat('vendor.js'))
     .pipe(gulpif(production, uglify({ mangle: false })))
     .pipe(gulp.dest('public/js'));
