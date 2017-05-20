@@ -15,26 +15,111 @@ var sourcemaps = require('gulp-sourcemaps');
 
 var production = process.env.NODE_ENV === 'production';
 
+var dependencies = [
+  'alt',
+  'react',
+  'react-dom',
+  'react-router',
+  'underscore'
+];
+
 /*
  |--------------------------------------------------------------------------
  | Combine all JS libraries into a single file for fewer HTTP requests.
  |--------------------------------------------------------------------------
  */
-gulp.task('vendor', function() {
-  return gulp.src([
-    'app/js/bootstrap.js',
-    'app/js/ckeditor.js',
-    'app/js/comment.js',
-    'app/js/formEdit.js',
-    'app/js/jquery-3.2.1.js.js',
-    'app/js/jquery.flot.js',
-    'app/js/jquery.flot.pie.js',
-    'app/js/upload.js',
-    'app/js/material.js',
-    'app/js/ripple.js'
-  ]).pipe(concat('vendor.js'))
+// gulp.task('vendor', function() {
+//   return gulp.src([
+//     'bower_components/jquery/dist/jquery.js',
+//     'bower_components/tether/dist/js/tether.js',
+//     'bower_components/ckeditor/ckeditor.js',
+//     'bower_components/bootstrap/dist/js/bootstrap.js',
+//     'bower_components/flot/jquery.flot.js',
+//     'bower_components/flot/jquery.flot.pie.js'
+//   ]).pipe(concat('vendor.js'))
+//     .pipe(gulpif(production, uglify({ mangle: false })))
+//     .pipe(gulp.dest('public/js'));
+// });
+
+/*
+ |--------------------------------------------------------------------------
+ | Compile third-party dependencies separately for faster performance.
+ |--------------------------------------------------------------------------
+ */
+ gulp.task('browserify-vendor', function() {
+   return browserify()
+     .require(dependencies)
+     .bundle()
+     .pipe(source('vendor.bundle.js'))
+     .pipe(buffer())
+     .pipe(gulpif(production, uglify({ mangle: false })))
+     .pipe(gulp.dest('public/js'));
+ });
+
+/*
+ |--------------------------------------------------------------------------
+ | Compile only project files, excluding all third-party dependencies.
+ |--------------------------------------------------------------------------
+ */
+gulp.task('browserify', ['browserify-vendor'], function() {
+  return browserify({ entries: 'app/app-client.js', debug: true })
+    .external(dependencies)
+    .transform(babelify, { presets: ['es2015', 'react', 'react-hmre'] })
+    .bundle()
+    .pipe(source('bundle.js'))
+    .pipe(buffer())
+    .pipe(sourcemaps.init({ loadMaps: true }))
     .pipe(gulpif(production, uglify({ mangle: false })))
+    .pipe(sourcemaps.write('.'))
     .pipe(gulp.dest('public/js'));
 });
 
-gulp.task('default', ['vendor']);
+/*
+ |--------------------------------------------------------------------------
+ | Same as browserify task, but will also watch for changes and re-compile.
+ |--------------------------------------------------------------------------
+ */
+gulp.task('browserify-watch', ['browserify-vendor'], function() {
+  var bundler = watchify(browserify({ entries: 'app/app-client.js', debug: true }, watchify.args));
+  bundler.external(dependencies);
+  bundler.transform(babelify, { presets: ['es2015', 'react', 'react-hmre'] });
+  bundler.on('update', rebundle);
+  return rebundle();
+
+  function rebundle() {
+    var start = Date.now();
+    return bundler.bundle()
+      .on('error', function(err) {
+        gutil.log(gutil.colors.red(err.toString()));
+      })
+      .on('end', function() {
+        gutil.log(gutil.colors.green('Finished rebundling in', (Date.now() - start) + 'ms.'));
+      })
+      .pipe(source('bundle.js'))
+      .pipe(buffer())
+      .pipe(sourcemaps.init({ loadMaps: true }))
+      .pipe(sourcemaps.write('.'))
+      .pipe(gulp.dest('public/js/'));
+  }
+});
+
+/*
+ |--------------------------------------------------------------------------
+ | Compile LESS stylesheets.
+ |--------------------------------------------------------------------------
+ */
+// gulp.task('styles', function() {
+//   return gulp.src([
+//       'bower_components/bootstrap/dist/bootstrap.css'
+//   ]).pipe(concat('main.css'))
+//     .pipe(plumber())
+//     .pipe(autoprefixer())
+//     .pipe(gulpif(production, cssmin()))
+//     .pipe(gulp.dest('public/css'));
+// });
+//
+// gulp.task('watch', function() {
+//   gulp.watch('app/stylesheets/**/*.css', ['styles']);
+// });
+
+gulp.task('default', ['browserify-vendor', 'browserify', 'browserify-watch']);
