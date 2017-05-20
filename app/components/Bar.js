@@ -9,6 +9,8 @@ export default class Bar extends React.Component {
     constructor(props) {
         super(props);
         this.state = { showModal: false };
+        this.open = this.open.bind(this)
+        this.close = this.close.bind(this)
     }
 
     close() {
