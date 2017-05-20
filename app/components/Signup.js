@@ -1,7 +1,9 @@
+'use strict'
+
 import React from 'react';
 import {Link} from 'react-router';
 
-class Signup extends React.Component {
+export default class Signup extends React.Component {
     render() {
         return (
         <section id='main'>
@@ -13,22 +15,22 @@ class Signup extends React.Component {
                       <legend>Signup</legend>
                       <div className='form-group'>
                          <div className='col-md-12'>
-                            <input type='text' className='form-control' id='inputUsername' placeholder='Username' name='name' autocomplete='off' autofocus=''></input>
+                            <input type='text' className='form-control' id='inputUsername' placeholder='Username' name='name' autoComplete='off' autoFocus='true'></input>
                          </div>
                       </div>
                       <div className='form-group'>
                          <div className='col-md-12'>
-                            <input type='text' className='form-control' id='inputEmail' placeholder='Email' name='email' autocomplete='off'></input>
+                            <input type='text' className='form-control' id='inputEmail' placeholder='Email' name='email' autoComplete='off'></input>
                          </div>
                       </div>
                       <div className='form-group'>
                          <div className='col-md-12'>
-                            <input type='password' className='form-control' id='inputPassword' placeholder='Password' name='password' autocomplete='off'></input>
+                            <input type='password' className='form-control' id='inputPassword' placeholder='Password' name='password' autoComplete='off'></input>
                          </div>
                       </div>
                       <div className='form-group'>
                          <div className='col-md-12'>
-                            <input type='password' className='form-control' id='confirmPassword' placeholder='Confirm Password' name='password-confirm' autocomplete='off'></input>
+                            <input type='password' className='form-control' id='confirmPassword' placeholder='Confirm Password' name='password-confirm' autoComplete='off'></input>
                          </div>
                       </div>
                       <p>Already have account ? <Link to='/login'>Login</Link></p>
@@ -46,5 +48,3 @@ class Signup extends React.Component {
         );
     }
 }
-
-export default Signup;

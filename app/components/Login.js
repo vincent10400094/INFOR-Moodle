@@ -1,7 +1,9 @@
+'use strict'
+
 import React from 'react';
 import {Link} from 'react-router';
 
-class Login extends React.Component {
+export default class Login extends React.Component {
     render() {
         return (
         <section id='main'>
@@ -13,12 +15,12 @@ class Login extends React.Component {
                           <legend>Login</legend>
                           <div className='form-group'>
                              <div className='col-md-12'>
-                                <input type='text' className='form-control' id='inputUsername' placeholder='Username' name='name' autocomplete='off' autofocus=''></input>
+                                <input type='text' className='form-control' id='inputUsername' placeholder='Username' name='name' autoComplete='off' autoFocus='true'></input>
                              </div>
                           </div>
                           <div className='form-group'>
                              <div className='col-md-12'>
-                                <input type='password' className='form-control' id='inputPassword' placeholder='Password' name='password' autocomplete='off'></input>
+                                <input type='password' className='form-control' id='inputPassword' placeholder='Password' name='password' autoComplete='off'></input>
                              </div>
                           </div>
                            <p>Need an account ? <Link to='/signup'>Signup</Link></p>
@@ -39,5 +41,3 @@ class Login extends React.Component {
         );
     }
 }
-
-export default Login;

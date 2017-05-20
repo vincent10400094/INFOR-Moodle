@@ -12,6 +12,5 @@ access.log
 .git/
 bower_components
 public/js/bundle.js
-public/js/bundle.js.map
 public/js/vendor.js
-public/js/vendor.bundle.js
+babel_cache

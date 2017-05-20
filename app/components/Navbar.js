@@ -1,7 +1,9 @@
+'use strict'
+
 import React from 'react';
 import {Link} from 'react-router';
 
-class Navbar extends React.Component {
+export default class Navbar extends React.Component {
     render() {
         return (
             <nav className='navbar navbar-default'>
@@ -26,7 +28,7 @@ class Navbar extends React.Component {
                         </ul>
                         <form className='navbar-form navbar-left' action='/search' method='GET' id='searchbar'>
                             <div className='form-group has-success'>
-                                <input type='text' name='keyword' className='form-control' placeholder='Search' autocomplete='off'></input>
+                                <input type='text' name='keyword' className='form-control' placeholder='Search' autoComplete='off'></input>
                             </div>
                         </form>
                         <ul className='nav navbar-nav navbar-right'>
@@ -40,5 +42,3 @@ class Navbar extends React.Component {
         );
     }
 }
-
-export default Navbar;
