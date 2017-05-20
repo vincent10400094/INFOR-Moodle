@@ -1,16 +1,16 @@
 'use strict'
 
 import React from 'react';
-import {Link} from 'react-router';
+import { Link } from 'react-router';
 
-export default class Article extends React.Component {
+export default class Post extends React.Component {
     render() {
         return (
             <div className='well' >
                 <h3>
-                  <span className='grey'>
-                  <Link to=''>Title</Link>
-                  </span>
+                    <span className='grey'>
+                        <Link to=''>Title</Link>
+                    </span>
                 </h3>
                 <p className='grey'>Yesterdy — Vincent</p>
                 <h4>

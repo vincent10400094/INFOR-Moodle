@@ -97,6 +97,11 @@ app.use(express.static(path.join(__dirname, 'public')));
 // app.use(passport.initialize());
 // app.use(passport.session());
 
+app.get('/api/post/:params', (req, res, next) => {
+  var posts = [1,2,3,4,5];
+  res.send(posts);
+})
+
 app.get('*', (req, res) => {
   match(
     { routes, location: req.url },
@@ -114,7 +119,7 @@ app.get('*', (req, res) => {
       let markup;
       if (renderProps) {
         // if the current route matched we have renderProps
-        markup = renderToString(<RouterContext {...renderProps}/>);
+        markup = renderToString(<RouterContext {...renderProps} />);
       } else {
         res.status(404);
       }

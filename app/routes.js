@@ -11,6 +11,7 @@ import NotFoundPage from './components/404';
 const routes = (
     <Route path="/" component={Layout}>
       <IndexRoute component={Home}/>
+      <Route path=':page' component={Home}/>
       <Route path="login" component={Login} />
       <Route path="signup" component={Signin} />
       <Route path="*" component={NotFoundPage} />

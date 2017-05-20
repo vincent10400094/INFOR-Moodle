@@ -1,11 +1,12 @@
 'use strict'
 
 import React from 'react';
-import Article from './Article';
+import PostList from './PostList';
 import Bar from './Bar';
 import { Link } from 'react-router';
 
 export default class Home extends React.Component {
+
     render() {
         const displayNone = {
             display: 'none'
@@ -18,7 +19,7 @@ export default class Home extends React.Component {
                             <Bar></Bar>
                         </div>
                         <div className='col-md-8 col-md-offset-2'>
-                            <Article></Article>
+                            <PostList page={this.props.params.page}></PostList>
                         </div>
                     </div>
                 </div>
