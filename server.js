@@ -111,8 +111,7 @@ app.get('*', (req, res) => {
       if (redirectLocation) {
         return res.redirect(302, redirectLocation.pathname + redirectLocation.search);
       }
-      console.log("redirectLocation: " + redirectLocation);
-      console.log("renderProps: " + JSON.stringify(renderProps));
+
       // generate the React markup for the current route
       let markup;
       if (renderProps) {
@@ -121,7 +120,6 @@ app.get('*', (req, res) => {
       } else {
         res.status(404);
       }
-      console.log("markup: " + markup);
       // render the index template with the embedded React markup
       return res.render('index', { markup });
     }

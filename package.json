@@ -7,11 +7,12 @@
     "url": "https://github.com/vincent10400094/INFOR-Moodle"
   },
   "scripts": {
-      "start": "cross-env NODE_ENV=production node_modules/.bin/babel-node --presets react,es2015 server.js",
-      "start-dev": "npm run start-dev-hmr",
-      "start-dev-single-page": "node_modules/.bin/http-server public",
-      "start-dev-hmr": "node_modules/.bin/webpack-dev-server --progress --inline --hot --open",
-      "build": "cross-env NODE_ENV=production node_modules/.bin/webpack -p && gulp"
+    "start": "cross-env NODE_ENV=production node_modules/.bin/babel-node --presets react,es2015 server.js",
+    "start-dev": "npm run start-dev-hmr",
+    "start-dev-single-page": "node_modules/.bin/http-server public",
+    "start-dev-hmr": "node_modules/.bin/webpack-dev-server --progress --inline --hot --open",
+    "build": "cross-env NODE_ENV=production node_modules/.bin/webpack -p ",
+    "watch": "cross-env NODE_ENV=production node_modules/.bin/webpack -w "
   },
   "babel": {
     "presets": [
@@ -21,6 +22,13 @@
   },
   "dependencies": {
     "alt": "^0.18.6",
+    "babel-cli": "^6.11.4",
+    "babel-core": "^6.13.2",
+    "babel-loader": "^6.2.5",
+    "babel-plugin-react-html-attrs": "^2.0.0",
+    "babel-preset-es2015": "^6.13.2",
+    "babel-preset-react": "^6.11.1",
+    "babel-preset-react-hmre": "^1.1.1",
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "~1.16.0",
     "busboy": "^0.2.14",
@@ -29,6 +37,7 @@
     "connect-mongo": "~1.3.2",
     "cookie-parser": "~1.4.3",
     "cookie-session": "^2.0.0-beta.1",
+    "cross-env": "^3.1.4",
     "debug": "~2.6.0",
     "ejs": "~2.5.5",
     "express": "~4.14.1",
@@ -50,23 +59,17 @@
     "prop-types": "^15.5.10",
     "randomstring": "^1.1.5",
     "react": "^15.3.1",
+    "react-bootstrap": "^0.31.0",
     "react-dom": "^15.3.1",
     "react-router": "^2.6.1",
     "request": "^2.81.0",
     "serve-favicon": "~2.3.2",
     "skip-map": "^1.0.0",
     "underscore": "^1.8.3",
-    "util": "^0.10.3",
-    "babel-cli": "^6.11.4",
-    "babel-core": "^6.13.2",
-    "babel-loader": "^6.2.5",
-    "babel-plugin-react-html-attrs": "^2.0.0",
-    "babel-preset-es2015": "^6.13.2",
-    "babel-preset-react": "^6.11.1",
-    "babel-preset-react-hmre": "^1.1.1",
-    "cross-env": "^3.1.4"
+    "util": "^0.10.3"
   },
   "devDependencies": {
+<<<<<<< HEAD
     "babel-cli": "^6.24.1",
     "babel-core": "^6.1.19",
     "babel-preset-es2015": "^6.24.1",
@@ -74,6 +77,9 @@
     "babel-preset-stage-2": "^6.24.1",
     "babel-register": "^6.3.13",
     "babelify": "^7.2.0",
+=======
+    "babel-preset-react-hmre": "^1.1.1",
+>>>>>>> 86a58ae3fb05fea74517d6a63a9fbef5a2de23a7
     "bower": "^1.6.5",
     "browserify": "^12.0.1",
     "gulp": "^3.9.0",
@@ -86,13 +92,13 @@
     "gulp-sourcemaps": "^1.6.0",
     "gulp-uglify": "^1.4.2",
     "gulp-util": "^3.0.7",
+    "http-server": "^0.9.0",
+    "react-hot-loader": "^1.3.0",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0",
     "watchify": "^3.6.0",
-    "react-hot-loader": "^1.3.0",
     "webpack": "^1.13.2",
-    "webpack-dev-server": "^1.14.1",
-    "http-server": "^0.9.0"
+    "webpack-dev-server": "^1.14.1"
   },
   "license": "MIT"
 }
