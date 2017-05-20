@@ -11,6 +11,8 @@ var session = require('express-session');
 var busboy = require('connect-busboy');
 // var expressLayouts = require('express-e6js-layouts');
 
+var Post = require('./models/post')
+
 //var session = require('cookie-session');
 var MongoStore = require('connect-mongo')(session);
 // var hbs = require('express-handlebars');  //view engine
@@ -21,6 +23,7 @@ var flash = require('connect-flash');
 var multer = require('multer');
 var fs = require('fs');
 var _ = require('underscore');
+var skipMap = require('skip-map');
 
 var debug = require('debug')('blog:server');
 var http = require('http');
@@ -28,7 +31,7 @@ var http = require('http');
 var React = require('react');
 import { renderToString } from 'react-dom/server';
 import { match, RouterContext } from 'react-router'
-var routes = require('./app/routes');
+import routes from './app/routes';
 import NotFoundPage from './app/components/404';
 
 var accessLog = fs.createWriteStream('access.log', {
@@ -66,113 +69,86 @@ app.use(bodyParser.urlencoded({
 
 app.use(cookieParser());
 app.use(busboy());
+app.use(skipMap());
+
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use(function(err, req, res, next) {
-  var meta = '[' + new Date() + ']' + req.url + '\n';
-  errorLog.write(meta + err.stack + '\n');
-  next();
-});
+// app.use(function(err, req, res, next) {
+//   var meta = '[' + new Date() + ']' + req.url + '\n';
+//   errorLog.write(meta + err.stack + '\n');
+//   next();
+// });
 
-app.use(session({
-  secret: settings.cookieSecret,
-  key: settings.db,
-  resave: true,
-  saveUninitialized: true,
-  cookie: {
-    maxAge: 1000 * 60 * 60 * 24 * 30 //30天
-  },
-  seen: 0,
-  store: new MongoStore({
-    db: settings.db,
-    host: settings.host,
-    port: settings.port,
-    url: 'mongodb://localhost:27017/blog'
-  })
-}));
+// app.use(session({
+//   secret: settings.cookieSecret,
+//   key: settings.db,
+//   resave: true,
+//   saveUninitialized: true,
+//   cookie: {
+//     maxAge: 1000 * 60 * 60 * 24 * 30 //30天
+//   },
+//   seen: 0,
+//   store: new MongoStore({
+//     db: settings.db,
+//     host: settings.host,
+//     port: settings.port,
+//     url: 'mongodb://localhost:27017/blog'
+//   })
+// }));
 
-app.use(passport.initialize());
-app.use(passport.session());
-
-// app.use('/', index);
+// app.use(passport.initialize());
+// app.use(passport.session());
 
 app.get('*', (req, res) => {
   match(
-    { routes: routes.default, location: req.url },
+    { routes, location: req.url },
     (err, redirectLocation, renderProps) => {
-
       // in case of error display the error message
       if (err) {
         return res.status(500).send(err.message);
       }
-
       // in case of redirect propagate the redirect to the browser
       if (redirectLocation) {
         return res.redirect(302, redirectLocation.pathname + redirectLocation.search);
       }
-
+      console.log("redirectLocation: " + redirectLocation);
+      console.log("renderProps: " + JSON.stringify(renderProps));
       // generate the React markup for the current route
       let markup;
       if (renderProps) {
         // if the current route matched we have renderProps
-        markup = renderToString(<RouterContext {...renderProps}/>);
+        markup = renderToString(<RouterContext {...renderProps} />);
       } else {
-        // otherwise we can render a 404 page
-        markup = renderToString(<NotFoundPage/>);
         res.status(404);
       }
-
+      console.log("markup: " + markup);
       // render the index template with the embedded React markup
       return res.render('index', { markup });
     }
   );
 });
 
-// app.use(function(req, res) {
-//   Router.match({ routes: routes.default, location: req.url }, function(err, redirectLocation, renderProps) {
-//     if (err) {
-//       res.status(500).send(err.message)
-//     } else if (redirectLocation) {
-//       res.status(302).redirect(redirectLocation.pathname + redirectLocation.search)
-//     } else if (renderProps) {
-//         console.log(renderProps);
-//         console.log(Router.RoutingContext);
-//         var html = ReactDOM.renderToString(React.createElement(Router.RoutingContext, renderProps))
-//         res.render('index', html)
-//     } else {
-//       res.status(404).send('Page Not Found')
-//     }
-//   });
-// });
+//getTen 拿到的posts是每十篇文章 
+// total是總共的文章數量，以便計算在前端會不會顯示下一頁或上一頁
+app.get('/api/posts', (req, res) => {
 
-// catch 404 and forward to error handler
-// app.use(function(req, res, next) {
-//   var err = new Error('Not Found');
-//   err.status = 404;
-//   next(err);
-// });
+  var page = req.query.p ? parseInt(req.query.p) : 1;
 
-// error handler
-// app.use(function(err, req, res, next) {
-//   res.locals.error = req.app.get('env') === 'development' ? err : {};
-//   res.locals.user = req.session.user;
-//   res.locals.req = req;
-//
-//   res.status(err.status || 500);
-//
-//   if (err.status == 500) {
-//     res.render('error', {
-//       title: 'Oops',
-//       code: err.status,
-//     });
-//   } else {
-//     res.render('error', {
-//       title: 'Not found',
-//       code: err.status,
-//     });
-//   }
-//   next();
-// });
+  Post.getTen(null, page, function (err, posts, total) {
+    if (err) {
+      console.log(err);
+      posts = {};
+    }
+    total = parseInt(total / 10) + 1;
+
+    var data = {
+      posts: posts,
+      total: total
+    }
+
+    res.send(data);
+  });
+});
 
 var port = normalizePort(process.env.PORT || '1209');
 app.set('port', port);

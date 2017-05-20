@@ -2,21 +2,20 @@
     color: #777;
 }
 
-#login{
-  margin-top:30px;
+#login {
+    margin-top: 30px;
 }
 
-/* Footer */
-#footer{
-    background:#333333;
-    color:#ffffff;
-    text-align:center;
-    padding:30px;
-    margin-top:30px;
+#footer {
+    background: #333333;
+    color: #ffffff;
+    text-align: center;
+    padding: 30px;
+    margin-top: 30px;
     width: 100%;
 }
 
-body, html{
+body, html {
     height: 100%;
 }
 
@@ -53,22 +52,30 @@ body, html{
 }
 
 #wrap {
-  min-height: 100%;
-  height: auto;
-  margin: 0 auto -120px;
-  padding: 0 0 120px;
+    min-height: 100%;
+    height: auto !important;
+    margin: 0 auto -120px;
+    padding: 0 0 120px;
+}
+
+#main {
+    height: 100%;
+}
+
+#app-container {
+    height: 100%;
 }
 
 #searchbar {
-  background-image: -webkit-gradient(linear, left top, left bottom, from(#D2D2D2), to(#D2D2D2)), -webkit-gradient(linear, left top, left bottom, from(#D2D2D2), to(#D2D2D2));
-  background-image: -webkit-linear-gradient(#009688, #009688), -webkit-linear-gradient(#009688, #009688);
-  background-image: -o-linear-gradient(#009688, #009688), -o-linear-gradient(#009688, #009688);
-  background-image: linear-gradient(#009688, #009688), linear-gradient(#D2D2D2, #D2D2D2);
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#D2D2D2), to(#D2D2D2)), -webkit-gradient(linear, left top, left bottom, from(#D2D2D2), to(#D2D2D2));
+    background-image: -webkit-linear-gradient(#009688, #009688), -webkit-linear-gradient(#009688, #009688);
+    background-image: -o-linear-gradient(#009688, #009688), -o-linear-gradient(#009688, #009688);
+    background-image: linear-gradient(#009688, #009688), linear-gradient(#D2D2D2, #D2D2D2);
 }
 
 .modal-dialog {
-  /*position:absolute;*/
-  top:5% !important;
+    /*position:absolute;*/
+    top: 5% !important;
 }
 
 .btn-group.btn-group-raised, .btn-group-vertical.btn-group-raised {

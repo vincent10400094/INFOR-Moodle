@@ -1,11 +1,13 @@
+'use strict'
+
 import React from 'react';
 import Navbar from './Navbar';
 import Footer from './Footer';
 
-class App extends React.Component {
+export default class Layout extends React.Component {
   render() {
     return (
-      <div>
+      <div id='app-container'>
         <div id='wrap'>
             <Navbar />
             {this.props.children}
@@ -15,5 +17,3 @@ class App extends React.Component {
     );
   }
 }
-
-export default App;
