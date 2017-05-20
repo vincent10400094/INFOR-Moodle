@@ -5,7 +5,7 @@ import Footer from './Footer';
 class App extends React.Component {
   render() {
     return (
-      <div>
+      <div id='main'>
         <div id='wrap'>
             <Navbar />
             {this.props.children}

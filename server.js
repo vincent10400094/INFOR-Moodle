@@ -98,7 +98,7 @@ app.use(passport.session());
 
 app.get('*', (req, res) => {
   match(
-    { routes: routes.default, location: req.url },
+    { routes , location: req.url },
     (err, redirectLocation, renderProps) => {
 
       // in case of error display the error message

@@ -31,7 +31,7 @@ class Signup extends React.Component {
                             <input type='password' className='form-control' id='confirmPassword' placeholder='Confirm Password' name='password-confirm' autocomplete='off'></input>
                          </div>
                       </div>
-                      <p>Already have account ? <a href='/login'>Login</a></p>
+                      <p>Already have account ? <Link to='/login'>Login</Link></p>
                       <div className='form-group'>
                          <div className='col-md-12'>
                             <button type='submit' className='btn btn-default btn-block' value='login'>Signup</button>

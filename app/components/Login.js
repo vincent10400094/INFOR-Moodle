@@ -21,7 +21,7 @@ class Login extends React.Component {
                                 <input type='password' className='form-control' id='inputPassword' placeholder='Password' name='password' autocomplete='off'></input>
                              </div>
                           </div>
-                           <p>Need an account ? <a href='/signup'>Signup</a></p>
+                           <p>Need an account ? <Link to='/signup'>Signup</Link></p>
                           <div className='form-group'>
                              <div className='col-md-12'>
                                 <button type='submit' className='btn btn-default btn-block' value='login'>Login</button>

@@ -1,9 +1,7 @@
 import React from 'react';
-import Router from 'react-router';
 import ReactDOM from 'react-dom';
-import createBrowserHistory from 'history/createBrowserHistory';
-import routes from './routes';
+import AppRoutes from './components/AppRoutes';
 
-let history = createBrowserHistory();
-
-ReactDOM.render(<Router history={history}>{routes}</Router>, document.getElementById('wrap'));
+window.onload = () => {
+  ReactDOM.render(<AppRoutes/>, document.getElementById('main'));
+};
