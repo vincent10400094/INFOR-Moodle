@@ -1,7 +1,6 @@
 'use strict'
 
 import React from 'react';
-import Post from './Post';
 import { isEqual } from 'underscore';
 import { Link } from 'react-router';
 import PostListActions from '../actions/PostListActions';
@@ -10,7 +9,7 @@ import PostListStore from '../stores/PostListStore'
 export default class PostList extends React.Component {
     constructor(props) {
         super(props);
-        this.state = PostListStore.getState();
+        this.state = PostListStore.getState();    
         this.onChange = this.onChange.bind(this);
     }
 
