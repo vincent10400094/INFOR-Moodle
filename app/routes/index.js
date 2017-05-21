@@ -18,22 +18,22 @@ var Pdf = require('../../pdfreader/parse');
 
 /* GET home page. */
 
-router.get('/welcome', function(req, res) {
+router.get('/welcome', function (req, res) {
   res.render('welcome');
 });
 
 router.get('/', checkLogin);
-router.get('/', function(req, res) {
+router.get('/', function (req, res) {
   //console.log(req.session.user);
   if (req.session.user) {
     if (!req.session.user.isVerified) {
       req.flash('error', "請認證email");
-    //   console.log('not verified');
+      //   console.log('not verified');
     }
   }
   var page = req.query.p ? parseInt(req.query.p) : 1;
 
-  Post.getTen(null, page, function(err, posts, total) {
+  Post.getTen(null, page, function (err, posts, total) {
     if (err) {
       console.log(err);
       posts = {};
@@ -59,7 +59,7 @@ router.get('/', function(req, res) {
 
 
 router.get('/signup', checkBeenLogin);
-router.get('/signup', function(req, res) {
+router.get('/signup', function (req, res) {
   res.render('signup', {
     title: 'Register',
     req: req,
@@ -69,7 +69,7 @@ router.get('/signup', function(req, res) {
   });
 });
 
-router.get('/form', function(req, res) {
+router.get('/form', function (req, res) {
   res.render('form', {
     title: 'Form test',
     user: null,
@@ -78,7 +78,7 @@ router.get('/form', function(req, res) {
 
 
 router.get('/login', checkBeenLogin);
-router.get('/login', function(req, res) {
+router.get('/login', function (req, res) {
   res.render('login', {
     title: '登入',
     user: null,
@@ -89,10 +89,10 @@ router.get('/login', function(req, res) {
 
 
 router.get('/user/:user', checkLogin);
-router.get('/user/:user', function(req, res) {
+router.get('/user/:user', function (req, res) {
   User.findOne({
     'name': req.params.user
-  }, function(err, user) {
+  }, function (err, user) {
     if (err) {
       console.log('error finding user: ', err);
       res.redirect('/');
@@ -126,32 +126,32 @@ router.post('/login', passport.authenticate('local-login', {
 }));
 
 
-router.get('/verify', function(req, res) {
+router.get('/verify', function (req, res) {
 
   User.update({
     'verifyId': req.query.id
   }, {
-    'isVerified': true
-  }, function(err) {
+      'isVerified': true
+    }, function (err) {
 
-    if (err) {
-      console.log('Something went wrong: ' + err);
-    } else {
-      User.findOne({
-        'verifyId': req.query.id
-      }, function(err, user) {
-        // if there are any errors, return the error before anything else
-        if (err) {
-          console.log(err);
-        }
+      if (err) {
+        console.log('Something went wrong: ' + err);
+      } else {
+        User.findOne({
+          'verifyId': req.query.id
+        }, function (err, user) {
+          // if there are any errors, return the error before anything else
+          if (err) {
+            console.log(err);
+          }
 
-        req.session.user = user;
-        console.log('verified');
-        req.flash('email 認證成功');
-        res.redirect('/');
-      });
-    }
-  });
+          req.session.user = user;
+          console.log('verified');
+          req.flash('email 認證成功');
+          res.redirect('/');
+        });
+      }
+    });
 })
 
 
@@ -169,7 +169,7 @@ router.get('/auth/facebook/callback', passport.authenticate('facebook-login',
   }));
 
 router.get('/post', checkLogin);
-router.get('/post', function(req, res) {
+router.get('/post', function (req, res) {
   //console.log("HEY");
   res.render('post', {
     title: '發表',
@@ -180,7 +180,7 @@ router.get('/post', function(req, res) {
 });
 
 router.post('/post', checkLogin);
-router.post('/post', function(req, res) {
+router.post('/post', function (req, res) {
   var currentUser = req.session.user;
   //console.log(currentUser);
   var tags = (req.body.tags + '#end').split(/\s*#/);
@@ -191,7 +191,7 @@ router.post('/post', function(req, res) {
   tags.splice(tags.length - 1, 1);
 
   var post = new Post(currentUser.name, currentUser.head, req.body.title, tags, req.body.editor1, {}, file);
-  post.save(function(err) {
+  post.save(function (err) {
     if (err) {
       req.flash('error', err);
       return res.redirect('/');
@@ -203,15 +203,15 @@ router.post('/post', function(req, res) {
 });
 
 router.get('/logout', checkLogin);
-router.get('/logout', function(req, res) {
-  req.session.user = null ;
+router.get('/logout', function (req, res) {
+  req.session.user = null;
   req.flash('success', '登出成功!');
   res.redirect('/');
 });
 
 
 var storage = multer.diskStorage({
-  destination: function(req, file, cb) {
+  destination: function (req, file, cb) {
 
     var destDir = './public/images/' + req.session.user.name;
 
@@ -231,7 +231,7 @@ var storage = multer.diskStorage({
       }
     });
   },
-  filename: function(req, file, cb) {
+  filename: function (req, file, cb) {
     cb(null, file.originalname);
   }
 });
@@ -244,7 +244,7 @@ var upload = multer({
 });
 
 router.post('/upload', checkLogin);
-router.post('/upload', upload.array('photos', 12), function(req, res) {
+router.post('/upload', upload.array('photos', 12), function (req, res) {
 
   req.flash('success', '檔案上傳成功');
   res.redirect('/');
@@ -252,10 +252,10 @@ router.post('/upload', upload.array('photos', 12), function(req, res) {
 
 
 var PDFstorage = multer.diskStorage({
-  destination: function(req, file, cb) {
+  destination: function (req, file, cb) {
     cb(null, './public/images');
   },
-  filename: function(req, file, cb) {
+  filename: function (req, file, cb) {
     cb(null, file.originalname);
   }
 });
@@ -265,7 +265,7 @@ var PDFupload = multer({
 });
 
 router.get('/pdfUpload', checkLogin);
-router.get('/pdfUpload', function(req, res) {
+router.get('/pdfUpload', function (req, res) {
   res.render('pdfUpload', {
     title: 'PDF上傳',
     user: req.session.user,
@@ -285,7 +285,7 @@ var english_flag,
 
 router.post('/pdfUpload', checkLogin);
 
-router.post('/pdfUpload', PDFupload.array('pdf', 12), function(req, res) {
+router.post('/pdfUpload', PDFupload.array('pdf', 12), function (req, res) {
 
   var str_1 = req.files[0].filename;
   var str_2 = req.files[1].filename;
@@ -318,39 +318,39 @@ router.post('/pdfUpload', PDFupload.array('pdf', 12), function(req, res) {
 });
 
 router.get('/txt', checkLogin);
-router.get('/txt', function(req, res) {
+router.get('/txt', function (req, res) {
 
   if (english_flag) {
     var newTXT = new Txt(txt_name, ans_name, 'english');
-    newTXT.SaveEnglish(txt_name, function(err) {
+    newTXT.SaveEnglish(txt_name, function (err) {
       req.flash('success', '題目已抓取，請檢查');
       res.redirect('/txt/' + txt_name);
     })
   }
   if (chinese_flag) {
     var newTXT = new Txt(txt_name, ans_name, 'chinese');
-    newTXT.SaveChinese(txt_name, function(err) {
+    newTXT.SaveChinese(txt_name, function (err) {
       req.flash('success', '題目已抓取，請檢查');
       res.redirect('/txt/' + txt_name);
     })
   }
   if (social_flag) {
     var newTXT = new Txt(txt_name, ans_name, 'social');
-    newTXT.SaveSocial(txt_name, function(err) {
+    newTXT.SaveSocial(txt_name, function (err) {
       req.flash('success', '題目已抓取，請檢查');
       res.redirect('/txt/' + txt_name);
     })
   }
   if (math_flag) {
     var newTXT = new Txt(txt_name, ans_name, 'math');
-    newTXT.SaveMath(txt_name, function(err) {
+    newTXT.SaveMath(txt_name, function (err) {
       req.flash('success', '題目已抓取，請檢查');
       res.redirect('/txt/' + txt_name);
     })
   }
   if (science_flag) {
     var newTXT = new Txt(txt_name, ans_name, 'science');
-    newTXT.SaveScience(txt_name, function(err) {
+    newTXT.SaveScience(txt_name, function (err) {
       req.flash('success', '題目已抓取，請檢查');
       res.redirect('/txt/' + txt_name);
     })
@@ -358,11 +358,11 @@ router.get('/txt', function(req, res) {
 });
 
 router.get('/txt/:txtname', checkLogin);
-router.get('/txt/:txtname', function(req, res) {
+router.get('/txt/:txtname', function (req, res) {
 
   var page = req.query.p ? parseInt(req.query.p) : 0;
 
-  Txt.get(req.params.txtname, function(err, data) {
+  Txt.get(req.params.txtname, function (err, data) {
     res.render('txt', {
       title: req.params.txtname,
       content: data.post,
@@ -378,11 +378,11 @@ router.get('/txt/:txtname', function(req, res) {
 
 
 router.post('/txt/:txtname', checkLogin);
-router.post('/txt/:txtname', function(req, res) {
+router.post('/txt/:txtname', function (req, res) {
 
   var page = req.query.p ? parseInt(req.query.p) : 0;
 
-  Txt.edit(req.params.txtname, page, req.body.post, req.body.ans, function(err, data) {
+  Txt.edit(req.params.txtname, page, req.body.post, req.body.ans, function (err, data) {
     var url = encodeURI('/txt/' + req.params.txtname + '?p=' + page);
     if (err) {
       console.log(err);
@@ -396,10 +396,10 @@ router.post('/txt/:txtname', function(req, res) {
 });
 
 router.get('/txt/remove/:txtname', checkLogin);
-router.get('/txt/remove/:txtname', function(err, req, res) {
+router.get('/txt/remove/:txtname', function (err, req, res) {
   var page = req.query.p ? parseInt(req.query.p) : 0;
 
-  Txt.remove(req.params.txtname, page, function(err, data) {
+  Txt.remove(req.params.txtname, page, function (err, data) {
     var url = encodeURI('/txt/' + req.params.txtname + '?p=' + page);
     if (err) {
       console.log(err);
@@ -412,9 +412,9 @@ router.get('/txt/remove/:txtname', function(err, req, res) {
   });
 });
 router.get('/history', checkLogin);
-router.get('/history', function(req, res) {
+router.get('/history', function (req, res) {
 
-  Post.getArchive(function(err, posts) {
+  Post.getArchive(function (err, posts) {
     if (err) {
       req.flash('error', err);
       return res.redirect('/');
@@ -431,7 +431,7 @@ router.get('/history', function(req, res) {
 });
 
 router.post('/testsave', checkLogin);
-router.post('/testsave', function(req, res) {
+router.post('/testsave', function (req, res) {
 
   var newcontent = JSON.parse(req.body.content);
   var now_ans = JSON.parse(req.body.ans_array);
@@ -439,7 +439,7 @@ router.post('/testsave', function(req, res) {
   var TextInform = [];
   var newpost = '';
   //console.log(newcontent);
-  newcontent.forEach(function(content, index) {
+  newcontent.forEach(function (content, index) {
     //console.log(content);
     // console.log(content.name + ":" + (content.name !== 'post' && content.name !== 'radio' && content.name !== 'TextInform'));
 
@@ -465,7 +465,7 @@ router.post('/testsave', function(req, res) {
 
   // console.log(postindex);
 
-  Txt.testedit(req.body.name, postindex, newpost, optionarray, now_ans, TextInform, function(err, data) {
+  Txt.testedit(req.body.name, postindex, newpost, optionarray, now_ans, TextInform, function (err, data) {
 
     if (err) {
       console.log(err);
@@ -479,9 +479,9 @@ router.post('/testsave', function(req, res) {
 });
 
 router.get('/Ansform/:txtname', checkLogin);
-router.get('/Ansform/:txtname', function(req, res) {
+router.get('/Ansform/:txtname', function (req, res) {
 
-  Txt.get(req.params.txtname, function(err, doc) {
+  Txt.get(req.params.txtname, function (err, doc) {
     if (err) {
       console.log("err: " + err);
       req.flash('error', err);
@@ -499,9 +499,9 @@ router.get('/Ansform/:txtname', function(req, res) {
   });
 });
 
-router.get('/tags/:tag', function(req, res) {
+router.get('/tags/:tag', function (req, res) {
 
-  Post.getTag(req.params.tag, function(err, posts) {
+  Post.getTag(req.params.tag, function (err, posts) {
     if (err) {
       req.flash('error', err);
       return res.redirect('/');
@@ -519,9 +519,9 @@ router.get('/tags/:tag', function(req, res) {
 });
 
 router.post('/newtest', checkLogin);
-router.post('/newtest', function(req, res) {
+router.post('/newtest', function (req, res) {
 
-  Txt.newtest(req.body.title, req.body.subject, req.session.user.name, function(err, data) {
+  Txt.newtest(req.body.title, req.body.subject, req.session.user.name, function (err, data) {
     var url = encodeURI('/test/' + req.body.title);
     if (err) {
       console.log(err);
@@ -535,8 +535,8 @@ router.post('/newtest', function(req, res) {
 });
 
 router.post('/testInsert', checkLogin);
-router.post('/testInsert', function(req, res) {
-  Txt.insert(req.body.name, req.body.index, function(err, data) {
+router.post('/testInsert', function (req, res) {
+  Txt.insert(req.body.name, req.body.index, function (err, data) {
     var url = encodeURI('/test/' + req.body.name);
     if (err) {
       console.log(err);
@@ -550,9 +550,9 @@ router.post('/testInsert', function(req, res) {
 });
 
 router.post('/insertOption', checkLogin);
-router.post('/insertOption', function(req, res) {
+router.post('/insertOption', function (req, res) {
   console.log("sum: " + req.body.sum);
-  Txt.insertOption(req.body.name, req.body.index, req.body.sum, function(err) {
+  Txt.insertOption(req.body.name, req.body.index, req.body.sum, function (err) {
     if (err) {
       req.flash('error', err);
       return res.redirect('/');
@@ -564,8 +564,8 @@ router.post('/insertOption', function(req, res) {
 });
 
 router.post('/removeOneOption', checkLogin);
-router.post('/removeOneOption', function(req, res) {
-  Txt.removeOneOption(req.body.name, req.body.index, req.body.sum, req.body.optionindex, function(err) {
+router.post('/removeOneOption', function (req, res) {
+  Txt.removeOneOption(req.body.name, req.body.index, req.body.sum, req.body.optionindex, function (err) {
     if (err) {
       req.flash('error', err);
       return res.redirect('/');
@@ -577,9 +577,9 @@ router.post('/removeOneOption', function(req, res) {
 });
 
 router.post('/convertOption', checkLogin);
-router.post('/convertOption', function(req, res) {
+router.post('/convertOption', function (req, res) {
 
-  Txt.convertOption(req.body.name, req.body.index, req.body.sum, req.body.type, function(err) {
+  Txt.convertOption(req.body.name, req.body.index, req.body.sum, req.body.type, function (err) {
     if (err) {
       req.flash('error', err);
       return res.redirect('/');
@@ -591,8 +591,8 @@ router.post('/convertOption', function(req, res) {
 });
 
 router.post('/testremove', checkLogin);
-router.post('/testremove', function(req, res) {
-  Txt.testremove(req.body.name, req.body.index, function(err, data) {
+router.post('/testremove', function (req, res) {
+  Txt.testremove(req.body.name, req.body.index, function (err, data) {
     var url = encodeURI('/test/' + req.body.name);
     if (err) {
       console.log(err);
@@ -606,9 +606,9 @@ router.post('/testremove', function(req, res) {
 });
 
 router.get('/test', checkLogin);
-router.get('/test', function(req, res) {
+router.get('/test', function (req, res) {
 
-  Txt.getList({}, function(err, docs) {
+  Txt.getList({}, function (err, docs) {
     if (err) {
       req.flash('error', err);
       return res.redirect('/');
@@ -624,9 +624,9 @@ router.get('/test', function(req, res) {
   });
 });
 router.get('/test/:txtname', checkLogin);
-router.get('/test/:txtname', function(req, res) {
+router.get('/test/:txtname', function (req, res) {
 
-  Txt.get(req.params.txtname, function(err, doc) {
+  Txt.get(req.params.txtname, function (err, doc) {
     if (err) {
       req.flash('error', err);
       return res.redirect('/');
@@ -644,9 +644,9 @@ router.get('/test/:txtname', function(req, res) {
 });
 
 router.get('/rank/:txtname', checkLogin);
-router.get('/rank/:txtname', function(req, res) {
+router.get('/rank/:txtname', function (req, res) {
 
-  Txt.Rankget(req.params.txtname, function(err, userrank, doc) {
+  Txt.Rankget(req.params.txtname, function (err, userrank, doc) {
     if (err) {
       req.flash('error', err);
       return res.redirect('/');
@@ -664,9 +664,9 @@ router.get('/rank/:txtname', function(req, res) {
 });
 
 router.get('/pdfEditTest/:txtname', checkLogin);
-router.get('/pdfEditTest/:txtname', function(req, res) {
+router.get('/pdfEditTest/:txtname', function (req, res) {
 
-  Txt.get(req.params.txtname, function(err, doc) {
+  Txt.get(req.params.txtname, function (err, doc) {
     if (err) {
       req.flash('error', err);
       return res.redirect('/');
@@ -684,9 +684,9 @@ router.get('/pdfEditTest/:txtname', function(req, res) {
 });
 
 router.post('/Ansform/:txtname', checkLogin);
-router.post('/Ansform/:txtname', function(req, res) {
+router.post('/Ansform/:txtname', function (req, res) {
   //console.log(req.body);
-  Txt.compare(req.params.txtname, req.body, req.session.user.name, function(err, error_ans, small_array, big_array, ans_allsum, error_index, correct_index, ans_allnumber, doc) {
+  Txt.compare(req.params.txtname, req.body, req.session.user.name, function (err, error_ans, small_array, big_array, ans_allsum, error_index, correct_index, ans_allnumber, doc) {
     //console.log(error_ans);
 
     res.render('correct', {
@@ -709,9 +709,9 @@ router.post('/Ansform/:txtname', function(req, res) {
 
 
 router.get('/search', checkLogin);
-router.get('/search', function(req, res) {
+router.get('/search', function (req, res) {
 
-  Post.search(req.query.keyword, function(err, posts) {
+  Post.search(req.query.keyword, function (err, posts) {
 
     if (err) {
       req.flash('error', err);
@@ -728,16 +728,16 @@ router.get('/search', function(req, res) {
   });
 });
 
-router.get('/u/:name', function(req, res) {
+router.get('/u/:name', function (req, res) {
   var page = req.query.p ? parseInt(req.query.p) : 1;
 
-  User.get(req.params.name, function(err, user) {
+  User.get(req.params.name, function (err, user) {
     if (err) {
       req.flash('error', "用戶不存在");
       return res.redirect('/');
     }
 
-    Post.getTen(user.name, page, function(err, posts, total) {
+    Post.getTen(user.name, page, function (err, posts, total) {
       if (err) {
         req.flash('error', err);
         return res.redirect('/');
@@ -757,8 +757,8 @@ router.get('/u/:name', function(req, res) {
   });
 });
 
-router.get('/u/:name/:day/:title', function(req, res) {
-  Post.getOne(req.params.name, req.params.day, req.params.title, function(err, post) {
+router.get('/u/:name/:day/:title', function (req, res) {
+  Post.getOne(req.params.name, req.params.day, req.params.title, function (err, post) {
     if (err) {
       console.log(err);
       req.flash('error', err);
@@ -775,10 +775,10 @@ router.get('/u/:name/:day/:title', function(req, res) {
   });
 });
 
-router.post('/u/:name/:day/:title', function(req, res) {
+router.post('/u/:name/:day/:title', function (req, res) {
   var date = new Date;
   var time = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + "" + date.getHours() + ":"
-  + (date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes());
+    + (date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes());
 
   var head = req.session.user.head;
 
@@ -793,7 +793,7 @@ router.post('/u/:name/:day/:title', function(req, res) {
   };
   var newComment = new Comment(req.params.name, req.params.day, req.params.title, comment);
 
-  newComment.save(function(err) {
+  newComment.save(function (err) {
     if (err) {
       req.flash('error', err);
       return res.redirect('back');
@@ -811,27 +811,27 @@ router.post('/u/:name/:day/:title', function(req, res) {
   User.update({
     name: req.params.name
   }, {
-    $push: {
-      message: newMessage
-    }
-  }, {
-    safe: true,
-    upsert: true
-  }, function(err) {
-    if (err) {
-      console.log(err);
-      req.flash('error', err);
-      return res.redirect('back');
-    }
-    res.redirect('back');
-  })
+      $push: {
+        message: newMessage
+      }
+    }, {
+      safe: true,
+      upsert: true
+    }, function (err) {
+      if (err) {
+        console.log(err);
+        req.flash('error', err);
+        return res.redirect('back');
+      }
+      res.redirect('back');
+    })
 });
 
-router.post('/comments/star/', function(req, res) {
+router.post('/comments/star/', function (req, res) {
   var data = req.body;
   console.log(data);
   if (data.inc == 1) {
-    Post.comment_star(data.postname, data.day, data.title, data.username, data.index, function(err) {
+    Post.comment_star(data.postname, data.day, data.title, data.username, data.index, function (err) {
       if (err) {
         console.log(err);
         req.flash('error', err);
@@ -841,7 +841,7 @@ router.post('/comments/star/', function(req, res) {
     });
   }
   if (data.inc == -1) {
-    Post.comment_unstar(data.postname, data.day, data.title, data.username, data.index, function(err) {
+    Post.comment_unstar(data.postname, data.day, data.title, data.username, data.index, function (err) {
       if (err) {
         console.log(err);
         req.flash('error', err);
@@ -852,10 +852,10 @@ router.post('/comments/star/', function(req, res) {
   }
 });
 
-router.post('/u/star/', function(req, res) {
+router.post('/u/star/', function (req, res) {
   var data = req.body;
   if (data.inc == 1) {
-    Post.star(data.postname, data.day, data.title, data.username, function(err) {
+    Post.star(data.postname, data.day, data.title, data.username, function (err) {
       if (err) {
         console.log(err);
         req.flash('error', err);
@@ -865,7 +865,7 @@ router.post('/u/star/', function(req, res) {
     });
   }
   if (data.inc == -1) {
-    Post.unstar(data.postname, data.day, data.title, data.username, function(err) {
+    Post.unstar(data.postname, data.day, data.title, data.username, function (err) {
       if (err) {
         console.log(err);
         req.flash('error', err);
@@ -877,10 +877,10 @@ router.post('/u/star/', function(req, res) {
 });
 
 router.get('/rm_comment/:name/:day/:title/:content', checkLogin);
-router.get('/rm_comment/:name/:day/:title/:content', function(req, res) {
+router.get('/rm_comment/:name/:day/:title/:content', function (req, res) {
   var currentUser = req.session.user;
 
-  Comment.remove(req.params.name, req.params.day, req.params.title, req.params.content, function(err, post) {
+  Comment.remove(req.params.name, req.params.day, req.params.title, req.params.content, function (err, post) {
     if (err) {
       req.flash('error', err);
       return res.redirect('back');
@@ -892,10 +892,10 @@ router.get('/rm_comment/:name/:day/:title/:content', function(req, res) {
 });
 
 router.get('/edit/:name/:day/:title', checkLogin);
-router.get('/edit/:name/:day/:title', function(req, res) {
+router.get('/edit/:name/:day/:title', function (req, res) {
   var currentUser = req.session.user;
 
-  Post.edit(currentUser.name, req.params.day, req.params.title, function(err, post) {
+  Post.edit(currentUser.name, req.params.day, req.params.title, function (err, post) {
     if (err) {
       req.flash('error', err);
       return res.redirect('back');
@@ -913,10 +913,10 @@ router.get('/edit/:name/:day/:title', function(req, res) {
 });
 
 router.post('/edit/:name/:day/:title', checkLogin);
-router.post('/edit/:name/:day/:title', function(req, res) {
+router.post('/edit/:name/:day/:title', function (req, res) {
   var currentUser = req.session.user;
 
-  Post.update(currentUser.name, req.params.day, req.params.title, req.body.editor1, function(err) {
+  Post.update(currentUser.name, req.params.day, req.params.title, req.body.editor1, function (err) {
     var url = encodeURI('/u/' + req.params.name + '/' + req.params.day + '/' + req.params.title);
     if (err) {
       req.flash('error', err);
@@ -929,10 +929,10 @@ router.post('/edit/:name/:day/:title', function(req, res) {
 });
 
 router.get('/remove/:name/:day/:title', checkLogin);
-router.get('/remove/:name/:day/:title', function(req, res) {
+router.get('/remove/:name/:day/:title', function (req, res) {
   var currentUser = req.session.user;
 
-  Post.remove(currentUser.name, req.params.day, req.params.title, function(err) {
+  Post.remove(currentUser.name, req.params.day, req.params.title, function (err) {
     if (err) {
       req.flash('error', err);
       return res.redirect('back');
@@ -944,8 +944,8 @@ router.get('/remove/:name/:day/:title', function(req, res) {
 });
 
 router.get('/reprint/:name/:day/:title', checkLogin);
-router.get('/reprint/:name/:day/:title', function(req, res) {
-  Post.edit(req.params.name, req.params.day, req.params.title, function(err, post) {
+router.get('/reprint/:name/:day/:title', function (req, res) {
+  Post.edit(req.params.name, req.params.day, req.params.title, function (err, post) {
     if (err) {
       req.flash('error', err);
       return res.render('back');
@@ -964,7 +964,7 @@ router.get('/reprint/:name/:day/:title', function(req, res) {
 
     // console.log(reprint_from);
     // console.log(reprint_to);
-    Post.reprint(reprint_from, reprint_to, function(err, post) {
+    Post.reprint(reprint_from, reprint_to, function (err, post) {
       if (err) {
         console.log(err);
         req.flash('error', err);
@@ -972,7 +972,7 @@ router.get('/reprint/:name/:day/:title', function(req, res) {
       }
 
       var reprint_post = new Post(post.name, post.head, post.title, post.tags, post.post, post.reprint_info);
-      reprint_post.ReprintSave(function(err) {
+      reprint_post.ReprintSave(function (err) {
         if (err) {
           req.flash('error', err);
           return res.redirect('/');
@@ -987,11 +987,11 @@ router.get('/reprint/:name/:day/:title', function(req, res) {
   });
 });
 
-router.post('/choice', function(req, res) {
+router.post('/choice', function (req, res) {
 
   var data = req.body;
 
-  Txt.choice(data.name, data.index, data.choice, function(err) {
+  Txt.choice(data.name, data.index, data.choice, function (err) {
     if (err) {
       req.flash('error', err);
       return res.redirect('/');
@@ -1002,10 +1002,10 @@ router.post('/choice', function(req, res) {
   });
 })
 
-router.post('/removeChoice', function(req, res) {
+router.post('/removeChoice', function (req, res) {
 
   var data = req.body;
-  Txt.removechoice(data.name, data.index, data.sum, function(err) {
+  Txt.removechoice(data.name, data.index, data.sum, function (err) {
     if (err) {
       req.flash('error', err);
       return res.redirect('/');
@@ -1016,15 +1016,15 @@ router.post('/removeChoice', function(req, res) {
   });
 })
 
-router.post('/uploadfile', function(req, res) {
+router.post('/uploadfile', function (req, res) {
   //console.log(req.busboy);
   var fstream;
   req.pipe(req.busboy);
-  req.busboy.on('file', function(fieldname, file, filename) {
+  req.busboy.on('file', function (fieldname, file, filename) {
     console.log("Uploading: " + filename);
     fstream = fs.createWriteStream('./public/files/' + filename);
     file.pipe(fstream);
-    fstream.on('close', function() {
+    fstream.on('close', function () {
       req.flash('success', 'success');
       res.redirect('/');
     });

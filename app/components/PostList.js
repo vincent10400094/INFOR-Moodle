@@ -2,7 +2,8 @@
 
 import React from 'react';
 import Post from './Post';
-import {isEqual} from 'underscore';
+import { isEqual } from 'underscore';
+import { Link } from 'react-router';
 import PostListActions from '../actions/PostListActions';
 import PostListStore from '../stores/PostListStore'
 
@@ -33,11 +34,26 @@ export default class PostList extends React.Component {
     }
 
     render() {
-        console.log(this.props.page);
-        console.log(this.state);
+        console.log('list page:', this.props.page);
+        console.log('list store', this.state.posts);
         let postList = this.state.posts.map((post, index) => {
             return (
-                <Post></Post>
+                <div className='well' >
+                    <h3>
+                        <span className='grey'>
+                            <Link to=''>{post.title}</Link>
+                        </span>
+                    </h3>
+                    <p className='grey'>{post.time.date} — {post.name}</p>
+                    <h4>
+                        <p>post.post</p>
+                    </h4>
+                    <span><Link to=''>繼續閱讀</Link></span>
+                    <p>
+                        <span className='glyphicon glyphicon-thumbs-up grey'></span>5
+                    <span className='fa fa-eye grey'></span>5
+                </p>
+                </div>
             );
         });
         return (

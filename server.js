@@ -11,6 +11,8 @@ var session = require('express-session');
 var busboy = require('connect-busboy');
 // var expressLayouts = require('express-e6js-layouts');
 
+var Post = require('./models/post')
+
 //var session = require('cookie-session');
 var MongoStore = require('connect-mongo')(session);
 // var hbs = require('express-handlebars');  //view engine
@@ -97,6 +99,54 @@ app.use(express.static(path.join(__dirname, 'public')));
 // app.use(passport.initialize());
 // app.use(passport.session());
 
+//getTen 拿到的posts是每十篇文章 
+// total是總共的文章數量，以便計算在前端會不會顯示下一頁或上一頁
+app.get('/api/post/:page', (req, res) => {
+  
+  // if (req.session.user) {
+  //   if (!req.session.user.isVerified) {
+  //     req.flash('error', "請認證email");
+  //   }
+  // }
+
+  var page = page ? page : 1;
+  console.log('page: ', page);
+
+  Post.getTen(null, page, function (err, posts, total) {
+    if (err) {
+      console.log(err);
+      posts = {};
+    }
+    total = parseInt(total / 10) + 1;
+
+    console.log(posts);
+    res.send(posts);
+  });
+});
+
+//新增文章
+// app.post('/api/post', function (req, res) {
+
+//   var currentUser = req.session.user;
+//   //console.log(currentUser);
+//   var tags = (req.body.tags + '#end').split(/\s*#/);
+//   // console.log(req.body);
+//   var file = (typeof req.body.file !== 'undefined') ? req.body.fileName.split(',') : [];
+
+//   tags.splice(0, 1);
+//   tags.splice(tags.length - 1, 1);
+
+//   var post = new Post(currentUser.name, currentUser.head, req.body.title, tags, req.body.editor1, {}, file);
+//   post.save(function (err) {
+//     if (err) {
+//       req.flash('error', err);
+//       return res.redirect('/');
+//     }
+
+//      res.send({ message: req.body.title + ' has been posted.' });
+//   });
+// });
+
 app.get('*', (req, res) => {
   match(
     { routes, location: req.url },
@@ -114,7 +164,7 @@ app.get('*', (req, res) => {
       let markup;
       if (renderProps) {
         // if the current route matched we have renderProps
-        markup = renderToString(<RouterContext {...renderProps} />);
+        markup = renderToString(<RouterContext {...renderProps}/>);
       } else {
         res.status(404);
       }
