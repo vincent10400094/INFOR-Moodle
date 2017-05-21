@@ -1,7 +1,7 @@
 import alt from '../alt';
 import LoginAction from '../actions/LoginAction';
 
-class AddCharacterStore {
+class LoginStore {
   constructor() {
     this.bindActions(LoginAction);
     this.password = '';
@@ -19,4 +19,4 @@ class AddCharacterStore {
 
 }
 
-export default alt.createStore(AddCharacterStore);
+export default alt.createStore(LoginStore);

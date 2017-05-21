@@ -7,10 +7,12 @@ class PostListStore {
     constructor() {
         this.bindActions(PostListActions);
         this.posts = [];
+        this.total = 0;
     }
 
     onGetPostListSuccess(data) {
-        this.posts = data;
+        this.posts = data.posts;
+        this.total = data.total
     }
 
     onGetPostListFail(jqXhr) {

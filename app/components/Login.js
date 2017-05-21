@@ -2,23 +2,23 @@
 
 import React from 'react';
 import { Link } from 'react-router';
-import AddCharacterStore from '../stores/AddCharacterStore';
-import AddCharacterActions from '../actions/AddCharacterActions';
+import LoginStore from '../stores/LoginStore';
+import LoginAction from '../actions/LoginAction';
 
 export default class Login extends React.Component {
     constructor(props) {
         super(props);
-        this.state = AddCharacterStore.getState();
+        this.state = LoginStore.getState();
         this.onChange = this.onChange.bind(this);
     }
 
     componentDidMount() {
         document.title = 'Login';
-        AddCharacterStore.listen(this.onChange);
+        LoginStore.listen(this.onChange);
     }
 
     componentWillUnmount() {
-        AddCharacterStore.unlisten(this.onChange);
+        LoginStore.unlisten(this.onChange);
     }
 
     onChange(state) {
@@ -28,21 +28,11 @@ export default class Login extends React.Component {
     handleSubmit(event) {
         event.preventDefault();
 
-        var name = this.state.name.trim();
-        var gender = this.state.gender;
+        var email = this.state.email
+        var password = this.state.password;
 
-        if (!name) {
-            AddCharacterActions.invalidName();
-            this.refs.nameTextField.focus();
-        }
+        LoginAction.addCharacter(password, email);
 
-        if (!gender) {
-            AddCharacterActions.invalidGender();
-        }
-
-        if (name && gender) {
-            AddCharacterActions.addCharacter(name, gender);
-        }
     }
 
 
@@ -57,15 +47,14 @@ export default class Login extends React.Component {
                                     <legend>Login</legend>
                                     <div className='form-group'>
                                         <div className='col-md-12'>
-                                            <input type='text' className='form-control' ref='nameTextField' value={this.state.name}
-                                                onChange={AddCharacterActions.updateName} autoFocus />
 
+                                            <input type='text' className='form-control' id='inputUsername' placeholder='Username' name='name' autoComplete='off' value={this.state.email} autoFocus='true'></input>
                                         </div>
                                     </div>
                                     <div className='form-group'>
                                         <div className='col-md-12'>
-                                            <input type='text' className='form-control' ref='nameTextField' value={this.state.password}
-                                                onChange={AddCharacterActions.updateName} autoFocus />
+
+                                            <input type='text' className='form-control' id='inputUsername' placeholder='Password' name='name' autoComplete='off' value={this.state.password} autoFocus='true'></input>
                                         </div>
                                     </div>
                                     <p>Need an account ? <Link to='/signup'>Signup</Link></p>

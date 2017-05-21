@@ -102,17 +102,16 @@ app.use(passport.initialize());
 //getTen 拿到的posts是每十篇文章 
 // total是總共的文章數量，以便計算在前端會不會顯示下一頁或上一頁
 app.get('/api/post/:page', (req, res) => {
-  
+
   // if (req.session.user) {
   //   if (!req.session.user.isVerified) {
   //     req.flash('error', "請認證email");
   //   }
   // }
 
-  var page = req.params.page ? parseInt(req.params.page) : 1;
-
-  console.log('page: ', page);
-
+  var page = req.params.page;
+  page = (typeof page !== 'undefined') ? page : 1;
+  console.log('get page: ', page);
 
   Post.getTen(null, page, function (err, posts, total) {
     if (err) {
@@ -121,7 +120,8 @@ app.get('/api/post/:page', (req, res) => {
     }
     total = parseInt(total / 10) + 1;
 
-    res.send(posts);
+    let data = { posts: posts, total: total };
+    res.send(data);
   });
 });
 
@@ -149,13 +149,17 @@ app.get('/api/post/:page', (req, res) => {
 // });
 
 
-app.post('/api/login', passport.authenticate('local-login', {
-  successRedirect: '/', // redirect to the secure profile section
-  failureRedirect: '/login', // redirect back to the signup page if there is an error
-  failureFlash: true, // allow flash messages
-  session: false
+app.post('/api/login', function (req, res) {
+  console.log("req.body.email: " + req.body.email);
+  console.log("req.body.password: " + req.body.password);
+  passport.authenticate('local-login', {
+    successRedirect: '/', // redirect to the secure profile section
+    failureRedirect: '/login', // redirect back to the signup page if there is an error
+    failureFlash: true, // allow flash messages
+    session: false
 
-}));
+  })
+});
 
 app.post('/api/signup', passport.authenticate('local-signup', {
   successRedirect: '/', // redirect to the secure profile section
@@ -181,7 +185,7 @@ app.get('*', (req, res) => {
       let markup;
       if (renderProps) {
         // if the current route matched we have renderProps
-        markup = renderToString(<RouterContext {...renderProps}/>);
+        markup = renderToString(<RouterContext {...renderProps} />);
       } else {
         res.status(404);
       }

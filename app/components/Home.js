@@ -15,6 +15,10 @@ export default class Home extends React.Component {
     }
 
     render() {
+        console.log(this.props.location.query);
+        let page = this.props.location.query.p;
+        console.log('page', page);
+
         const displayNone = {
             display: 'none'
         }
@@ -26,7 +30,7 @@ export default class Home extends React.Component {
                             <Bar></Bar>
                         </div>
                         <div className='col-md-8 col-md-offset-2'>
-                            <PostList page={this.props.params.page}></PostList>
+                            <PostList page={page}></PostList>
                         </div>
                     </div>
                 </div>

@@ -1,12 +1,10 @@
 import alt from '../alt';
 
-class AddCharacterActions {
+class LoginAction {
   constructor() {
     this.generateActions(
-      'addCharacterSuccess',
-      'addCharacterFail',
-      'updateName',
-      'updateGender',
+      'LoginSuccess',
+      'LoginFailed'
     );
   }
 
@@ -17,12 +15,12 @@ class AddCharacterActions {
       data: { password: password, email: email }
     })
       .done((data) => {
-        this.actions.addCharacterSuccess();
+        this.actions.LoginSuccess();
       })
       .fail((jqXhr) => {
-        this.actions.addCharacterFail(jqXhr.responseJSON.message);
+        this.actions.LoginFailed(jqXhr.responseJSON.message);
       });
   }
 }
 
-export default alt.createActions(AddCharacterActions);
+export default alt.createActions(LoginAction);
