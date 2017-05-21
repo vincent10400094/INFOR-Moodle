@@ -109,7 +109,8 @@ app.get('/api/post/:page', (req, res) => {
   //   }
   // }
 
-  var page = page ? page : 1;
+  var page = req.params.page ? parseInt(req.params.page) : 1;
+
   console.log('page: ', page);
 
   Post.getTen(null, page, function (err, posts, total) {
