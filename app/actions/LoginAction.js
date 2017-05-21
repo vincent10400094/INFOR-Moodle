@@ -15,10 +15,10 @@ class LoginAction {
       data: { password: password, email: email }
     })
       .done((data) => {
-        this.actions.LoginSuccess();
+        this.LoginSuccess();
       })
       .fail((jqXhr) => {
-        this.actions.LoginFailed(jqXhr.responseJSON.message);
+        this.LoginFailed(jqXhr.responseJSON.message);
       });
   }
 }

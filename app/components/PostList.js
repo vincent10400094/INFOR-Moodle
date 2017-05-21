@@ -67,15 +67,15 @@ export default class PostList extends React.Component {
         if (total > 1) {
             if (page != 1) {
                 // let pre = '?p=' + (page - 1).toString();
-                footer.push(<li><Link to='/' query={{p: (page - 1)}}>Previous</Link></li>);
+                footer.push(<li><Link to='/' query={{p: (page - 1)} } onclick={PostListActions.getPost(page)} >Previous</Link></li>);
             }
             for (var i = 1; i <= total; i++) {
                 // let to = '?p=' + i.toString();
-                footer.push(<li><Link to='/' query={{p: i}}>{i}</Link></li>)
+                footer.push(<li><Link to='/' query={{p: i}} onclick={PostListActions.getPost(page)} >{i}</Link></li>)
             }
             if (page != total) {
                 // let next = '?p=' + (page + 1).toString();
-                footer.push(<li><Link to='/' query={{p: (page + 1)}}>Next</Link></li>);
+                footer.push(<li><Link to='/' query={{p: (page + 1)}} onclick={PostListActions.getPost(page)} >Next</Link></li>);
             }
         }
 
