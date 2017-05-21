@@ -18,6 +18,7 @@ export default class Home extends React.Component {
         console.log(this.props.location.query);
         let page = this.props.location.query.p;
         console.log('page', page);
+
         const displayNone = {
             display: 'none'
         }

@@ -9,7 +9,7 @@ import PostListStore from '../stores/PostListStore'
 export default class PostList extends React.Component {
     constructor(props) {
         super(props);
-        this.state = PostListStore.getState();    
+        this.state = PostListStore.getState();
         this.onChange = this.onChange.bind(this);
     }
 
@@ -32,9 +32,16 @@ export default class PostList extends React.Component {
         this.setState(state);
     }
 
+    getPage() {
+        PostListActions.getPost(this.props.page);
+    }
+
     render() {
-        console.log('list page:', this.props.page);
-        console.log('list store', this.state.posts);
+        // console.log('list page:', this.props.page);
+        // console.log('list store', this.state.posts);
+        let page = this.props.page;
+        let total = this.state.total;
+
         let postList = this.state.posts.map((post, index) => {
             let markup = post.post;
             return (
@@ -46,7 +53,7 @@ export default class PostList extends React.Component {
                     </h3>
                     <p className='grey'>{post.time.date} — {post.name}</p>
                     <h4>
-                        <div dangerouslySetInnerHTML={{__html: markup}}></div>
+                        <div dangerouslySetInnerHTML={{ __html: markup }}></div>
                     </h4>
                     <span><Link to=''>繼續閱讀</Link></span>
                     <p>
@@ -56,9 +63,32 @@ export default class PostList extends React.Component {
                 </div>
             );
         });
+
+        let footer = [];
+
+        if (total > 1) {
+            if (page != 1) {
+                let pre = '?p=' + (page - 1).toString();
+                footer.push(<li><Link to={pre}>Previous</Link></li>);
+            }
+            for (var i = 1; i <= total; i++) {
+                let to = '?p=' + i.toString();
+                footer.push(<li><Link to={to}>{i}</Link></li>)
+            }
+            if (page != total) {
+                let next = '?p=' + (page + 1).toString();
+                footer.push(<li><Link to={next}>Next</Link></li>);
+            }
+        }
+
         return (
             <div>
                 {postList}
+                <div className='col-md-9 col-md-offset-3'>
+                    <ul className='pagination pagination-lg'>
+                        {footer}
+                    </ul>
+                </div>
             </div>
         );
     }
