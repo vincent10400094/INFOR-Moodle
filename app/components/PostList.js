@@ -16,15 +16,29 @@ export default class PostList extends React.Component {
     componentDidMount() {
         PostListStore.listen(this.onChange);
         PostListActions.getPost(this.props.page);
+        console.log('did');
     }
 
     componentWillUnmount() {
         PostListStore.unlisten(this.onChange);
     }
 
-    componentDidUpdate() {
-        PostListActions.getPosts(this.props.page);
+    shouldComponentUpdate(nextProps, nextState) {
+        // console.log('next',typeof nextProps.page, nextProps.page);
+        // console.log('this',typeof this.props.page, this.props.page);
+        console.log('should',nextProps.page !== this.props.page)
+        return nextProps.page !== this.props.page;
     }
+
+    componentWillReceiveProps(nextProps, nextState) {
+        console.log('next: ', nextProps.page, typeof nextProps.page);
+        PostListActions.getPost(nextProps.page);
+        this.forceUpdate();
+    }
+
+    // componentDidUpdate() {
+    //     console.log('update');
+    // }
 
     onChange(state) {
         this.setState(state);
@@ -37,8 +51,10 @@ export default class PostList extends React.Component {
     render() {
         // console.log('list page:', this.props.page);
         // console.log('list store', this.state.posts);
+        PostListActions.getPost(this.props.page);
         let page = this.props.page;
         let total = this.state.total;
+        
 
         let postList = this.state.posts.map((post, index) => {
             let markup = post.post;
@@ -67,15 +83,15 @@ export default class PostList extends React.Component {
         if (total > 1) {
             if (page != 1) {
                 // let pre = '?p=' + (page - 1).toString();
-                footer.push(<li><Link to='/' query={{p: (page - 1)} } onclick={PostListActions.getPost(page)} >Previous</Link></li>);
+                footer.push(<li><Link to='/' query={{ p: (page - 1) }} >Previous</Link></li>);
             }
             for (var i = 1; i <= total; i++) {
                 // let to = '?p=' + i.toString();
-                footer.push(<li><Link to='/' query={{p: i}} onclick={PostListActions.getPost(page)} >{i}</Link></li>)
+                footer.push(<li><Link to='/' query={{ p: i }}>{i}</Link></li>)
             }
             if (page != total) {
                 // let next = '?p=' + (page + 1).toString();
-                footer.push(<li><Link to='/' query={{p: (page + 1)}} onclick={PostListActions.getPost(page)} >Next</Link></li>);
+                footer.push(<li><Link to='/' query={{ p: (page + 1) }} >Next</Link></li>);
             }
         }
 

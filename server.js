@@ -150,6 +150,7 @@ app.get('/api/post/:page', (req, res) => {
 
 
 app.post('/api/login', function (req, res) {
+  console.log(req);
   console.log("req.body.email: " + req.body.email);
   console.log("req.body.password: " + req.body.password);
   passport.authenticate('local-login', {

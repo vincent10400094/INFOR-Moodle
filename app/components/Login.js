@@ -47,7 +47,7 @@ export default class Login extends React.Component {
                                     <legend>Login</legend>
                                     <div className='form-group'>
                                         <div className='col-md-12'>
-                                            <input type='text' className='form-control' id='inputUsername' placeholder='Username' name='name' autoComplete='off' autoFocus=''></input>
+                                            <input type='text' className='form-control' id='inputUsername' placeholder='Username' name='name' autoComplete='off' autoFocus='on'></input>
                                         </div>
                                     </div>
                                     <div className='form-group'>
