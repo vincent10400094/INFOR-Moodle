@@ -5,8 +5,9 @@ INFOR 木豆
 install modules required
 ```
 $ npm install
+$ npm run build
 ```
-start(default port: 1209)
+start (default port: 1209)
 ```
 $ npm start
 ```

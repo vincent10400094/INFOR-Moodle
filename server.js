@@ -3,7 +3,7 @@ require('babel-register');
 
 var express = require('express');
 var path = require('path');
-//var favicon = require('serve-favicon');
+var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
@@ -56,7 +56,7 @@ app.set('view engine', 'ejs');
 
 app.use(flash());
 
-//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+app.use(favicon(path.join(__dirname, 'public', 'favicon.png')));
 app.use(logger('dev'));
 app.use(logger('common', {
   stream: accessLog
@@ -110,7 +110,7 @@ app.get('/api/post/:page', (req, res) => {
   // }
 
   var page = page ? page : 1;
-  console.log('page: ', page);
+  console.log('get page: ', page);
 
   Post.getTen(null, page, function (err, posts, total) {
     if (err) {
@@ -119,7 +119,6 @@ app.get('/api/post/:page', (req, res) => {
     }
     total = parseInt(total / 10) + 1;
 
-    console.log(posts);
     res.send(posts);
   });
 });
