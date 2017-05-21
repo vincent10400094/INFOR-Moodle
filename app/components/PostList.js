@@ -22,19 +22,17 @@ export default class PostList extends React.Component {
         PostListStore.unlisten(this.onChange);
     }
 
-    componentDidUpdate(prevProps) {
-        if (!isEqual(prevProps.page, this.props.page)) {
-            PostListActions.getPosts(this.props.page);
-        }
+    componentDidUpdate() {
+        PostListActions.getPosts(this.props.page);
     }
 
     onChange(state) {
         this.setState(state);
     }
 
-    getPage() {
-        PostListActions.getPost(this.props.page);
-    }
+    // getPage() {
+    //     PostListActions.getPost(this.props.page);
+    // }
 
     render() {
         // console.log('list page:', this.props.page);
@@ -68,16 +66,16 @@ export default class PostList extends React.Component {
 
         if (total > 1) {
             if (page != 1) {
-                let pre = '?p=' + (page - 1).toString();
-                footer.push(<li><Link to={pre}>Previous</Link></li>);
+                // let pre = '?p=' + (page - 1).toString();
+                footer.push(<li><Link to='/' query={{p: (page - 1)}}>Previous</Link></li>);
             }
             for (var i = 1; i <= total; i++) {
-                let to = '?p=' + i.toString();
-                footer.push(<li><Link to={to}>{i}</Link></li>)
+                // let to = '?p=' + i.toString();
+                footer.push(<li><Link to='/' query={{p: i}}>{i}</Link></li>)
             }
             if (page != total) {
-                let next = '?p=' + (page + 1).toString();
-                footer.push(<li><Link to={next}>Next</Link></li>);
+                // let next = '?p=' + (page + 1).toString();
+                footer.push(<li><Link to='/' query={{p: (page + 1)}}>Next</Link></li>);
             }
         }
 
