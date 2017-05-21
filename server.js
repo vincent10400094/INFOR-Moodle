@@ -108,8 +108,8 @@ app.get('/api/post/:page', (req, res) => {
   //     req.flash('error', "請認證email");
   //   }
   // }
-
-  var page = page ? page : 1;
+  var page = req.params.page;
+  page = (typeof page !== 'undefined') ? page : 1;
   console.log('get page: ', page);
 
   Post.getTen(null, page, function (err, posts, total) {
