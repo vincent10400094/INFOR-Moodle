@@ -3,6 +3,14 @@
 import React from 'react';
 
 export default class NotFoundPage extends React.Component {
+    constructor(props) {
+        super(props);
+    }
+
+    componentDidMount() {
+        document.title = 'Not Found';
+    }
+
     render() {
         const style = {
             paddingTop: '20%'

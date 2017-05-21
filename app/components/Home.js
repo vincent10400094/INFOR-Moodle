@@ -6,6 +6,13 @@ import Bar from './Bar';
 import { Link } from 'react-router';
 
 export default class Home extends React.Component {
+    constructor(props) {
+        super(props);
+    }
+
+    componentDidMount() {
+        document.title = 'Home';
+    }
 
     render() {
         const displayNone = {

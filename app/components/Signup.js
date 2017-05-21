@@ -4,6 +4,14 @@ import React from 'react';
 import {Link} from 'react-router';
 
 export default class Signup extends React.Component {
+    constructor(props) {
+        super(props);
+    }
+
+    componentDidMount() {
+        document.title = 'Signup';
+    }
+
     render() {
         return (
         <section id='main'>

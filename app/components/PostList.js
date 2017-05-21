@@ -37,6 +37,7 @@ export default class PostList extends React.Component {
         console.log('list page:', this.props.page);
         console.log('list store', this.state.posts);
         let postList = this.state.posts.map((post, index) => {
+            let markup = post.post;
             return (
                 <div className='well' >
                     <h3>
@@ -46,7 +47,7 @@ export default class PostList extends React.Component {
                     </h3>
                     <p className='grey'>{post.time.date} — {post.name}</p>
                     <h4>
-                        <p>post.post</p>
+                        <div dangerouslySetInnerHTML={{__html: markup}}></div>
                     </h4>
                     <span><Link to=''>繼續閱讀</Link></span>
                     <p>
