@@ -79,25 +79,25 @@ app.use(express.static(path.join(__dirname, 'public')));
 //   next();
 // });
 
-// app.use(session({
-//   secret: settings.cookieSecret,
-//   key: settings.db,
-//   resave: true,
-//   saveUninitialized: true,
-//   cookie: {
-//     maxAge: 1000 * 60 * 60 * 24 * 30 //30天
-//   },
-//   seen: 0,
-//   store: new MongoStore({
-//     db: settings.db,
-//     host: settings.host,
-//     port: settings.port,
-//     url: 'mongodb://localhost:27017/blog'
-//   })
-// }));
+app.use(session({
+  secret: settings.cookieSecret,
+  key: settings.db,
+  resave: true,
+  saveUninitialized: true,
+  cookie: {
+    maxAge: 1000 * 60 * 60 * 24 * 30 //30天
+  },
+  seen: 0,
+  store: new MongoStore({
+    db: settings.db,
+    host: settings.host,
+    port: settings.port,
+    url: 'mongodb://localhost:27017/blog'
+  })
+}));
 
-// app.use(passport.initialize());
-// app.use(passport.session());
+app.use(passport.initialize());
+//app.use(passport.session());
 
 //getTen 拿到的posts是每十篇文章 
 // total是總共的文章數量，以便計算在前端會不會顯示下一頁或上一頁
@@ -147,6 +147,22 @@ app.get('/api/post/:page', (req, res) => {
 //      res.send({ message: req.body.title + ' has been posted.' });
 //   });
 // });
+
+
+app.post('/api/login', passport.authenticate('local-login', {
+  successRedirect: '/', // redirect to the secure profile section
+  failureRedirect: '/login', // redirect back to the signup page if there is an error
+  failureFlash: true, // allow flash messages
+  session: false
+
+}));
+
+app.post('/api/signup', passport.authenticate('local-signup', {
+  successRedirect: '/', // redirect to the secure profile section
+  failureRedirect: '/signup', // redirect back to the signup page if there is an error
+  failureFlash: true, // allow flash messages
+  session: false
+}));
 
 app.get('*', (req, res) => {
   match(
