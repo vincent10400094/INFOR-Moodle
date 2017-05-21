@@ -11,7 +11,7 @@ class PostListActions {
   getPost(page) {
     $.ajax({ url: '/api/post/' + page })
       .done((data) => {
-        console.log('data: ',data);
+        //console.log('data: ',data);
         this.getPostListSuccess(data);
       })
       .fail((jqXhr) => {

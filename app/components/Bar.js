@@ -21,7 +21,9 @@ export default class Bar extends React.Component {
     }
 
     openPost() {
+        CKEDITOR.replace("editor1");
         this.setState({ newPost: true });
+
     }
 
     closePaper() {
@@ -30,10 +32,11 @@ export default class Bar extends React.Component {
 
     openPaper() {
         this.setState({ newPaper: true });
+
     }
 
     componentDidMount() {
-        // CKEDITOR.replace('editor1');
+
         $.material.init();
     }
 
@@ -80,23 +83,23 @@ export default class Bar extends React.Component {
                             <div className='form-group'>
                                 <label>選擇科目</label>
                                 <div className='radio radio-primary'>
-                                    <label dangerouslySetInnerHTML={{__html: '<input type="radio" name="subject" value="chinese" id="radio1">國文'}}>
+                                    <label dangerouslySetInnerHTML={{ __html: '<input type="radio" name="subject" value="chinese" id="radio1">國文' }}>
                                     </label>
                                 </div>
                                 <div className='radio radio-primary'>
-                                    <label dangerouslySetInnerHTML={{__html: '<input type="radio" name="subject" value="english" id="radio1">英文'}}>
+                                    <label dangerouslySetInnerHTML={{ __html: '<input type="radio" name="subject" value="english" id="radio1">英文' }}>
                                     </label>
                                 </div>
                                 <div className='radio radio-primary'>
-                                    <label dangerouslySetInnerHTML={{__html: '<input type="radio" name="subject" value="math" id="radio1">數學'}}>
+                                    <label dangerouslySetInnerHTML={{ __html: '<input type="radio" name="subject" value="math" id="radio1">數學' }}>
                                     </label>
                                 </div>
                                 <div className='radio radio-primary'>
-                                    <label dangerouslySetInnerHTML={{__html: '<input type="radio" name="subject" value="science" id="radio1">自然'}}>
+                                    <label dangerouslySetInnerHTML={{ __html: '<input type="radio" name="subject" value="science" id="radio1">自然' }}>
                                     </label>
                                 </div>
                                 <div className='radio radio-primary'>
-                                    <label dangerouslySetInnerHTML={{__html: '<input type="radio" name="subject" value="society" id="radio1">社會'}}>
+                                    <label dangerouslySetInnerHTML={{ __html: '<input type="radio" name="subject" value="society" id="radio1">社會' }}>
                                     </label>
                                 </div>
                                 <Modal.Footer>
@@ -108,6 +111,7 @@ export default class Bar extends React.Component {
                     </Modal.Body>
                 </Modal>
             </div>
+
         );
     }
 }
