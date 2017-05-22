@@ -7,13 +7,18 @@ import Home from './components/Home';
 import Login from './components/Login';
 import Signin from './components/Signup';
 import NotFoundPage from './components/404';
+import ProfilePage from './components/ProfilePage';
+import Article from './components/Article'
 
 const routes = (
     <Route component={Layout}>
       <Route path='/' component={Home} />
-      <Route path="/login" component={Login} />
-      <Route path="/signup" component={Signin} />
-      <Route path="*" component={NotFoundPage} />
+      <Route path='/login' component={Login} />
+      <Route path='/signup' component={Signin} />
+      <Route path='/u' component={ProfilePage}>
+        <Route path='/:user/:time/:title' component={Article}/>
+      </Route>
+      <Route path='*' component={NotFoundPage} />
     </Route>
 );
 
