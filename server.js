@@ -222,6 +222,18 @@ app.post('/api/post', function (req, res) {
   });
 });
 
+//使用者介面資料
+app.get('/api/u/:name', function (req, res) {
+
+  User.get(req.params.name, function (err, user) {
+    if (err) {
+      req.flash('error', "用戶不存在");
+      return res.redirect('/');
+    }
+
+    res.send(user);
+  });
+});
 
 app.post('/api/login', function (req, res) {
   console.log(req);
