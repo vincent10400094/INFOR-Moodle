@@ -103,11 +103,11 @@ app.use(passport.initialize());
 // total是總共的文章數量，以便計算在前端會不會顯示下一頁或上一頁
 app.get('/api/post/:page', (req, res) => {
 
-  // if (req.session.user) {
-  //   if (!req.session.user.isVerified) {
-  //     req.flash('error', "請認證email");
-  //   }
-  // }
+  if (req.session.user) {
+    if (!req.session.user.isVerified) {
+      req.flash('error', "請認證email");
+    }
+  }
 
   var page = req.params.page;
   page = (typeof page !== 'undefined') ? page : 1;
@@ -122,6 +122,19 @@ app.get('/api/post/:page', (req, res) => {
 
     let data = { posts: posts, total: total };
     res.send(data);
+  });
+});
+
+app.get('/api/u/:name/:day/:title', function (req, res) {
+  Post.getOne(req.params.name, req.params.day, req.params.title, function (err, post) {
+    if (err) {
+      console.log(err);
+      req.flash('error', err);
+      return res.redirect('/');
+    }
+
+    
+    res.send(post);
   });
 });
 
