@@ -43,7 +43,7 @@ export default class article extends React.Component {
                             <div className='well'>
                                 <span> <Link className='edit' to={`/edit/${params.user}/${params.time}/${params.title}`}>編輯</Link></span>
                                 <span> <Link className='edit' to={`/remove/${params.user}/${params.time}/${params.title}`}>刪除</Link></span>
-                                <span className='grey'>瀏覽次數：{this.state.pv}</span>
+                                <span className='grey' style={{float: 'right', marginBottom: '5px'}}>瀏覽次數：{this.state.pv}</span>
                                 <hr />
                                 <div dangerouslySetInnerHTML={{ __html: this.state.post }}></div>
                                 <hr />

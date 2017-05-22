@@ -239,6 +239,17 @@ app.get('/api/user/:name', function (req, res) {
   });
 });
 
+app.get('/api/history', function (req, res) {
+
+  Post.getArchive(function (err, posts) {
+    if (err) {
+      return res.redirect('/');
+    }
+    //console.log(posts);
+    res.send(posts);
+  });
+});
+
 app.post('/api/login', function (req, res) {
   console.log(req);
   console.log("req.body.email: " + req.body.email);
