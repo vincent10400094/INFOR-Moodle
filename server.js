@@ -125,6 +125,7 @@ app.get('/api/post/:page', (req, res) => {
   });
 });
 
+//拿到文章內容
 app.get('/api/u/:name/:day/:title', function (req, res) {
   Post.getOne(req.params.name, req.params.day, req.params.title, function (err, post) {
     if (err) {
@@ -138,28 +139,88 @@ app.get('/api/u/:name/:day/:title', function (req, res) {
   });
 });
 
+//留言
+app.post('/api/comment/:name/:day/:title', function (req, res) {
+  var date = new Date;
+  var time = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + "" + date.getHours() + ":"
+    + (date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes());
+
+  var head = req.session.user.head;
+
+  var comment = {
+    name: req.session.user.name,
+    head: head,
+    email: req.session.user.email,
+    time: time,
+    content: req.body.content,
+    star: 0,
+    starname: []
+  };
+  var newComment = new Comment(req.params.name, req.params.day, req.params.title, comment);
+
+  newComment.save(function (err) {
+    if (err) {
+      req.flash('error', err);
+      return res.redirect('back');
+    }
+    req.flash('success', '留言成功');
+
+  });
+  var url = '/u/' + req.params.name + '/' + req.params.day + '/' + req.params.title;
+});
+
+// 編輯文章介面
+router.get('/api/edit/:name/:day/:title', function (req, res) {
+  var currentUser = req.session.user;
+
+  Post.edit(currentUser.name, req.params.day, req.params.title, function (err, post) {
+    if (err) {
+      req.flash('error', err);
+      return res.redirect('back');
+    }
+    //文章內容放在textarea
+    res.send(post);
+  });
+});
+
+//編輯文章完成
+router.post('/api/edit/:name/:day/:title', function (req, res) {
+  var currentUser = req.session.user;
+
+  Post.update(currentUser.name, req.params.day, req.params.title, req.body.editor1, function (err) {
+    var url = encodeURI('/u/' + req.params.name + '/' + req.params.day + '/' + req.params.title);
+    if (err) {
+      req.flash('error', err);
+      return res.redirect(url);
+    }
+
+    req.send({message: "修改完成!"});
+    res.redirect(url);
+  });
+});
+
 //新增文章
-// app.post('/api/post', function (req, res) {
+app.post('/api/post', function (req, res) {
 
-//   var currentUser = req.session.user;
-//   //console.log(currentUser);
-//   var tags = (req.body.tags + '#end').split(/\s*#/);
-//   // console.log(req.body);
-//   var file = (typeof req.body.file !== 'undefined') ? req.body.fileName.split(',') : [];
+  var currentUser = req.session.user;
+  //console.log(currentUser);
+  var tags = (req.body.tags + '#end').split(/\s*#/);
+  // console.log(req.body);
+  var file = (typeof req.body.file !== 'undefined') ? req.body.fileName.split(',') : [];
 
-//   tags.splice(0, 1);
-//   tags.splice(tags.length - 1, 1);
+  tags.splice(0, 1);
+  tags.splice(tags.length - 1, 1);
 
-//   var post = new Post(currentUser.name, currentUser.head, req.body.title, tags, req.body.editor1, {}, file);
-//   post.save(function (err) {
-//     if (err) {
-//       req.flash('error', err);
-//       return res.redirect('/');
-//     }
+  var post = new Post(currentUser.name, currentUser.head, req.body.title, tags, req.body.editor1, {}, file);
+  post.save(function (err) {
+    if (err) {
+      req.flash('error', err);
+      return res.redirect('/');
+    }
 
-//      res.send({ message: req.body.title + ' has been posted.' });
-//   });
-// });
+     res.send({ message: req.body.title + ' has been posted.' });
+  });
+});
 
 
 app.post('/api/login', function (req, res) {
