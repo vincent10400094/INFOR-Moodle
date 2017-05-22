@@ -18,7 +18,7 @@ export default class ProfilePage extends React.Component {
                 <div className='container'>
                     <div className='row'>
                         <div className='col-md-8 col-md-offset-2'>
-                            <p>article</p>
+                            <p>profile</p>
                         </div>
                     </div>
                 </div>

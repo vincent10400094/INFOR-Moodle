@@ -13,11 +13,10 @@ import Article from './components/Article'
 const routes = (
     <Route component={Layout}>
       <Route path='/' component={Home} />
-      <Route path='/login' component={Login} />
-      <Route path='/signup' component={Signin} />
-      <Route path='/u' component={ProfilePage}>
-        <Route path='/:user/:time/:title' component={Article}/>
-      </Route>
+      <Route path='login' component={Login} />
+      <Route path='signup' component={Signin} />
+      <Route path='user/:user' component={ProfilePage}/>
+      <Route path='u/:user/:time/:title' component={Article}/>
       <Route path='*' component={NotFoundPage} />
     </Route>
 );

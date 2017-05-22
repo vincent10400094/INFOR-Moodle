@@ -170,7 +170,7 @@ app.post('/api/comment/:name/:day/:title', function (req, res) {
 });
 
 // 編輯文章介面
-router.get('/api/edit/:name/:day/:title', function (req, res) {
+app.get('/api/edit/:name/:day/:title', function (req, res) {
   var currentUser = req.session.user;
 
   Post.edit(currentUser.name, req.params.day, req.params.title, function (err, post) {
@@ -184,7 +184,7 @@ router.get('/api/edit/:name/:day/:title', function (req, res) {
 });
 
 //編輯文章完成
-router.post('/api/edit/:name/:day/:title', function (req, res) {
+app.post('/api/edit/:name/:day/:title', function (req, res) {
   var currentUser = req.session.user;
 
   Post.update(currentUser.name, req.params.day, req.params.title, req.body.editor1, function (err) {
