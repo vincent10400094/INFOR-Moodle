@@ -23,18 +23,18 @@ export default class PostList extends React.Component {
         PostListStore.unlisten(this.onChange);
     }
 
-    shouldComponentUpdate(nextProps, nextState) {
-        // console.log('next',typeof nextProps.page, nextProps.page);
-        // console.log('this',typeof this.props.page, this.props.page);
-        console.log('should',nextProps.page !== this.props.page)
-        return nextProps.page !== this.props.page;
-    }
+    // shouldComponentUpdate(nextProps, nextState) {
+    //     // console.log('next',typeof nextProps.page, nextProps.page);
+    //     // console.log('this',typeof this.props.page, this.props.page);
+    //     console.log('should',nextProps.page !== this.props.page)
+    //     return nextProps.page !== this.props.page;
+    // }
 
-    componentWillReceiveProps(nextProps, nextState) {
-        console.log('next: ', nextProps.page, typeof nextProps.page);
-        PostListActions.getPost(nextProps.page);
-        this.forceUpdate();
-    }
+    // componentWillReceiveProps(nextProps, nextState) {
+    //     console.log('next: ', nextProps.page, typeof nextProps.page);
+    //     PostListActions.getPost(nextProps.page);
+    //     this.forceUpdate();
+    // }
 
     // componentDidUpdate() {
     //     console.log('update');
@@ -51,7 +51,6 @@ export default class PostList extends React.Component {
     render() {
         // console.log('list page:', this.props.page);
         // console.log('list store', this.state.posts);
-        PostListActions.getPost(this.props.page);
         let page = this.props.page;
         let total = this.state.total;
         
