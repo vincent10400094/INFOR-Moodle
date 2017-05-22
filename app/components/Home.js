@@ -18,6 +18,10 @@ export default class Home extends React.Component {
         console.log('home will update');
     }
 
+    componentDidUpdate() {
+        $.material.init();
+    }
+
     render() {
         // console.log(this.props.location.query);
         let page = this.props.location.query.p;

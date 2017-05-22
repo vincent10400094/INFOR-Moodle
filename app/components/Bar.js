@@ -13,7 +13,6 @@ export default class Bar extends React.Component {
         this.closePost = this.closePost.bind(this);
         this.openPaper = this.openPaper.bind(this);
         this.closePaper = this.closePaper.bind(this);
-        this.componentDidMount = this.componentDidMount.bind(this);
     }
 
     closePost() {
@@ -21,9 +20,7 @@ export default class Bar extends React.Component {
     }
 
     openPost() {
-        
         this.setState({ newPost: true });
-
     }
 
     closePaper() {
@@ -32,12 +29,11 @@ export default class Bar extends React.Component {
 
     openPaper() {
         this.setState({ newPaper: true });
-
     }
 
-    componentDidMount() {
-
+    componentDidUpdate() {
         $.material.init();
+        console.log('bar update');
     }
 
     render() {
@@ -68,7 +64,7 @@ export default class Bar extends React.Component {
                             </div>
                         </Modal.Body>
                         <Modal.Footer>
-                            <Button onClick={this.closePaper} >Cancel</Button>
+                            <Button onClick={this.closePost} >Cancel</Button>
                             <Button type='submit' className='btn btn-primary'>Post</Button>
                         </Modal.Footer>
                     </form>

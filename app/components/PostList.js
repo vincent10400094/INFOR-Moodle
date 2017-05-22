@@ -62,10 +62,10 @@ export default class PostList extends React.Component {
                         <div dangerouslySetInnerHTML={{ __html: markup }}></div>
                     </h4>
                     <span><Link to={link}>繼續閱讀</Link></span>
-                    <p>
-                        <span className='glyphicon glyphicon-thumbs-up grey'></span>{post.star}
-                    <span className='fa fa-eye grey'></span>{post.pv}
-                </p>
+                    <p style={{marginTop:'10px'}}>
+                        <span className='glyphicon glyphicon-thumbs-up grey' style={{paddingRight:'5px'}}></span>{post.star}
+                        <span className='fa fa-eye grey' style={{paddingRight:'5px', paddingLeft:'15px'}}></span>{post.pv}
+                    </p>
                 </div>
             );
         });
@@ -81,15 +81,15 @@ export default class PostList extends React.Component {
             }
             for (var i = 1; i <= total; i++) {
                 // let to = '?p=' + i.toString();
-                if(i == thisPage){
+                if (i == thisPage) {
                     footer.push(<li className='active'><Link to='/' query={{ p: i }}>{i}</Link></li>)
-                }else{
+                } else {
                     footer.push(<li><Link to='/' query={{ p: i }}>{i}</Link></li>)
                 }
             }
             if (page != total) {
                 // let next = '?p=' + (page + 1).toString();
-                footer.push(<li><Link to='/' query={{ p: (thisPage + 1 )}} >Next</Link></li>);
+                footer.push(<li><Link to='/' query={{ p: (thisPage + 1) }} >Next</Link></li>);
             }
         }
 
