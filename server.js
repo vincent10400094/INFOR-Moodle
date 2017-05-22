@@ -385,6 +385,19 @@ app.get('/api/history', function (req, res) {
   });
 });
 
+app.get('/api/search', function (req, res) {
+  Post.search(req.query.keyword, function (err, posts) {
+    console.log('search query: ', req.query.keyword);
+    if (err) {
+      console.log('search error: ', err);
+    }
+    //console.log("Search:" + posts);
+    let data = {posts: posts, keyword: req.query.keyword}
+    console.log(data);
+    res.send(data);
+  });
+});
+
 app.post('/api/login', function (req, res) {
   console.log(req);
   console.log("req.body.email: " + req.body.email);
