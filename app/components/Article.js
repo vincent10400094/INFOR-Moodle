@@ -8,7 +8,7 @@ export default class article extends React.Component {
     constructor(props) {
         super(props);
         console.log(this.props);
-        this.state = { time: {} };
+        this.state = { time: {}, tags:[] };
     }
 
     componentWillMount() {
@@ -32,6 +32,11 @@ export default class article extends React.Component {
     render() {
         let params = this.props.params;
         console.log('state: ', this.state);
+        let tags = this.state.tags.map((tag, index) => {
+            return(
+                <b><span><Link to={`/tags/${tag}`} style={{paddingRight:'5px'}}>#{tag}</Link></span></b>
+            );
+        });
         return (
             <section id='main'>
                 <div className='container'>
@@ -47,6 +52,7 @@ export default class article extends React.Component {
                                 <span className='grey' style={{ float: 'right', marginBottom: '5px' }}>瀏覽次數：{this.state.pv}</span>
                                 <hr />
                                 <div dangerouslySetInnerHTML={{ __html: this.state.post }}></div>
+                                {tags}
                                 <hr />
                                 <Link id='fakeButton'>Like</Link>
                             </div>

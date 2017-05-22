@@ -11,6 +11,7 @@ import ProfilePage from './components/ProfilePage';
 import Article from './components/Article';
 import history from './components/history';
 import Search from './components/Search';
+import TagPage from './components/TagPage';
 
 const routes = (
     <Route component={Layout}>
@@ -19,6 +20,7 @@ const routes = (
       <Route path='signup' component={Signin} />
       <Route path='history' component={history} />
       <Route path='search' component={Search} />
+      <Route path='tags/:tag' component={TagPage} />
       <Route path='user/:user' component={ProfilePage}/>
       <Route path='u/:user/:time/:title' component={Article}/>
       <Route path='remove/:user/:time/:title' component={Article}/>

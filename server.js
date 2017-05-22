@@ -362,14 +362,13 @@ app.post('/api/post/star/', function (req, res) {
 
 //標籤
 app.get('/api/tags/:tag', function (req, res) {
-
+  console.log('tag:',req.params.tag);
   Post.getTag(req.params.tag, function (err, posts) {
     if (err) {
-      req.flash('error', err);
-      return res.redirect('/');
+      console.log('find tag page error: ', err);
     }
-
-    res.send(posts);
+    let data = {posts: posts, tag: req.params.tag}
+    res.send(data);
   });
 });
 
@@ -393,7 +392,7 @@ app.get('/api/search', function (req, res) {
     }
     //console.log("Search:" + posts);
     let data = {posts: posts, keyword: req.query.keyword}
-    console.log(data);
+    // console.log(data);
     res.send(data);
   });
 });

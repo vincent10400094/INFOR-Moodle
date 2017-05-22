@@ -45,7 +45,7 @@ export default class Bar extends React.Component {
             display: 'none'
         }
         return (
-            <div className='btn-group btn-group-justified btn-group-raised'>
+            <div className='btn-group btn-group-justified btn-group-raised' style={{marginBottom:'20px'}}>
                 <a className='btn' id='custom-btn' onClick={this.openPost}>發文</a>
                 <Link to='/pdfUpload' className='btn' id='custom-btn'>新增題目</Link>
                 <a className='btn' id='custom-btn' onClick={this.openPaper}>自訂考卷</a>
@@ -111,7 +111,6 @@ export default class Bar extends React.Component {
                     </Modal.Body>
                 </Modal>
             </div>
-
         );
     }
 }
