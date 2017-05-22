@@ -34,6 +34,8 @@ import { match, RouterContext } from 'react-router'
 import routes from './app/routes';
 import NotFoundPage from './app/components/404';
 
+var User = require('./models/user');
+
 var accessLog = fs.createWriteStream('access.log', {
   flags: 'a'
 });
@@ -134,7 +136,7 @@ app.get('/api/u/:name/:day/:title', function (req, res) {
       return res.redirect('/');
     }
 
-    
+
     res.send(post);
   });
 });
@@ -194,7 +196,7 @@ app.post('/api/edit/:name/:day/:title', function (req, res) {
       return res.redirect(url);
     }
 
-    req.send({message: "修改完成!"});
+    req.send({ message: "修改完成!" });
     res.redirect(url);
   });
 });
@@ -218,20 +220,22 @@ app.post('/api/post', function (req, res) {
       return res.redirect('/');
     }
 
-     res.send({ message: req.body.title + ' has been posted.' });
+    res.send({ message: req.body.title + ' has been posted.' });
   });
 });
 
 //使用者介面資料
-app.get('/api/u/:name', function (req, res) {
-
-  User.get(req.params.name, function (err, user) {
+app.get('/api/user/:name', function (req, res) {
+  console.log('username: ', req.params.name)
+  User.findOne({
+    'name': req.params.name
+  }, function (err, user) {
     if (err) {
-      req.flash('error', "用戶不存在");
-      return res.redirect('/');
+      console.log('error finding user: ', err);
+    } else {
+      console.log(user);
+      res.send(user);
     }
-
-    res.send(user);
   });
 });
 
@@ -244,7 +248,6 @@ app.post('/api/login', function (req, res) {
     failureRedirect: '/login', // redirect back to the signup page if there is an error
     failureFlash: true, // allow flash messages
     session: false
-
   })
 });
 

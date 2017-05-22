@@ -7,11 +7,11 @@ export default class article extends React.Component {
     constructor(props) {
         super(props);
         console.log(this.props);
-        this.state = {};
+        this.state = {time:{}};
     }
 
     componentWillMount() {
-
+        
     }
 
     componentDidMount() {
@@ -50,7 +50,7 @@ export default class article extends React.Component {
                                 <Link id='fakeButton'>Like</Link>
                             </div>
                         </div>
-                        <div className='col-md-5 '>
+                        <div className='col-md-5 col-md-offset-1'>
                             <div className='well'>
                                 <h4>附件</h4>
                                 <hr/>
