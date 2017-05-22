@@ -57,18 +57,19 @@ export default class PostList extends React.Component {
 
         let postList = this.state.posts.map((post, index) => {
             let markup = post.post;
+            let link = `/u/${post.name}/${post.time.day}/${post.title}`
             return (
                 <div className='well' >
                     <h3>
                         <span className='grey'>
-                            <Link to=''>{post.title}</Link>
+                            <Link to={link}>{post.title}</Link>
                         </span>
                     </h3>
                     <p className='grey'>{post.time.date} — {post.name}</p>
                     <h4>
                         <div dangerouslySetInnerHTML={{ __html: markup }}></div>
                     </h4>
-                    <span><Link to=''>繼續閱讀</Link></span>
+                    <span><Link to={link}>繼續閱讀</Link></span>
                     <p>
                         <span className='glyphicon glyphicon-thumbs-up grey'></span>5
                     <span className='fa fa-eye grey'></span>5
