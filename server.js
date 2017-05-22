@@ -332,7 +332,7 @@ app.post('/api/comments/star/', function (req, res) {
 });
 
 //文章按讚
-router.post('/api/post/star/', function (req, res) {
+app.post('/api/post/star/', function (req, res) {
   var data = req.body;
   if (data.inc == 1) {
     Post.star(data.postname, data.day, data.title, data.username, function (err) {
@@ -359,7 +359,7 @@ router.post('/api/post/star/', function (req, res) {
 });
 
 //標籤
-router.get('/api/tags/:tag', function (req, res) {
+app.get('/api/tags/:tag', function (req, res) {
 
   Post.getTag(req.params.tag, function (err, posts) {
     if (err) {
