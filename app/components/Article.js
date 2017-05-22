@@ -2,16 +2,17 @@
 
 import React from 'react';
 import { Link } from 'react-router';
+import PostListActions from '../actions/PostListActions';
 
 export default class article extends React.Component {
     constructor(props) {
         super(props);
         console.log(this.props);
-        this.state = {time:{}};
+        this.state = { time: {} };
     }
 
     componentWillMount() {
-        
+
     }
 
     componentDidMount() {
@@ -42,8 +43,8 @@ export default class article extends React.Component {
                             </div>
                             <div className='well'>
                                 <span> <Link className='edit' to={`/edit/${params.user}/${params.time}/${params.title}`}>編輯</Link></span>
-                                <span> <Link className='edit' to={`/remove/${params.user}/${params.time}/${params.title}`}>刪除</Link></span>
-                                <span className='grey' style={{float: 'right', marginBottom: '5px'}}>瀏覽次數：{this.state.pv}</span>
+                                <span> <a className='remove' onClick={PostListActions.removePost.bind(this, this.state.name, params.time, params.title)} >刪除</a></span>
+                                <span className='grey' style={{ float: 'right', marginBottom: '5px' }}>瀏覽次數：{this.state.pv}</span>
                                 <hr />
                                 <div dangerouslySetInnerHTML={{ __html: this.state.post }}></div>
                                 <hr />
@@ -53,14 +54,14 @@ export default class article extends React.Component {
                         <div className='col-md-5 col-md-offset-1'>
                             <div className='well'>
                                 <h4>附件</h4>
-                                <hr/>
+                                <hr />
                                 <p>無附件</p>
                             </div>
                         </div>
                         <div className='col-md-5'>
                             <div className='well'>
                                 <h4>時間</h4>
-                                <hr/>
+                                <hr />
                                 <p>發布：{this.state.time.date}</p>
                             </div>
                         </div>

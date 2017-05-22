@@ -239,7 +239,7 @@ Post.remove = function(name, day, title, callback) {
       console.log(err);
       return callback(err);
     }
-    console.log("doc" + doc);
+    // console.log("doc: " + doc);
     var reprint_from = "";
     if (doc.reprint_info.reprint_from != null) {
       reprint_from = doc.reprint_info.reprint_from;

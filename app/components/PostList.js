@@ -25,15 +25,15 @@ export default class PostList extends React.Component {
 
     componentWillUpdate(nextProps, nextState) {
         console.log('list will update')
-        console.log('this page:', this.props.page)
-        console.log('next page:', nextProps.page)
+        // console.log('this page:', this.props.page)
+        // console.log('next page:', nextProps.page)
         PostListActions.getPost(nextProps.page);
     }
 
     shouldComponentUpdate(nextProps, nextState) {
-        console.log('next', nextState);
-        console.log('this', this.state);
-        console.log('should', nextState.page !== this.state.page)
+        // console.log('next', nextState);
+        // console.log('this', this.state);
+        // console.log('should', nextState.page !== this.state.page)
         return nextState.page !== this.state.page || nextProps.page !== this.props.page;
     }
 
@@ -63,8 +63,8 @@ export default class PostList extends React.Component {
                     </h4>
                     <span><Link to={link}>繼續閱讀</Link></span>
                     <p>
-                        <span className='glyphicon glyphicon-thumbs-up grey'></span>5
-                    <span className='fa fa-eye grey'></span>5
+                        <span className='glyphicon glyphicon-thumbs-up grey'></span>{post.star}
+                    <span className='fa fa-eye grey'></span>{post.pv}
                 </p>
                 </div>
             );
@@ -73,17 +73,23 @@ export default class PostList extends React.Component {
         let footer = [];
 
         if (total > 1) {
+            let thisPage = parseInt(page);
+            console.log('thisPage:', thisPage, typeof thisPage);
             if (page != 1) {
                 // let pre = '?p=' + (page - 1).toString();
-                footer.push(<li><Link to='/' query={{ p: (page - 1) }} >Previous</Link></li>);
+                footer.push(<li><Link to='/' query={{ p: (thisPage - 1) }} >Previous</Link></li>);
             }
             for (var i = 1; i <= total; i++) {
                 // let to = '?p=' + i.toString();
-                footer.push(<li><Link to='/' query={{ p: i }}>{i}</Link></li>)
+                if(i == thisPage){
+                    footer.push(<li className='active'><Link to='/' query={{ p: i }}>{i}</Link></li>)
+                }else{
+                    footer.push(<li><Link to='/' query={{ p: i }}>{i}</Link></li>)
+                }
             }
             if (page != total) {
                 // let next = '?p=' + (page + 1).toString();
-                footer.push(<li><Link to='/' query={{ p: (parseInt(page) + 1 )}} >Next</Link></li>);
+                footer.push(<li><Link to='/' query={{ p: (thisPage + 1 )}} >Next</Link></li>);
             }
         }
 
