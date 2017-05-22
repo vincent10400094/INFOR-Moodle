@@ -11,7 +11,11 @@ var session = require('express-session');
 var busboy = require('connect-busboy');
 // var expressLayouts = require('express-e6js-layouts');
 
-var Post = require('./models/post')
+var Post = require('./models/post');
+var User = require('./models/user');
+var Txt = require('./models/TXT');
+var Comment = require('./models/comment');
+var Pdf = require('./pdfreader/parse');
 
 //var session = require('cookie-session');
 var MongoStore = require('connect-mongo')(session);
@@ -224,6 +228,66 @@ app.post('/api/post', function (req, res) {
   });
 });
 
+//刪除文章
+app.get('/api/remove/:name/:day/:title', function (req, res) {
+  var currentUser = req.session.user;
+
+  Post.remove(currentUser.name, req.params.day, req.params.title, function (err) {
+    if (err) {
+      req.flash('error', err);
+      return res.redirect('back');
+    }
+
+    res.send({ message: '刪除成功!' });
+    req.flash('success', '刪除成功!');
+    res.redirect('/');
+  });
+});
+
+//轉載文章
+app.get('/api/reprint/:name/:day/:title', function (req, res) {
+  Post.edit(req.params.name, req.params.day, req.params.title, function (err, post) {
+    if (err) {
+      req.flash('error', err);
+      return res.render('back');
+    }
+
+    var currentUser = req.session.user;
+    var reprint_from = {
+      name: post.name,
+      day: post.time.day,
+      title: post.title
+    };
+    var reprint_to = {
+      name: currentUser.name,
+      head: currentUser.head
+    };
+
+    // console.log(reprint_from);
+    // console.log(reprint_to);
+    Post.reprint(reprint_from, reprint_to, function (err, post) {
+      if (err) {
+        console.log(err);
+        req.flash('error', err);
+        return res.redirect('back');
+      }
+
+      var reprint_post = new Post(post.name, post.head, post.title, post.tags, post.post, post.reprint_info);
+      reprint_post.ReprintSave(function (err) {
+        if (err) {
+          req.flash('error', err);
+          return res.redirect('/');
+        }
+
+        req.flash('success', '轉載成功');
+        //var url = encodeURI('/u/' + post.name +'/'+ post.time.day +'/'+ post.title);
+        res.send({ message: '轉載成功!' });
+        res.redirect('/');
+      });
+    });
+  });
+});
+
 //使用者介面資料
 app.get('/api/user/:name', function (req, res) {
   console.log('username: ', req.params.name)
@@ -239,6 +303,75 @@ app.get('/api/user/:name', function (req, res) {
   });
 });
 
+//留言按讚
+app.post('/api/comments/star/', function (req, res) {
+  var data = req.body;
+  //console.log(data);
+  if (data.inc == 1) {
+    Post.comment_star(data.postname, data.day, data.title, data.username, data.index, function (err) {
+      if (err) {
+        console.log(err);
+        req.flash('error', err);
+        return res.redirect('/');
+      }
+      res.send({message: '留言按讚成功'});
+      res.redirect('back');
+    });
+  }
+  if (data.inc == -1) {
+    Post.comment_unstar(data.postname, data.day, data.title, data.username, data.index, function (err) {
+      if (err) {
+        console.log(err);
+        req.flash('error', err);
+        return res.redirect('/');
+      }
+      res.send({message: '留言取消按贊成功!'});
+      res.redirect('back');
+    });
+  }
+});
+
+//文章按讚
+router.post('/api/post/star/', function (req, res) {
+  var data = req.body;
+  if (data.inc == 1) {
+    Post.star(data.postname, data.day, data.title, data.username, function (err) {
+      if (err) {
+        console.log(err);
+        req.flash('error', err);
+        return res.redirect('/');
+      }
+      res.send({message: '文章按讚成功'});
+      res.redirect('back');
+    });
+  }
+  if (data.inc == -1) {
+    Post.unstar(data.postname, data.day, data.title, data.username, function (err) {
+      if (err) {
+        console.log(err);
+        req.flash('error', err);
+        return res.redirect('/');
+      }
+      res.send({message: '文章取消按贊成功!'});
+      res.redirect('back');
+    });
+  }
+});
+
+//標籤
+router.get('/api/tags/:tag', function (req, res) {
+
+  Post.getTag(req.params.tag, function (err, posts) {
+    if (err) {
+      req.flash('error', err);
+      return res.redirect('/');
+    }
+
+    res.send(posts);
+  });
+});
+
+//文章列表
 app.get('/api/history', function (req, res) {
 
   Post.getArchive(function (err, posts) {
