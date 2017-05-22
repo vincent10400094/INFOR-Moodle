@@ -21,7 +21,7 @@ export default class Bar extends React.Component {
     }
 
     openPost() {
-        CKEDITOR.replace("editor1");
+        
         this.setState({ newPost: true });
 
     }

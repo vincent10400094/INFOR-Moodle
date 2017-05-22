@@ -11,6 +11,21 @@ class PostListActions {
   getPost(page) {
     $.ajax({ url: '/api/post/' + page })
       .done((data) => {
+        console.log('data: ',data);
+        this.getPostListSuccess(data);
+      })
+      .fail((jqXhr) => {
+        this.getPostListFail(jqXhr);
+      });
+  }
+
+  removePost(name, day, title) {
+
+    $.ajax({
+      type: 'GET',
+      url: '/api/remove/' + name + '/' + day + '/' + title
+    })
+      .done((data) => {
         //console.log('data: ',data);
         this.getPostListSuccess(data);
       })

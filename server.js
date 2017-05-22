@@ -237,10 +237,12 @@ app.get('/api/remove/:name/:day/:title', function (req, res) {
       req.flash('error', err);
       return res.redirect('back');
     }
-
+    console.log("come back callback");
     res.send({ message: '刪除成功!' });
-    req.flash('success', '刪除成功!');
-    res.redirect('/');
+    console.log("come in message");
+    // req.flash('success', '刪除成功!');
+    // console.log(" come in flash ");
+    
   });
 });
 

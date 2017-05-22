@@ -19,6 +19,7 @@ const routes = (
       <Route path='history' component={history} />
       <Route path='user/:user' component={ProfilePage}/>
       <Route path='u/:user/:time/:title' component={Article}/>
+      <Route path='remove/:user/:time/:title' component={Article}/>
       <Route path='*' component={NotFoundPage} />
     </Route>
 );
