@@ -14,6 +14,10 @@ export default class Home extends React.Component {
         document.title = 'Home';
     }
 
+    componentWillUpdate() {
+        console.log('home will update');
+    }
+
     render() {
         // console.log(this.props.location.query);
         let page = this.props.location.query.p;

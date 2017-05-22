@@ -23,37 +23,29 @@ export default class PostList extends React.Component {
         PostListStore.unlisten(this.onChange);
     }
 
-    // shouldComponentUpdate(nextProps, nextState) {
-    //     // console.log('next',typeof nextProps.page, nextProps.page);
-    //     // console.log('this',typeof this.props.page, this.props.page);
-    //     console.log('should',nextProps.page !== this.props.page)
-    //     return nextProps.page !== this.props.page;
-    // }
+    componentWillUpdate(nextProps, nextState) {
+        console.log('list will update')
+        console.log('this page:', this.props.page)
+        console.log('next page:', nextProps.page)
+        PostListActions.getPost(nextProps.page);
+    }
 
-    // componentWillReceiveProps(nextProps, nextState) {
-    //     console.log('next: ', nextProps.page, typeof nextProps.page);
-    //     PostListActions.getPost(nextProps.page);
-    //     this.forceUpdate();
-    // }
-
-    // componentDidUpdate() {
-    //     console.log('update');
-    // }
+    shouldComponentUpdate(nextProps, nextState) {
+        console.log('next', nextState);
+        console.log('this', this.state);
+        console.log('should', nextState.page !== this.state.page)
+        return nextState.page !== this.state.page || nextProps.page !== this.props.page;
+    }
 
     onChange(state) {
         this.setState(state);
     }
-
-    // getPage() {
-    //     PostListActions.getPost(this.props.page);
-    // }
 
     render() {
         // console.log('list page:', this.props.page);
         // console.log('list store', this.state.posts);
         let page = this.props.page;
         let total = this.state.total;
-        
 
         let postList = this.state.posts.map((post, index) => {
             let markup = post.post;
@@ -91,7 +83,7 @@ export default class PostList extends React.Component {
             }
             if (page != total) {
                 // let next = '?p=' + (page + 1).toString();
-                footer.push(<li><Link to='/' query={{ p: (page + 1) }} >Next</Link></li>);
+                footer.push(<li><Link to='/' query={{ p: (parseInt(page) + 1 )}} >Next</Link></li>);
             }
         }
 

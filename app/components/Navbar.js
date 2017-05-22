@@ -15,7 +15,7 @@ export default class Navbar extends React.Component {
                             <span className='icon-bar'></span>
                             <span className='icon-bar'></span>
                         </button>
-                        <Link className='navbar-brand' to='/'>Home</Link>
+                        <Link className='navbar-brand' to='/?p=1'>Home</Link>
                     </div>
                     <div id='navbar' className='collapse navbar-collapse'>
                         <ul className='nav navbar-nav'>

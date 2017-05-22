@@ -8,11 +8,13 @@ class PostListStore {
         this.bindActions(PostListActions);
         this.posts = [];
         this.total = 0;
+        this.page = 0;
     }
 
     onGetPostListSuccess(data) {
         this.posts = data.posts;
-        this.total = data.total
+        this.total = data.total;
+        this.page = data.page;
     }
 
     onGetPostListFail(jqXhr) {

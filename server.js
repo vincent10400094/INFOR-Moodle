@@ -122,7 +122,7 @@ app.get('/api/post/:page', (req, res) => {
     }
     total = parseInt(total / 10) + 1;
 
-    let data = { posts: posts, total: total };
+    let data = { posts: posts, total: total , page: page};
     res.send(data);
   });
 });
