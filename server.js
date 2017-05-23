@@ -404,6 +404,11 @@ app.post('/api/login', passport.authenticate('local-login'), function (req, res)
   res.send({isLoggedIn: req.body.user !== NULL, errMessage: ''});
 });
 
+app.get('/logout', function (req, res) {
+  req.session.user = null;
+  res.redirect('/');
+});
+
 // route for facebook authentication and login
 app.get('/auth/facebook', passport.authenticate('facebook-login', {
   scope: 'email'

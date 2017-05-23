@@ -30,7 +30,7 @@ export default class Navbar extends React.Component {
                 return (
                     <ul className='nav navbar-nav navbar-right'>
                         <li><Link to={`/user/${user.name}`}>Welcome, {user.name}</Link></li>
-                        <li ><Link to='/logout'>logout <span class='badge'></span></Link></li>
+                        <li ><a href='/logout'>logout <span class='badge'></span></a></li>
                     </ul>
                 );
             } else {
