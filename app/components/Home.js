@@ -11,6 +11,7 @@ export default class Home extends React.Component {
     }
 
     componentDidMount() {
+        $.material.init();
         document.title = 'Home';
     }
 

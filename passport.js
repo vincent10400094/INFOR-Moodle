@@ -192,6 +192,7 @@ module.exports = function(passport) {
           // if the user is found, then log them in
           if (user) {
             req.session.user = user;
+            console.log('facebook auth success')
             return done(null, user); // user found, return that user
           } else {
             // if there is no user found with that facebook id, create them

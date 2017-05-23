@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { Route, IndexRoute } from 'react-router';
-import Layout from './components/Layout';
+import App from './components/App';
 import Home from './components/Home';
 import Login from './components/Login';
 import Signin from './components/Signup';
@@ -14,7 +14,7 @@ import Search from './components/Search';
 import TagPage from './components/TagPage';
 
 const routes = (
-  <Route component={Layout}>
+  <Route component={App}>
     <Route path='/' component={Home} />
     <Route path='login' component={Login} />
     <Route path='signup' component={Signin} />

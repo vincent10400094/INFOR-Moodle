@@ -72,7 +72,7 @@ export default class Login extends React.Component {
                                             <button type='submit' className='btn btn-default btn-block' value='login'>Login</button>
                                         </div>
                                         <div className='col-md-12'>
-                                            <a href='/Linkuth/facebook' className='btn btn-primary btn-block'>Facebook</a>
+                                            <a href='/auth/facebook' className='btn btn-primary btn-block'>Facebook</a>
                                         </div>
                                     </div>
                                 </fieldset>

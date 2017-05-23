@@ -404,8 +404,21 @@ app.post('/api/login', passport.authenticate('local-login'), function (req, res)
   res.send({isLoggedIn: req.body.user !== NULL, errMessage: ''});
 });
 
-app.get('/api/isLoggedIn', (req, res) => {
-  res.send(req.session.user !== NULL);
+// route for facebook authentication and login
+app.get('/auth/facebook', passport.authenticate('facebook-login', {
+  scope: 'email'
+}));
+
+// handle the callback after facebook has authenticated the user
+app.get('/auth/facebook/callback', passport.authenticate('facebook-login',
+  {
+    successRedirect: '/',
+    failureRedirect: '/login',
+    session: false
+  }));
+
+app.get('/api/getSession', (req, res) => {
+  res.send(req.session);
 })
 
 app.get('*', (req, res) => {

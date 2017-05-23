@@ -1,10 +1,49 @@
 'use strict'
 
 import React from 'react';
-import {Link} from 'react-router';
+import { Link } from 'react-router';
+import AppStore from '../stores/AppStore';
 
 export default class Navbar extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = AppStore.getState();
+        this.onChange = this.onChange.bind(this);
+    }
+
+    componentDidMount() {
+        AppStore.listen(this.onChange);
+    }
+
+    componentWillUnmount() {
+        AppStore.unlisten(this.onChange);
+    }
+
+    onChange(state) {
+        this.setState(state);
+    }
+
     render() {
+        var user = this.state.user;
+        function userStatus() {
+            if (user) {
+                return (
+                    <ul className='nav navbar-nav navbar-right'>
+                        <li><Link to={`/user/${user.name}`}>Welcome, {user.name}</Link></li>
+                        <li ><Link to='/logout'>logout <span class='badge'></span></Link></li>
+                    </ul>
+                );
+            } else {
+                return (
+                    <ul className='nav navbar-nav navbar-right'>
+                        <li>
+                            <Link to='/login'>login</Link>
+                        </li>
+                    </ul>
+                )
+            }
+        };
+
         return (
             <nav className='navbar navbar-default'>
                 <div className='container'>
@@ -31,11 +70,7 @@ export default class Navbar extends React.Component {
                                 <input type='text' name='keyword' className='form-control' placeholder='Search' autoComplete='off'></input>
                             </div>
                         </form>
-                        <ul className='nav navbar-nav navbar-right'>
-                            <li>
-                                <Link to='/login'>login</Link>
-                            </li>
-                        </ul>
+                        {userStatus()}
                     </div>
                 </div>
             </nav>
