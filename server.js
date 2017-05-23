@@ -397,19 +397,12 @@ app.get('/api/search', function (req, res) {
   });
 });
 
-app.get('/api/login', function (req, res) {
+app.post('/api/login', function (req, res) {
   console.log('log in: ', req.body);
-  console.log("req.body.email: " + req.body.email);
+  console.log("req.body.username: " + req.body.username);
   console.log("req.body.password: " + req.body.password);
-  res.send('jizz');
+  res.send(false);
 });
-
-app.post('/login', passport.authenticate('local-login', {
-  successRedirect: '/', // redirect to the secure profile section
-  failureRedirect: '/login', // redirect back to the signup page if there is an error
-  failureFlash: true, // allow flash messages
-  session: false
-}));
 
 app.post('/api/signup', passport.authenticate('local-signup', {
   successRedirect: '/', // redirect to the secure profile section
@@ -417,6 +410,10 @@ app.post('/api/signup', passport.authenticate('local-signup', {
   failureFlash: true, // allow flash messages
   session: false
 }));
+
+app.get('/api/isLoggedIn', (req, res) => {
+  res.send(req.session.user !== NULL);
+})
 
 app.get('*', (req, res) => {
   match(

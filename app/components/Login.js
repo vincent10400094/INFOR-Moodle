@@ -26,7 +26,7 @@ export default class Login extends React.Component {
     }
 
     handleSubmit(event) {
-
+        event.preventDefault();
         var username = this.state.username
         var password = this.state.password;
         console.log('onSubmit: ', this.state);

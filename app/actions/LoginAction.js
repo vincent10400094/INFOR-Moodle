@@ -1,4 +1,5 @@
 import alt from '../alt';
+import { browserHistory } from 'react-router'
 
 class LoginAction {
   constructor() {
@@ -12,12 +13,17 @@ class LoginAction {
 
   addCharacter(username, password) {
     $.ajax({
-      type: 'get',
+      type: 'post',
       url: '/api/login',
-      data: { password: password, username: username }
+      data: {username: username, password: password}
     })
       .done((data) => {
         console.log(data);
+        if(data){
+          browserHistory.push('/')
+        }else{
+          browserHistory.push('/login')
+        }
       })
       .fail((jqXhr) => {
         this.LoginFailed(jqXhr.responseJSON.message);

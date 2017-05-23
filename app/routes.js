@@ -14,18 +14,18 @@ import Search from './components/Search';
 import TagPage from './components/TagPage';
 
 const routes = (
-    <Route component={Layout}>
-      <Route path='/' component={Home} />
-      <Route path='login' component={Login} />
-      <Route path='signup' component={Signin} />
-      <Route path='history' component={history} />
-      <Route path='search' component={Search} />
-      <Route path='tags/:tag' component={TagPage} />
-      <Route path='user/:user' component={ProfilePage}/>
-      <Route path='u/:user/:time/:title' component={Article}/>
-      <Route path='remove/:user/:time/:title' component={Article}/>
-      <Route path='*' component={NotFoundPage} />
-    </Route>
+  <Route component={Layout}>
+    <Route path='/' component={Home} />
+    <Route path='login' component={Login} />
+    <Route path='signup' component={Signin} />
+    <Route path='history' component={history} />
+    <Route path='search' component={Search} />
+    <Route path='tags/:tag' component={TagPage} />
+    <Route path='user/:user' component={ProfilePage} />
+    <Route path='u/:user/:time/:title' component={Article} />
+    <Route path='remove/:user/:time/:title' component={Article} />
+    <Route path='*' component={NotFoundPage} />
+  </Route>
 );
 
 export default routes;
