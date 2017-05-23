@@ -3,7 +3,6 @@
 import React from 'react';
 import { Link } from 'react-router';
 import PostListActions from '../actions/PostListActions';
-import Comment from './Comment';
 
 export default class article extends React.Component {
     constructor(props) {
@@ -78,22 +77,23 @@ export default class article extends React.Component {
             comments = this.state.comments.map((comment, index) => {
                 return (
                     <div>
-                        <hr style={{margin:'1px'}} />
-                        <div class='list-group-item' style={{paddingTop:'20px', paddingBottom:'20px'}}>
-                            <div class='row-picture'>
-                                <img class='circle' src={comment.head} alt='icon' />
+                        <hr style={{margin: '1px'}} />
+                        <div className='list-group-item' style={{ paddingTop: '20px', paddingBottom: '20px' }}>
+                            <div className='row-picture'>
+                                <img className='circle' src={comment.head} alt='icon' />
                             </div>
-                            <div class='row-content'>
-                                <span style={{marginBottom:'0px', fontSize:'19px'}}><Link to='/user/<%= comment.name %>'>{comment.name}</Link></span>
-                                <p class='list-group-item-text' style={{fontSize: '16px'}}>{comment.content}</p>
-                                <small class='grey' style={{paddingLeft:'5px'}}>{comment.time}</small>
+                            <div className='row-content'>
+                                <span style={{ marginBottom: '0px', fontSize: '19px' }}><Link to={`/user/${comment.name}`}>{comment.name}</Link></span>
+                                <p className='list-group-item-text' style={{ fontSize: '16px' }}>{comment.content}</p>
+                                <small className='grey' style={{ paddingLeft: '5px' }}>{comment.time}</small>
                             </div>
                         </div>
                     </div>
-
                 );
             });
         }
+
+        let d = new Date(this.state.time.date);
 
         return (
             <section id='main'>
@@ -126,7 +126,7 @@ export default class article extends React.Component {
                             <div className='well'>
                                 <h4>時間</h4>
                                 <hr />
-                                <p>發布：{this.state.time.date}</p>
+                                <p>發布：{d.toLocaleString()}</p>
                             </div>
                         </div>
                         <div className='col-md-10 col-md-offset-1'>

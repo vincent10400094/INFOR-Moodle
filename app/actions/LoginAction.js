@@ -3,19 +3,21 @@ import alt from '../alt';
 class LoginAction {
   constructor() {
     this.generateActions(
-      'LoginSuccess',
-      'LoginFailed'
+      'loginSuccess',
+      'loginFailed',
+      'updatePassword',
+      'updateUsername'
     );
   }
 
-  addCharacter(password, email) {
+  addCharacter(username, password) {
     $.ajax({
-      type: 'POST',
+      type: 'get',
       url: '/api/login',
-      data: { password: password, email: email }
+      data: { password: password, username: username }
     })
       .done((data) => {
-        this.LoginSuccess();
+        console.log(data);
       })
       .fail((jqXhr) => {
         this.LoginFailed(jqXhr.responseJSON.message);

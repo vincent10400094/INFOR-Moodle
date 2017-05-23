@@ -126,7 +126,7 @@ app.get('/api/post/:page', (req, res) => {
     }
     total = parseInt(total / 10) + 1;
 
-    let data = { posts: posts, total: total , page: page};
+    let data = { posts: posts, total: total, page: page };
     res.send(data);
   });
 });
@@ -242,7 +242,7 @@ app.get('/api/remove/:name/:day/:title', function (req, res) {
     console.log("come in message");
     // req.flash('success', '刪除成功!');
     // console.log(" come in flash ");
-    
+
   });
 });
 
@@ -316,7 +316,7 @@ app.post('/api/comments/star/', function (req, res) {
         req.flash('error', err);
         return res.redirect('/');
       }
-      res.send({message: '留言按讚成功'});
+      res.send({ message: '留言按讚成功' });
       res.redirect('back');
     });
   }
@@ -327,7 +327,7 @@ app.post('/api/comments/star/', function (req, res) {
         req.flash('error', err);
         return res.redirect('/');
       }
-      res.send({message: '留言取消按贊成功!'});
+      res.send({ message: '留言取消按贊成功!' });
       res.redirect('back');
     });
   }
@@ -343,7 +343,7 @@ app.post('/api/post/star/', function (req, res) {
         req.flash('error', err);
         return res.redirect('/');
       }
-      res.send({message: '文章按讚成功'});
+      res.send({ message: '文章按讚成功' });
       res.redirect('back');
     });
   }
@@ -354,7 +354,7 @@ app.post('/api/post/star/', function (req, res) {
         req.flash('error', err);
         return res.redirect('/');
       }
-      res.send({message: '文章取消按贊成功!'});
+      res.send({ message: '文章取消按贊成功!' });
       res.redirect('back');
     });
   }
@@ -362,12 +362,12 @@ app.post('/api/post/star/', function (req, res) {
 
 //標籤
 app.get('/api/tags/:tag', function (req, res) {
-  console.log('tag:',req.params.tag);
+  console.log('tag:', req.params.tag);
   Post.getTag(req.params.tag, function (err, posts) {
     if (err) {
       console.log('find tag page error: ', err);
     }
-    let data = {posts: posts, tag: req.params.tag}
+    let data = { posts: posts, tag: req.params.tag }
     res.send(data);
   });
 });
@@ -391,23 +391,25 @@ app.get('/api/search', function (req, res) {
       console.log('search error: ', err);
     }
     //console.log("Search:" + posts);
-    let data = {posts: posts, keyword: req.query.keyword}
+    let data = { posts: posts, keyword: req.query.keyword }
     // console.log(data);
     res.send(data);
   });
 });
 
-app.post('/api/login', function (req, res) {
-  console.log(req);
+app.get('/api/login', function (req, res) {
+  console.log('log in: ', req.body);
   console.log("req.body.email: " + req.body.email);
   console.log("req.body.password: " + req.body.password);
-  passport.authenticate('local-login', {
-    successRedirect: '/', // redirect to the secure profile section
-    failureRedirect: '/login', // redirect back to the signup page if there is an error
-    failureFlash: true, // allow flash messages
-    session: false
-  })
+  res.send('jizz');
 });
+
+app.post('/login', passport.authenticate('local-login', {
+  successRedirect: '/', // redirect to the secure profile section
+  failureRedirect: '/login', // redirect back to the signup page if there is an error
+  failureFlash: true, // allow flash messages
+  session: false
+}));
 
 app.post('/api/signup', passport.authenticate('local-signup', {
   successRedirect: '/', // redirect to the secure profile section

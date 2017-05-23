@@ -48,7 +48,7 @@ export default class PostList extends React.Component {
         let total = this.state.total;
 
         let postList = this.state.posts.map((post, index) => {
-            let markup = post.post;
+            let markup = post.post.split(/\s+</)[0];
             let link = `/u/${post.name}/${post.time.day}/${post.title}`
             return (
                 <div className='well' >
