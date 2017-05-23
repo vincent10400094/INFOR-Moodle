@@ -32,8 +32,13 @@ export default class Bar extends React.Component {
     }
 
     componentDidUpdate() {
-        $.material.init();
-        console.log('bar update');
+        if(this.state.newPaper || this.state.newPost){
+            $.material.init();
+        }
+        if(this.state.newPost){
+            CKEDITOR.replace('editor1');
+        }
+        // console.log('bar update');
     }
 
     render() {

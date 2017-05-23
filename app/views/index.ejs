@@ -25,13 +25,6 @@
     <div id="main">
         <%- markup -%>
     </div>
-    <script>
-        CKEDITOR.replace("editor1");
-        CKEDITOR.instances.editor.on('change', function () {
-            let data = CKEDITOR.instances.editor.getData();
-            this.props.onChange(data);
-        }.bind(this));
-    </script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script type="text/javascript" src="/js/jquery-3.2.1.min.js"></script>
