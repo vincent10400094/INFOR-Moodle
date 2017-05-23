@@ -6,7 +6,7 @@ class LoginStore {
     this.bindActions(LoginAction);
     this.password = '';
     this.username = '';
-
+    this.alertMessage = '';
   }
 
   onUpdatePassword (event) {
@@ -17,6 +17,15 @@ class LoginStore {
   onUpdateUsername (event) {
     console.log('update name: ', event.target.value)
     this.username = event.target.value;
+  }
+
+  onClearInput() {
+    this.password = '';
+    this.username = '';
+  }
+
+  onLoginFailed() {
+    this.alertMessage = 'Login failed';
   }
 
 }

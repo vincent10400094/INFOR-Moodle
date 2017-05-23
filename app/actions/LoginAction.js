@@ -4,10 +4,10 @@ import { browserHistory } from 'react-router'
 class LoginAction {
   constructor() {
     this.generateActions(
-      'loginSuccess',
       'loginFailed',
       'updatePassword',
-      'updateUsername'
+      'updateUsername',
+      'clearInput'
     );
   }
 
@@ -15,18 +15,16 @@ class LoginAction {
     $.ajax({
       type: 'post',
       url: '/api/login',
-      data: {username: username, password: password}
+      data: { username: username, password: password }
     })
       .done((data) => {
-        console.log(data);
-        if(data){
-          browserHistory.push('/')
-        }else{
-          browserHistory.push('/login')
-        }
+        console.log('login data', data);
+        this.clearInput();
+        browserHistory.push('/')
       })
       .fail((jqXhr) => {
-        this.LoginFailed(jqXhr.responseJSON.message);
+        this.clearInput()
+        browserHistory.push('/login')
       });
   }
 }

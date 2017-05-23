@@ -122,7 +122,6 @@ module.exports = function(passport) {
     }));
 
   passport.use('local-login', new LocalStrategy({
-    // by default, local strategy uses username and password, we will override with email
     usernameField: 'username',
     passwordField: 'password',
     passReqToCallback: true // allows us to pass back the entire request to the callback
@@ -152,7 +151,7 @@ module.exports = function(passport) {
         // create the loginMessage and save it to session as flashdata
         req.session.user = user;
         // all is well, return successful user
-
+        console.log('passport auth success')
         return done(null, user);
       });
 

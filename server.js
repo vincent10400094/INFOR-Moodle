@@ -397,19 +397,12 @@ app.get('/api/search', function (req, res) {
   });
 });
 
-app.post('/api/login', function (req, res) {
+app.post('/api/login', passport.authenticate('local-login'), function (req, res) {
   console.log('log in: ', req.body);
   console.log("req.body.username: " + req.body.username);
   console.log("req.body.password: " + req.body.password);
-  res.send(false);
+  res.send({isLoggedIn: req.body.user !== NULL, errMessage: ''});
 });
-
-app.post('/api/signup', passport.authenticate('local-signup', {
-  successRedirect: '/', // redirect to the secure profile section
-  failureRedirect: '/signup', // redirect back to the signup page if there is an error
-  failureFlash: true, // allow flash messages
-  session: false
-}));
 
 app.get('/api/isLoggedIn', (req, res) => {
   res.send(req.session.user !== NULL);

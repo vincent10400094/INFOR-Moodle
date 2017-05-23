@@ -35,12 +35,23 @@ export default class Login extends React.Component {
 
     }
 
-
     render() {
+
+        let errorMessage = [];
+        if(this.state.errorMessage) {
+            <div className='col-md-4 col-md-offset-4 '>
+              <div className='alert alert-dismissible alert-danger'>
+                 <button type='button' className='close' data-dismiss='alert'>×</button>
+                 {this.state.errorMessage}
+              </div>
+          </div>
+        }
+
         return (
             <section id='main'>
                 <div className='container'>
                     <div className='row'>
+                        {errorMessage}
                         <div className='col-md-4 col-md-offset-4'>
                             <form className='form-horizontal well' id='login' method='post' onSubmit={this.handleSubmit.bind(this)}>
                                 <fieldset>
