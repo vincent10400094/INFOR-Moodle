@@ -44,8 +44,8 @@ export default class article extends React.Component {
         });
 
         var files = [];
-
-        if (this.state.file.length - 1) {
+        console.log('atatch file', this.state.file.length)
+        if (this.state.file.length > 1) {
             files = this.state.file.map((file, index) => {
                 if (index) {
                     return (

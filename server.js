@@ -207,7 +207,7 @@ app.post('/api/edit/:name/:day/:title', function (req, res) {
 
 //新增文章
 app.post('/api/post', function (req, res) {
-
+  console.log('on post body: ', req.body)
   var currentUser = req.session.user;
   //console.log(currentUser);
   var tags = (req.body.tags + '#end').split(/\s*#/);
@@ -217,14 +217,14 @@ app.post('/api/post', function (req, res) {
   tags.splice(0, 1);
   tags.splice(tags.length - 1, 1);
 
-  var post = new Post(currentUser.name, currentUser.head, req.body.title, tags, req.body.editor1, {}, file);
+  var post = new Post(currentUser.name, currentUser.head, req.body.title, tags, req.body.content, {}, file);
   post.save(function (err) {
     if (err) {
-      req.flash('error', err);
-      return res.redirect('/');
+      // req.flash('error', err);
+      return res.send('internal error');
     }
-
-    res.send({ message: req.body.title + ' has been posted.' });
+    res.send('post success')
+    // res.send({ message: req.body.title + ' has been posted.' });
   });
 });
 

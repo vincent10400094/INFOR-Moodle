@@ -4,6 +4,8 @@ import React from 'react';
 import { Link } from 'react-router';
 import Button from 'react-bootstrap/lib/Button';
 import Modal from 'react-bootstrap/lib/Modal';
+import PostActions from '../actions/PostActions';
+import PostStore from '../stores/PostStore';
 
 export default class Bar extends React.Component {
     constructor(props) {
@@ -31,14 +33,27 @@ export default class Bar extends React.Component {
         this.setState({ newPaper: true });
     }
 
+    componetDidMount() {
+
+    }
+
     componentDidUpdate() {
-        if(this.state.newPaper || this.state.newPost){
+        if (this.state.newPaper || this.state.newPost) {
             $.material.init();
         }
-        if(this.state.newPost){
-            CKEDITOR.replace('editor1');
+        if (this.state.newPost) {
+            CKEDITOR.replace('editor1')
         }
         // console.log('bar update');
+    }
+
+    handlePost(event) {
+        event.preventDefault();
+        var data = PostStore.getState();
+        var title = data.title
+        var tags = data.tags;
+        console.log('handle post', this.state)
+        PostActions.handlePost(title, tags);
     }
 
     render() {
@@ -46,7 +61,7 @@ export default class Bar extends React.Component {
             display: 'none'
         }
         return (
-            <div className='btn-group btn-group-justified btn-group-raised' style={{marginBottom:'20px'}}>
+            <div className='btn-group btn-group-justified btn-group-raised' style={{ marginBottom: '20px' }}>
                 <a className='btn' id='custom-btn' onClick={this.openPost}>發文</a>
                 <Link to='/pdfUpload' className='btn' id='custom-btn'>新增題目</Link>
                 <a className='btn' id='custom-btn' onClick={this.openPaper}>自訂考卷</a>
@@ -54,23 +69,23 @@ export default class Bar extends React.Component {
                     <Modal.Header closeButton>
                         <Modal.Title>Write Post</Modal.Title>
                     </Modal.Header>
-                    <form action='/post'>
+                    <form action='/post' onSubmit={this.handlePost.bind(this)}>
                         <Modal.Body>
                             <div className='form-group label-floating'>
                                 <label className='control-label'>Title</label>
-                                <input type='text' name='title' className='form-control' autoComplete='off'></input>
+                                <input type='text' name='title' className='form-control' autoComplete='off' onChange={PostActions.updateTitle}></input>
                             </div>
                             <div className='form-group'>
-                                <textarea type='text' name='editor1' className='form-control' placeholder='Page Body' rows='20' cols='100'></textarea>
+                                <textarea type='text' name='editor1' className='form-control' placeholder='Page Body' rows='20' cols='100' onChange={PostActions.updateEditor}></textarea>
                             </div>
                             <div className='form-group'>
                                 <label>Tags</label>
-                                <input type='text' name='tags' className='form-control' placeholder='Use # to add tags' autoComplete='off'></input>
+                                <input type='text' name='tags' className='form-control' placeholder='Use # to add tags' autoComplete='off' onChange={PostActions.updateTags}></input>
                             </div>
                         </Modal.Body>
                         <Modal.Footer>
                             <Button onClick={this.closePost} >Cancel</Button>
-                            <Button type='submit' className='btn btn-primary'>Post</Button>
+                            <Button type='submit' className='btn btn-primary' onClick={this.closePost}>Post</Button>
                         </Modal.Footer>
                     </form>
                 </Modal>

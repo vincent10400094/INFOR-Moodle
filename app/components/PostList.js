@@ -34,7 +34,9 @@ export default class PostList extends React.Component {
         // console.log('next', nextState);
         // console.log('this', this.state);
         // console.log('should', nextState.page !== this.state.page)
-        return nextState.page !== this.state.page || nextProps.page !== this.props.page;
+        console.log('next posts', nextState.posts)
+        console.log('this posts', this.state.posts)
+        return !isEqual(nextState.posts, this.state.posts) || nextProps.page != this.props.page;
     }
 
     onChange(state) {
@@ -48,7 +50,10 @@ export default class PostList extends React.Component {
         let total = this.state.total;
 
         let postList = this.state.posts.map((post, index) => {
-            let markup = post.post.split(/\s+</)[0];
+            let markup
+            if (post.post) {
+                markup = post.post.split(/\s+</)[0];
+            }
             let link = `/u/${post.name}/${post.time.day}/${post.title}`
             return (
                 <div className='well' >
@@ -62,9 +67,9 @@ export default class PostList extends React.Component {
                         <div dangerouslySetInnerHTML={{ __html: markup }}></div>
                     </h4>
                     <span><Link to={link}>繼續閱讀</Link></span>
-                    <p style={{marginTop:'10px'}}>
-                        <span className='glyphicon glyphicon-thumbs-up grey' style={{paddingRight:'5px'}}></span>{post.star}
-                        <span className='fa fa-eye grey' style={{paddingRight:'5px', paddingLeft:'15px'}}></span>{post.pv}
+                    <p style={{ marginTop: '10px' }}>
+                        <span className='glyphicon glyphicon-thumbs-up grey' style={{ paddingRight: '5px' }}></span>{post.star}
+                        <span className='fa fa-eye grey' style={{ paddingRight: '5px', paddingLeft: '15px' }}></span>{post.pv}
                     </p>
                 </div>
             );
