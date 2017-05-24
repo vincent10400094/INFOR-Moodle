@@ -3,6 +3,7 @@
 import React from 'react';
 import { Link } from 'react-router';
 import PostListActions from '../actions/PostListActions';
+import AppStore from '../stores/AppStore';
 
 export default class article extends React.Component {
     constructor(props) {
@@ -134,7 +135,7 @@ export default class article extends React.Component {
                                 <div className='list-group'>
                                     <div className='list-group-item' style={{ paddingTop: '20px', paddingBottom: '20px' }}>
                                         <div className='row-picture'>
-                                            <img className='circle' src={this.state.head} alt='icon' />
+                                            <img className='circle' src={AppStore.getState().user.head} alt='icon' />
                                         </div>
                                         <div className='row-content'>
                                             <form method='post'>
