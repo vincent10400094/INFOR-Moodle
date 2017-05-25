@@ -500,7 +500,7 @@ app.get('*', (req, res) => {
   );
 });
 
-var port = normalizePort(process.env.PORT || '1209');
+var port = normalizePort(process.env.PORT || settings.serverport);
 app.set('port', port);
 
 var server = http.createServer(app);
