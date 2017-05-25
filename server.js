@@ -176,16 +176,14 @@ app.post('/api/comment/:name/:day/:title', function (req, res) {
 });
 
 // 編輯文章介面
-app.get('/api/edit/:name/:day/:title', function (req, res) {
+app.post('/api/edit/:name/:day/:title', function (req, res) {
   var currentUser = req.session.user;
 
-  Post.edit(currentUser.name, req.params.day, req.params.title, function (err, post) {
+  Post.update(currentUser.name, req.params.day, req.params.title, req.body.content, function (err) {
     if (err) {
-      req.flash('error', err);
-      return res.redirect('back');
+      return res.send({error: err});
     }
-    //文章內容放在textarea
-    res.send(post);
+    res.send('edit post success')
   });
 });
 
@@ -229,17 +227,16 @@ app.post('/api/post', function (req, res) {
 });
 
 //刪除文章
-app.get('/api/remove/:name/:day/:title', function (req, res) {
+app.post('/api/remove/:name/:day/:title', function (req, res) {
   var currentUser = req.session.user;
 
   Post.remove(currentUser.name, req.params.day, req.params.title, function (err) {
     if (err) {
-      req.flash('error', err);
-      return res.redirect('back');
+      console.log('remove post failed')
+      return res.send({error: err});
     }
-    console.log("come back callback");
+    console.log("remove post success");
     res.send({ message: '刪除成功!' });
-    console.log("come in message");
     // req.flash('success', '刪除成功!');
     // console.log(" come in flash ");
 
@@ -247,48 +244,48 @@ app.get('/api/remove/:name/:day/:title', function (req, res) {
 });
 
 //轉載文章
-app.get('/api/reprint/:name/:day/:title', function (req, res) {
-  Post.edit(req.params.name, req.params.day, req.params.title, function (err, post) {
-    if (err) {
-      req.flash('error', err);
-      return res.render('back');
-    }
+// app.get('/api/reprint/:name/:day/:title', function (req, res) {
+//   Post.edit(req.params.name, req.params.day, req.params.title, function (err, post) {
+//     if (err) {
+//       req.flash('error', err);
+//       return res.render('back');
+//     }
 
-    var currentUser = req.session.user;
-    var reprint_from = {
-      name: post.name,
-      day: post.time.day,
-      title: post.title
-    };
-    var reprint_to = {
-      name: currentUser.name,
-      head: currentUser.head
-    };
+//     var currentUser = req.session.user;
+//     var reprint_from = {
+//       name: post.name,
+//       day: post.time.day,
+//       title: post.title
+//     };
+//     var reprint_to = {
+//       name: currentUser.name,
+//       head: currentUser.head
+//     };
 
-    // console.log(reprint_from);
-    // console.log(reprint_to);
-    Post.reprint(reprint_from, reprint_to, function (err, post) {
-      if (err) {
-        console.log(err);
-        req.flash('error', err);
-        return res.redirect('back');
-      }
+//     // console.log(reprint_from);
+//     // console.log(reprint_to);
+//     Post.reprint(reprint_from, reprint_to, function (err, post) {
+//       if (err) {
+//         console.log(err);
+//         req.flash('error', err);
+//         return res.redirect('back');
+//       }
 
-      var reprint_post = new Post(post.name, post.head, post.title, post.tags, post.post, post.reprint_info);
-      reprint_post.ReprintSave(function (err) {
-        if (err) {
-          req.flash('error', err);
-          return res.redirect('/');
-        }
+//       var reprint_post = new Post(post.name, post.head, post.title, post.tags, post.post, post.reprint_info);
+//       reprint_post.ReprintSave(function (err) {
+//         if (err) {
+//           req.flash('error', err);
+//           return res.redirect('/');
+//         }
 
-        req.flash('success', '轉載成功');
-        //var url = encodeURI('/u/' + post.name +'/'+ post.time.day +'/'+ post.title);
-        res.send({ message: '轉載成功!' });
-        res.redirect('/');
-      });
-    });
-  });
-});
+//         req.flash('success', '轉載成功');
+//         //var url = encodeURI('/u/' + post.name +'/'+ post.time.day +'/'+ post.title);
+//         res.send({ message: '轉載成功!' });
+//         res.redirect('/');
+//       });
+//     });
+//   });
+// });
 
 //使用者介面資料
 app.get('/api/user/:name', function (req, res) {

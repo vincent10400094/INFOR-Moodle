@@ -12,6 +12,7 @@ import Article from './components/Article';
 import history from './components/history';
 import Search from './components/Search';
 import TagPage from './components/TagPage';
+import EditPost from './components/EditPost'
 
 const routes = (
   <Route component={App}>
@@ -23,6 +24,7 @@ const routes = (
     <Route path='tags/:tag' component={TagPage} />
     <Route path='user/:user' component={ProfilePage} />
     <Route path='u/:user/:time/:title' component={Article} />
+    <Route path='u/:user/:time/:title/edit' component={EditPost} />
     <Route path='remove/:user/:time/:title' component={Article} />
     <Route path='*' component={NotFoundPage} />
   </Route>

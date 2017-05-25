@@ -11,7 +11,7 @@ export default class article extends React.Component {
         super(props);
         console.log(this.props);
         this.onChange = this.onChange.bind(this)
-        this.state = { time: {}, tags: [], file: [], comments: [], user:{}};
+        this.state = { time: {}, tags: [], file: [], comments: [], session: { user: {} } };
     }
 
     componentWillUnmount() {
@@ -39,7 +39,8 @@ export default class article extends React.Component {
     }
 
     onChange(state) {
-        this.setState(state);
+        console.log('onchange jizz', state);
+        this.setState({ session: state });
     }
 
     render() {
@@ -86,7 +87,7 @@ export default class article extends React.Component {
             comments = this.state.comments.map((comment, index) => {
                 return (
                     <div>
-                        <hr style={{margin: '1px'}} />
+                        <hr style={{ margin: '1px' }} />
                         <div className='list-group-item' style={{ paddingTop: '20px', paddingBottom: '20px' }}>
                             <div className='row-picture'>
                                 <img className='circle' src={comment.head} alt='icon' />
@@ -102,6 +103,26 @@ export default class article extends React.Component {
             });
         }
 
+        let state = this.state;
+        console.log('control panel', state)
+
+        function controlPanel() {
+            if (state.name == state.session.user.name) {
+                return (
+                    <div>
+                        <span> <Link className='edit' to={`/u/${params.user}/${params.time}/${params.title}/edit`}>編輯</Link></span>
+                        <span> <a className='remove' onClick={PostListActions.removePost.bind(state, state.name, state.time.day, state.title)} >刪除</a></span>
+                        <span className='grey' style={{ float: 'right', marginBottom: '5px' }}>瀏覽次數：{state.pv}</span>
+                    </div>
+                )
+            }
+            else {
+                return (
+                    <span className='grey' style={{ float: 'right', marginBottom: '5px' }}>瀏覽次數：{state.pv}</span>
+                )
+            }
+        }
+
         let d = new Date(this.state.time.date);
 
         return (
@@ -114,9 +135,7 @@ export default class article extends React.Component {
                                 <p className='lead'>by <Link to={`/user/${params.user}`}>{this.state.name}</Link></p>
                             </div>
                             <div className='well'>
-                                <span> <Link className='edit' to={`/edit/${params.user}/${params.time}/${params.title}`}>編輯</Link></span>
-                                <span> <a className='remove' onClick={PostListActions.removePost.bind(this, this.state.name, params.time, params.title)} >刪除</a></span>
-                                <span className='grey' style={{ float: 'right', marginBottom: '5px' }}>瀏覽次數：{this.state.pv}</span>
+                                {controlPanel()}
                                 <hr />
                                 <div dangerouslySetInnerHTML={{ __html: this.state.post }}></div>
                                 {tags}
@@ -143,7 +162,7 @@ export default class article extends React.Component {
                                 <div className='list-group'>
                                     <div className='list-group-item' style={{ paddingTop: '20px', paddingBottom: '20px' }}>
                                         <div className='row-picture'>
-                                            <img className='circle' src={this.state.user.head} alt='icon' />
+                                            <img className='circle' src={this.state.session.user.head} alt='icon' />
                                         </div>
                                         <div className='row-content'>
                                             <form method='post'>
