@@ -4,16 +4,18 @@ import React from 'react';
 import { Link } from 'react-router';
 import PostListActions from '../actions/PostListActions';
 import AppStore from '../stores/AppStore';
+import AppActions from '../actions/AppActions'
 
 export default class article extends React.Component {
     constructor(props) {
         super(props);
         console.log(this.props);
-        this.state = { time: {}, tags: [], file: [], comments: [] };
+        this.onChange = this.onChange.bind(this)
+        this.state = { time: {}, tags: [], file: [], comments: [], user:{}};
     }
 
-    componentWillMount() {
-
+    componentWillUnmount() {
+        AppStore.unlisten(this.onChange);
     }
 
     componentDidUpdate() {
@@ -32,6 +34,12 @@ export default class article extends React.Component {
         }).fail((jqXhr) => {
             console.log(jqXhr);
         });
+        AppStore.listen(this.onChange)
+        AppActions.getSession()
+    }
+
+    onChange(state) {
+        this.setState(state);
     }
 
     render() {
@@ -135,7 +143,7 @@ export default class article extends React.Component {
                                 <div className='list-group'>
                                     <div className='list-group-item' style={{ paddingTop: '20px', paddingBottom: '20px' }}>
                                         <div className='row-picture'>
-                                            <img className='circle' src={AppStore.getState().user.head} alt='icon' />
+                                            <img className='circle' src={this.state.user.head} alt='icon' />
                                         </div>
                                         <div className='row-content'>
                                             <form method='post'>

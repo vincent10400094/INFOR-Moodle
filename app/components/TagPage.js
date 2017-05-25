@@ -40,7 +40,7 @@ export default class TagPage extends React.Component {
                 <div className='container'>
                     <div className='row'>
                         <div className='col-md-10 col-md-offset-1'>
-                            <h3 style={{marginBottom:'30px'}}>articles tagged with {this.state.tag}</h3>
+                            <h3 style={{marginBottom:'30px'}}>articles tagged with "{this.state.tag}"</h3>
                             {tagSerachResult}
                         </div>
                     </div>
