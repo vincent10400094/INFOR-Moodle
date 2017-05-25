@@ -9,7 +9,7 @@ import AppActions from '../actions/AppActions'
 export default class article extends React.Component {
     constructor(props) {
         super(props);
-        console.log(this.props);
+        // console.log(this.props);
         this.onChange = this.onChange.bind(this)
         this.state = { time: {}, tags: [], file: [], comments: [], session: { user: {} } };
     }
@@ -29,23 +29,23 @@ export default class article extends React.Component {
             url: `/api/u/${params.user}/${params.time}/${params.title}`,
             method: 'GET'
         }).done((data) => {
-            console.log('article data:', data);
+            // console.log('article data:', data);
             this.setState(data);
         }).fail((jqXhr) => {
-            console.log(jqXhr);
+            // console.log(jqXhr);
         });
         AppStore.listen(this.onChange)
         AppActions.getSession()
     }
 
     onChange(state) {
-        console.log('onchange jizz', state);
+        // console.log('onchange jizz', state);
         this.setState({ session: state });
     }
 
     render() {
         let params = this.props.params;
-        console.log('state: ', this.state);
+        // console.log('state: ', this.state);
 
         let tags = this.state.tags.map((tag, index) => {
             return (
@@ -54,7 +54,7 @@ export default class article extends React.Component {
         });
 
         var files = [];
-        console.log('atatch file', this.state.file.length)
+        // console.log('atatch file', this.state.file.length)
         if (this.state.file.length > 1) {
             files = this.state.file.map((file, index) => {
                 if (index) {
@@ -104,7 +104,7 @@ export default class article extends React.Component {
         }
 
         let state = this.state;
-        console.log('control panel', state)
+        // console.log('control panel', state)
 
         function controlPanel() {
             if (state.name == state.session.user.name) {

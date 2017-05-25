@@ -1,11 +1,12 @@
-// var fileSelect1 = document.getElementById("fileSelect1");
-// var fileElem1 = document.getElementById("fileElem1");
-// var fileSelect2 = document.getElementById("fileSelect2");
-// var fileElem2 = document.getElementById("fileElem2");
-// var pg = document.getElementById("progressBar");
-// var fs = document.getElementById("fileSelect");
+var fileSelect1 = document.getElementById("fileSelect1");
+var fileElem1 = document.getElementById("fileElem1");
+var fileSelect2 = document.getElementById("fileSelect2");
+var fileElem2 = document.getElementById("fileElem2");
+var pg = document.getElementById("progressBar");
+var fs = document.getElementById("fileSelect");
 // var close = document.getElementById("close");
 var count = 0;
+
 // function handleFiles1(files) {
 // 	console.log('1', files.length);
 // 	fileSelect1.innerText = files[0].name;
@@ -33,7 +34,6 @@ fileSelect2.addEventListener("click", (e) => {
 }, false);
 
 function handleFiles1(files) {
-	console.log('handle files')
 	console.log('1', files.length);
 	let file = files[0];
 	console.log(file.type);
@@ -42,7 +42,7 @@ function handleFiles1(files) {
 	$('#progressBar' + count.toString()).show();
 	$('#fileName').val($('#fileName').val() + ',' + file.name);
 	uploadFile(file, count.toString());
-	count++;
+	count ++;
 	// $('#progressBar').hide();
 	// $('#title').text('Succeed');
 	// $('#close').show();
@@ -63,7 +63,7 @@ function uploadFile(file, id) {
 			percentage = (e.loaded / e.total) * 100;
 			$('#percentage' + id).css('width', (percentage).toString() + '%');
 			console.log(percentage);
-			if (percentage == 100) {
+			if(percentage == 100){
 				$('#progressBar' + id).hide();
 				// console.log('hide: ',id);
 				$('#title' + id).text(file.name);
@@ -81,4 +81,5 @@ function uploadFile(file, id) {
 
 	console.log(formData);
 	xhr.send(formData);
+
 }

@@ -18,14 +18,14 @@ class LoginAction {
   }
 
   login(username, password) {
-    console.log('login post', username, password)
+    // console.log('login post', username, password)
     $.ajax({
       type: 'post',
       url: '/api/login',
       data: { username: username, password: password }
     })
       .done((data) => {
-        console.log('login back data', data)
+        // console.log('login back data', data)
         if (data.success) {
           this.clearInput();
           AppActions.getSession();
@@ -61,8 +61,11 @@ class LoginAction {
           data: { username: username, password: password, email: email }
         })
           .done((data) => {
-            console.log('signup data', data);
+            // console.log('signup data', data);
+            this.clearSignupInput();
+            AppActions.getSession();
             browserHistory.push('/')
+            toastr["success"]("<h3>註冊成功</h3>")
           })
           .fail((jqXhr) => {
             this.clearSignupInput()

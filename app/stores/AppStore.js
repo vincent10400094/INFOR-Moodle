@@ -12,7 +12,7 @@ class AppStore {
 
     onGetSessionSuccess(data) {
         this.user = data.user;
-        console.log('on get session success')
+        // console.log('on get session success')
     }
 
     onGetSessionFail(jqXhr) {

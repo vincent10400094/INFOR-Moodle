@@ -31,7 +31,7 @@ export default class ProfilePage extends React.Component {
             <section id='main'>
                 <div className='container'>
                     <div className='row'>
-                        <div className='col-md-8 col-md-offset-2 well' style={{marginTop:'15%', padding:'40px'}}>
+                        <div className='col-md-8 col-md-offset-2 well' style={{marginTop:'5%', padding:'40px'}}>
                             <div className='row'>
                                 <div className='col-md-4'>
                                     <img src={this.state.head} alt="profile photo" className="img-circle" style={{height: '200px', width: '200px'}}/>

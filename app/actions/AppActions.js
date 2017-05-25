@@ -11,7 +11,7 @@ class AppActions {
   getSession() {
     $.ajax({ url: '/api/getSession/'})
       .done((data) => {
-        console.log('session data: ', data);
+        // console.log('session data: ', data);
         this.getSessionSuccess(data);
       })
       .fail((jqXhr) => {

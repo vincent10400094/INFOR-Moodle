@@ -9,16 +9,31 @@ class PostStore {
         this.title = '';
         this.editor = '';
         this.tags = '';
+        this.files = '';
     }
 
     onUpdateTitle(event) {
-        console.log('update title', event.target.value)
+        // console.log('update title', event.target.value)
         this.title = event.target.value;
+        // console.log('state', this)
     }
 
     onUpdateTags(event) {
-        console.log('update tags', event.target.value)
+        // console.log('update tags', event.target.value)
         this.tags = event.target.value;
+    }
+
+    onUpdateFiles(fileName) {
+        // console.log('update files', fileName)
+        this.files = this.files + ',' + fileName;
+        // console.log('updated files:',this.files)
+    }
+
+    onRefresh() {
+        this.title = '';
+        this.editor = '';
+        this.tags = '';
+        this.files = '';
     }
 
 }

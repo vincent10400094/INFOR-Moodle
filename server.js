@@ -210,12 +210,13 @@ app.post('/api/post', function (req, res) {
   //console.log(currentUser);
   var tags = (req.body.tags + '#end').split(/\s*#/);
   // console.log(req.body);
-  var file = (typeof req.body.file !== 'undefined') ? req.body.fileName.split(',') : [];
+  console.log('files', req.body.file)
+  var files = (req.body.files.length) ? req.body.files.split(',') : [];
 
   tags.splice(0, 1);
   tags.splice(tags.length - 1, 1);
 
-  var post = new Post(currentUser.name, currentUser.head, req.body.title, tags, req.body.content, {}, file);
+  var post = new Post(currentUser.name, currentUser.head, req.body.title, tags, req.body.content, {}, files);
   post.save(function (err) {
     if (err) {
       // req.flash('error', err);
@@ -457,6 +458,20 @@ app.get('/auth/facebook/callback', passport.authenticate('facebook-login',
 app.get('/api/getSession', (req, res) => {
   res.send(req.session);
 })
+
+app.post('/uploadfile', function (req, res) {
+  //console.log(req.busboy);
+  var fstream;
+  req.pipe(req.busboy);
+  req.busboy.on('file', function (fieldname, file, filename) {
+    console.log("Uploading: " + filename);
+    fstream = fs.createWriteStream('./public/files/' + filename);
+    file.pipe(fstream);
+    fstream.on('close', function () {
+      res.end();
+    });
+  });
+});
 
 app.get('*', (req, res) => {
   match(

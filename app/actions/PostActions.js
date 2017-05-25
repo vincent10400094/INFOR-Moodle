@@ -6,13 +6,15 @@ class PostAction {
     constructor() {
         this.generateActions(
             'updateTitle',
-            'updateTags'
+            'updateTags',
+            'updateFiles',
+            'refresh'
         );
     }
 
-    handlePost(title, tags) {
+    handlePost(title, tags, files) {
         let content = CKEDITOR.instances.editor1.getData();
-        var data = { title: title, tags: tags, content: content }
+        var data = { title: title, tags: tags, content: content, files: files }
         console.log('on post data: ', data);
         $.ajax({
             type: 'post',

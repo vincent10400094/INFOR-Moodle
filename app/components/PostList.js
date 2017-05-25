@@ -16,7 +16,7 @@ export default class PostList extends React.Component {
     componentDidMount() {
         PostListStore.listen(this.onChange);
         PostListActions.getPost(this.props.page);
-        console.log('did');
+        // console.log('did');
     }
 
     componentWillUnmount() {
@@ -24,7 +24,7 @@ export default class PostList extends React.Component {
     }
 
     componentWillUpdate(nextProps, nextState) {
-        console.log('list will update')
+        // console.log('list will update')
         // console.log('this page:', this.props.page)
         // console.log('next page:', nextProps.page)
         PostListActions.getPost(nextProps.page);
@@ -34,8 +34,8 @@ export default class PostList extends React.Component {
         // console.log('next', nextState);
         // console.log('this', this.state);
         // console.log('should', nextState.page !== this.state.page)
-        console.log('next posts', nextState.posts)
-        console.log('this posts', this.state.posts)
+        // console.log('next posts', nextState.posts)
+        // console.log('this posts', this.state.posts)
         return !isEqual(nextState.posts, this.state.posts) || nextProps.page != this.props.page;
     }
 
@@ -51,6 +51,7 @@ export default class PostList extends React.Component {
 
         let postList = this.state.posts.map((post, index) => {
             let markup
+            let d = new Date(post.time.date)
             if (post.post) {
                 markup = post.post.split(/\s+</)[0];
             }
@@ -62,7 +63,7 @@ export default class PostList extends React.Component {
                             <Link to={link}>{post.title}</Link>
                         </span>
                     </h3>
-                    <p className='grey'>{post.time.date} — {post.name}</p>
+                    <p className='grey'>{d.toLocaleString()} — {post.name}</p>
                     <h4>
                         <div dangerouslySetInnerHTML={{ __html: markup }}></div>
                     </h4>
@@ -79,7 +80,7 @@ export default class PostList extends React.Component {
 
         if (total > 1) {
             let thisPage = parseInt(page);
-            console.log('thisPage:', thisPage, typeof thisPage);
+            // console.log('thisPage:', thisPage, typeof thisPage);
             if (page != 1) {
                 // let pre = '?p=' + (page - 1).toString();
                 footer.push(<li><Link to='/' query={{ p: (thisPage - 1) }} >Previous</Link></li>);

@@ -7,18 +7,22 @@ import Modal from 'react-bootstrap/lib/Modal';
 import PostActions from '../actions/PostActions';
 import PostStore from '../stores/PostStore';
 
+
 export default class Bar extends React.Component {
     constructor(props) {
         super(props);
+        this.handleFiles = this.handleFiles.bind(this)
         this.state = { newPost: false, newPaper: false };
         this.openPost = this.openPost.bind(this);
         this.closePost = this.closePost.bind(this);
         this.openPaper = this.openPaper.bind(this);
         this.closePaper = this.closePaper.bind(this);
+        this.state.count = 0;
     }
 
     closePost() {
         this.setState({ newPost: false });
+        PostActions.refresh();
     }
 
     openPost() {
@@ -34,26 +38,92 @@ export default class Bar extends React.Component {
     }
 
     componetDidMount() {
-
+        
     }
 
     componentDidUpdate() {
+        // PostActions.refresh();
         if (this.state.newPaper || this.state.newPost) {
             $.material.init();
         }
         if (this.state.newPost) {
             CKEDITOR.replace('editor1')
         }
+        this.state.count = 0;
+        this.init_elements();
         // console.log('bar update');
+    }
+
+    init_elements() {
+        $('#fileSelect1').click((event) => {
+            event.preventDefault()
+            // console.log('fileSelect1 click!', event.target.id)
+            $('#fileElem1').click()
+        })
+    }
+
+    uploadFile(file, id) {
+        // console.log('call upload')
+        var formData = new FormData();
+        formData.append('file', file);
+
+        var xhr = new XMLHttpRequest();
+        xhr.open('post', '/uploadfile', true);
+
+        let percentage;
+
+        xhr.upload.onprogress = function (e) {
+            if (e.lengthComputable) {
+                percentage = (e.loaded / e.total) * 100;
+                $('#percentage' + id).css('width', (percentage).toString() + '%');
+                // console.log(percentage);
+                if (percentage == 100) {
+                    $('#progressBar' + id).hide();
+                    // console.log('hide: ',id);
+                    $('#title' + id).text(file.name);
+                }
+            }
+        };
+
+        xhr.onerror = function (e) {
+            console.log('Error');
+            console.log(e);
+        };
+
+        xhr.onload = function () {
+            console.log(this.statusText);
+        };
+
+        console.log(formData);
+        xhr.send(formData);
     }
 
     handlePost(event) {
         event.preventDefault();
-        var data = PostStore.getState();
-        var title = data.title
-        var tags = data.tags;
-        console.log('handle post', this.state)
-        PostActions.handlePost(title, tags);
+        let data = PostStore.getState();
+        console.log('handlepost')
+        console.log('data:',data);
+        let title = data.title
+        let tags = data.tags;
+        let files = data.files;
+        // console.log('handle post', this.state)
+        PostActions.handlePost(title, tags, files);
+    }
+
+    handleFiles(event) {
+        // console.log('handle files')
+        // console.log(event)
+        // console.log($('#fileElem1')[0].files)
+        let files = $('#fileElem1')[0].files
+        let file = files[0];
+        console.log('this.state', this.state)
+        let count = this.state.count
+        $('#here').append('<p id="title' + count.toString() + '" style="font-size:15px;"></p><div id="progressBar' + count.toString() + '" style="display:none"><div class="bs-component"><div class="progress progress-striped active"><div class="progress-bar" style="width:0%" id="percentage' + count.toString() + '"></div></div></div></div>')
+        $('#title' + count.toString()).text('正在上傳 ' + file.name);
+        $('#progressBar' + count.toString()).show();
+        PostActions.updateFiles(file.name)
+        this.uploadFile(file, count.toString());
+        this.state.count++;
     }
 
     render() {
@@ -81,6 +151,24 @@ export default class Bar extends React.Component {
                             <div className='form-group'>
                                 <label>Tags</label>
                                 <input type='text' name='tags' className='form-control' placeholder='Use # to add tags' autoComplete='off' onChange={PostActions.updateTags}></input>
+                            </div>
+                            <div className='form-group'>
+                                <input type='text' name='fileName' id='fileName' style={{ display: 'none' }}></input>
+                                <p style={{ fontSize: '15px;' }}>附件</p>
+                                <div id='here'>
+                                    <p id='title' style={{ fontSize: '15px' }}></p>
+                                    <div id='progressBar' style={{ display: 'none' }}>
+                                        <div className='bs-component'>
+                                            <div className='progress progress-striped active'>
+                                                <div className='progress-bar' style={{ width: '0%' }} id='percentage'></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id='fileSelect'>
+                                    <input type='file' name='file' id='fileElem1' className='form-control' onChange={this.handleFiles} style={{ display: 'none' }}></input>
+                                    <a href='#' id='fileSelect1' className='btn' style={{ backgroundColor: '#ddd', textTransform: 'none', width: '100%' }}>+</a>
+                                </div>
                             </div>
                         </Modal.Body>
                         <Modal.Footer>

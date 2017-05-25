@@ -24,7 +24,7 @@ export default class Navbar extends React.Component {
     }
 
     render() {
-        console.log('nav state: ', this.state)
+        // console.log('nav state: ', this.state)
         let name
         if(this.state.user){
             name = this.state.user.name

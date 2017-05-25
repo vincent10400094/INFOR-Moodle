@@ -15,10 +15,10 @@ export default class history extends React.Component {
             url: 'api/history',
             method: 'GET'
         }).done((data) => {
-            console.log('history data:', data);
+            // console.log('history data:', data);
             this.setState({posts: data});
         }).fail((jqXhr) => {
-            console.log(jqXhr);
+            // console.log(jqXhr);
         });
     }
 

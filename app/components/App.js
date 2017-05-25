@@ -51,7 +51,15 @@ export default class App extends React.Component {
       }
     }
 
-    if (user) {
+    if (!user) {
+      return (
+        <div id='app-container'>
+          <div id='wrap'>
+            {content()}
+          </div>
+        </div>
+      );
+    } else {
       return (
         <div id='app-container'>
           <div id='wrap'>
@@ -61,15 +69,7 @@ export default class App extends React.Component {
           <Footer />
         </div>
       )
-    } else {
-      return (
-      <div id='app-container'>
-        <div id='wrap'>
-          {content()}
-        </div>
-      </div>
-    );
     }
-    
+
   }
 }
