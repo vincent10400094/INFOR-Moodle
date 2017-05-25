@@ -181,7 +181,7 @@ app.post('/api/edit/:name/:day/:title', function (req, res) {
 
   Post.update(currentUser.name, req.params.day, req.params.title, req.body.content, function (err) {
     if (err) {
-      return res.send({error: err});
+      return res.send({ error: err });
     }
     res.send('edit post success')
   });
@@ -233,7 +233,7 @@ app.post('/api/remove/:name/:day/:title', function (req, res) {
   Post.remove(currentUser.name, req.params.day, req.params.title, function (err) {
     if (err) {
       console.log('remove post failed')
-      return res.send({error: err});
+      return res.send({ error: err });
     }
     console.log("remove post success");
     res.send({ message: '刪除成功!' });
@@ -394,11 +394,46 @@ app.get('/api/search', function (req, res) {
   });
 });
 
-app.post('/api/login', passport.authenticate('local-login'), function (req, res) {
-  console.log('log in: ', req.body);
-  console.log("req.body.username: " + req.body.username);
-  console.log("req.body.password: " + req.body.password);
-  res.send({isLoggedIn: req.body.user !== NULL, errMessage: ''});
+app.post('/api/login', function (req, res, next) {
+  console.log(req.body);
+  passport.authenticate('local-login', function (err, user, info) {
+    console.log('err', err)
+    console.log('user', user)
+    console.log('info', info)
+    if (err) {
+      return res.status(400).json({
+        success: false,
+        message: err
+      });
+    }
+    if (!user) {
+      return res.status(400).json({
+        success: false,
+        message: err
+      });
+    }
+    req.logIn(user, function (err) {
+      if (err) { return next(err); }
+      return res.json({
+        success: true,
+        message: 'Login Success'
+      });
+    });
+  })(req, res, next);
+});
+
+// app.post('/api/login', passport.authenticate('local-login', function (err, user, info) {
+//   // console.log('log in: ', req.body);
+//   // console.log("req.body.username: " + req.body.username);
+//   // console.log("req.body.password: " + req.body.password);
+//   console.log('err', err);
+//   console.log('user', user)
+//   console.log('info', info)
+//   res.send({ isLoggedIn: req.body.user !== NULL, errMessage: '' });
+// }));
+
+app.post('/api/signup', passport.authenticate('local-signup'), (req, res) => {
+  res.send('sign up success')
 });
 
 app.get('/logout', function (req, res) {

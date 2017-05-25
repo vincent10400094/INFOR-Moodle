@@ -4,6 +4,7 @@ import React from 'react';
 import Navbar from './Navbar';
 import Footer from './Footer';
 import Login from './Login'
+import Signup from './Signup'
 import AppActions from '../actions/AppActions';
 import AppStore from '../stores/AppStore'
 import { isEqual } from 'underscore'
@@ -34,13 +35,14 @@ export default class App extends React.Component {
   }
 
   render() {
-    console.log('app props: ', this.props);
+    // console.log('app props: ', this.props);
     let user = this.state.user
-    let children = this.props.children
+    let props = this.props
+
     function content() {
-      if (user) {
+      if (props.location.pathname == '/signup') {
         return (
-          children
+          <Signup />
         )
       } else {
         return (
@@ -48,14 +50,26 @@ export default class App extends React.Component {
         )
       }
     }
-    return (
+
+    if (user) {
+      return (
+        <div id='app-container'>
+          <div id='wrap'>
+            <Navbar />
+            {props.children}
+          </div>
+          <Footer />
+        </div>
+      )
+    } else {
+      return (
       <div id='app-container'>
         <div id='wrap'>
-          <Navbar user={this.state.user} />
           {content()}
         </div>
-        <Footer />
       </div>
     );
+    }
+    
   }
 }

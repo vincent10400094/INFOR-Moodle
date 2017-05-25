@@ -1,6 +1,6 @@
 import alt from '../alt';
 
-class SessionActions {
+class AppActions {
   constructor() {
     this.generateActions(
       'getSessionSuccess',
@@ -21,4 +21,4 @@ class SessionActions {
 
 }
 
-export default alt.createActions(SessionActions);
+export default alt.createActions(AppActions);

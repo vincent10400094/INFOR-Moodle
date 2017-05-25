@@ -24,26 +24,11 @@ export default class Navbar extends React.Component {
     }
 
     render() {
-        var user = this.state.user;
-        function userStatus() {
-            if (user) {
-                return (
-                    <ul className='nav navbar-nav navbar-right'>
-                        <li><Link to={`/user/${user.name}`}>Welcome, {user.name}</Link></li>
-                        <li ><a href='/logout'>logout <span class='badge'></span></a></li>
-                    </ul>
-                );
-            } else {
-                return (
-                    <ul className='nav navbar-nav navbar-right'>
-                        <li>
-                            <Link to='/login'>login</Link>
-                        </li>
-                    </ul>
-                )
-            }
-        };
-
+        console.log('nav state: ', this.state)
+        let name
+        if(this.state.user){
+            name = this.state.user.name
+        }
         return (
             <nav className='navbar navbar-default'>
                 <div className='container'>
@@ -70,7 +55,10 @@ export default class Navbar extends React.Component {
                                 <input type='text' name='keyword' className='form-control' placeholder='Search' autoComplete='off'></input>
                             </div>
                         </form>
-                        {userStatus()}
+                        <ul className='nav navbar-nav navbar-right'>
+                            <li><Link to={`/user/${name}`}>Welcome, {name}</Link></li>
+                            <li ><a href='/logout'>logout <span class='badge'></span></a></li>
+                        </ul>
                     </div>
                 </div>
             </nav>
