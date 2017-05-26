@@ -10,8 +10,11 @@ export default class article extends React.Component {
     constructor(props) {
         super(props);
         // console.log(this.props);
+        this.submit = this.submit.bind(this)
         this.onChange = this.onChange.bind(this)
         this.state = { time: {}, tags: [], file: [], comments: [], session: { user: {} } };
+        this.componentDidMount = this.componentDidMount.bind(this)
+        this.handleCommentChange = this.handleCommentChange.bind(this)
     }
 
     componentWillUnmount() {
@@ -36,11 +39,46 @@ export default class article extends React.Component {
         });
         AppStore.listen(this.onChange)
         AppActions.getSession()
+
+        console.log('mount', $('textarea'))
+        $('textarea').keydown(function (event) {
+            if (event.keyCode == 13) {
+                $('#submitButton').click()
+                return false
+            }
+            // console.log('code', event.keyCode)
+        })
     }
 
     onChange(state) {
         // console.log('onchange jizz', state);
         this.setState({ session: state });
+    }
+
+    submit(e) {
+        e.preventDefault()
+        let params = this.props.params
+        let content = this.state.commentTMP
+        let comments = this.state.comments
+        this.state.commentTMP = ''
+        console.log('handle comment')
+        $.ajax({
+            url: `/api/comment/${params.user}/${params.time}/${params.title}`,
+            method: 'POST',
+            data: { content: content }
+        }).done((data) => {
+            // console.log('article data:', data);
+            comments.push(data.comment)
+            this.setState({comments: comments})
+        }).fail((jqXhr) => {
+            console.log('fail', jqXhr)
+            // console.log(jqXhr);
+        });
+    }
+
+    handleCommentChange(event) {
+        console.log('comment change', event.target.value)
+        this.state.commentTMP = event.target.value
     }
 
     render() {
@@ -118,7 +156,10 @@ export default class article extends React.Component {
             }
             else {
                 return (
-                    <span className='grey' style={{ float: 'right', marginBottom: '5px' }}>瀏覽次數：{state.pv}</span>
+                    <div>
+                        <span> <a className='edit' >轉載</a></span>
+                        <span className='grey' style={{ float: 'right', marginBottom: '5px' }}>瀏覽次數：{state.pv}</span>
+                    </div>
                 )
             }
         }
@@ -160,17 +201,18 @@ export default class article extends React.Component {
                         <div className='col-md-10 col-md-offset-1'>
                             <div className='well' style={{ paddingBottom: '10px', paddingTop: '10px' }}>
                                 <div className='list-group'>
+                                    {comments}
                                     <div className='list-group-item' style={{ paddingTop: '20px', paddingBottom: '20px' }}>
                                         <div className='row-picture'>
                                             <img className='circle' src={this.state.session.user.head} alt='icon' />
                                         </div>
                                         <div className='row-content'>
-                                            <form method='post'>
-                                                <textarea className='form-control' rows='1' id='textArea' name='content' placeholder='Leave a comment'></textarea>
+                                            <form onSubmit={this.submit}>
+                                                <textarea className='form-control' rows='1' id='textArea' name='content' placeholder='Leave a comment' value={this.state.commentTMP} onChange={this.handleCommentChange}></textarea>
+                                                <button type="submit" id='submitButton' style={{ display: 'none' }}>Submit</button>
                                             </form>
                                         </div>
                                     </div>
-                                    {comments}
                                 </div>
                             </div>
                         </div>

@@ -22,11 +22,11 @@ export default class Bar extends React.Component {
 
     closePost() {
         this.setState({ newPost: false });
-        PostActions.refresh();
     }
 
     openPost() {
         this.setState({ newPost: true });
+        PostActions.refresh();
     }
 
     closePaper() {

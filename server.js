@@ -162,15 +162,16 @@ app.post('/api/comment/:name/:day/:title', function (req, res) {
     star: 0,
     starname: []
   };
+  console.log('comment:', comment)
   var newComment = new Comment(req.params.name, req.params.day, req.params.title, comment);
 
   newComment.save(function (err) {
     if (err) {
-      req.flash('error', err);
-      return res.redirect('back');
+      console.log('comment error', err)
+      return res.status(500)
     }
-    req.flash('success', '留言成功');
-
+    console.log('add comment success')
+    res.send(newComment);
   });
   var url = '/u/' + req.params.name + '/' + req.params.day + '/' + req.params.title;
 });
