@@ -3,6 +3,7 @@
 # dependencies
 node_modules
 credentials.js
+setting.js
 *.log
 *.pdf
 *.txt
@@ -14,4 +15,3 @@ bower_components
 public/js/bundle.js
 public/js/vendor.js
 babel_cache
-setting.js

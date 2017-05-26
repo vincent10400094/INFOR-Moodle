@@ -39,8 +39,7 @@ export default class article extends React.Component {
         });
         AppStore.listen(this.onChange)
         AppActions.getSession()
-
-        console.log('mount', $('textarea'))
+        
         $('textarea').keydown(function (event) {
             if (event.keyCode == 13) {
                 $('#submitButton').click()
@@ -60,8 +59,9 @@ export default class article extends React.Component {
         let params = this.props.params
         let content = this.state.commentTMP
         let comments = this.state.comments
+        $('textarea').val('')
         this.state.commentTMP = ''
-        console.log('handle comment')
+        // console.log('handle comment')
         $.ajax({
             url: `/api/comment/${params.user}/${params.time}/${params.title}`,
             method: 'POST',
@@ -77,8 +77,9 @@ export default class article extends React.Component {
     }
 
     handleCommentChange(event) {
-        console.log('comment change', event.target.value)
+        // console.log('comment change', event.target.value)
         this.state.commentTMP = event.target.value
+        // console.log('state', this.state)
     }
 
     render() {
@@ -208,7 +209,7 @@ export default class article extends React.Component {
                                         </div>
                                         <div className='row-content'>
                                             <form onSubmit={this.submit}>
-                                                <textarea className='form-control' rows='1' id='textArea' name='content' placeholder='Leave a comment' value={this.state.commentTMP} onChange={this.handleCommentChange}></textarea>
+                                                <textarea className='form-control' rows='1' id='textArea' name='content' placeholder='Leave a comment' onChange={this.handleCommentChange}></textarea>
                                                 <button type="submit" id='submitButton' style={{ display: 'none' }}>Submit</button>
                                             </form>
                                         </div>
