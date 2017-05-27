@@ -14,6 +14,7 @@ import Search from './components/Search';
 import TagPage from './components/TagPage';
 import EditPost from './components/EditPost'
 import Test from './components/Test'
+import Rank from './components/Rank'
 
 const routes = (
   <Route component={App}>
@@ -24,6 +25,7 @@ const routes = (
     <Route path='search' component={Search} />
     <Route path='tags/:tag' component={TagPage} />
     <Route path='test' component={Test}></Route>
+    <Route path='rank/:title' component={Rank}></Route>
     <Route path='user/:user' component={ProfilePage} />
     <Route path='u/:user/:time/:title' component={Article} />
     <Route path='u/:user/:time/:title/edit' component={EditPost} />
