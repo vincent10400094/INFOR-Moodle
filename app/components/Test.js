@@ -29,10 +29,10 @@ export default class Test extends React.Component {
         console.log('state', this.state)
         let testList = this.state.docs.map((doc, index) => {
             return (
-                <tr className='success'>
+                <tr>
                     <th><span>{index + 1}</span></th>
                     <td><Link to={`/Ansform/${doc.name}`}>{doc.name}</Link></td>
-                    <td><Link to='/user/<%= doc.username %>'>{doc.username}</Link></td>
+                    <td><Link to={`/user/${doc.username}`}>{doc.username}</Link></td>
                     <td><Link to={`/rank/${doc.name}`}> 排行榜 </Link></td>
                 </tr>
             )
@@ -43,7 +43,7 @@ export default class Test extends React.Component {
                 <div className='container'>
                     <div className='row'>
                         <div className='col-md-10 col-md-offset-1'>
-                            <table className='table table-striped table-hover '>
+                            <table className='table table-striped'>
                                 <thead>
                                     <tr>
                                         <th>#</th>
