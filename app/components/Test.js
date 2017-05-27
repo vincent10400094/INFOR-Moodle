@@ -32,17 +32,17 @@ export default class Test extends React.Component {
                 <tr className='success'>
                     <td><span className='btn'>{index + 1}</span></td>
                     <td>
-                        <Link to='/Linknsform/<%= doc.name %>' className='btn btn-primary'>
+                        <Link to={`/Ansform/${doc.name}`}>
                             {doc.name}
                         </Link>
                     </td>
                     <td>
-                        <Link to='/user/<%= doc.username %>' className='btn btn-primary'>
+                        <Link to='/user/<%= doc.username %>'>
                             {doc.username}
                         </Link>
                     </td>
 
-                    <td><Link to='/rank/<%= doc.name %>' className='btn btn-raised btn-primary btn-xs'> 排行榜 </Link></td>
+                    <td><Link to={`/rank/${doc.name}`}> 排行榜 </Link></td>
                 </tr>
             )
         })
