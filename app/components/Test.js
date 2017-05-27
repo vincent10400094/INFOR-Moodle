@@ -30,17 +30,9 @@ export default class Test extends React.Component {
         let testList = this.state.docs.map((doc, index) => {
             return (
                 <tr className='success'>
-                    <td><span>{index + 1}</span></td>
-                    <td>
-                        <Link to={`/Ansform/${doc.name}`}>
-                            {doc.name}
-                        </Link>
-                    </td>
-                    <td>
-                        <Link to='/user/<%= doc.username %>'>
-                            {doc.username}
-                        </Link>
-                    </td>
+                    <th><span>{index + 1}</span></th>
+                    <td><Link to={`/Ansform/${doc.name}`}>{doc.name}</Link></td>
+                    <td><Link to='/user/<%= doc.username %>'>{doc.username}</Link></td>
                     <td><Link to={`/rank/${doc.name}`}> 排行榜 </Link></td>
                 </tr>
             )
@@ -52,12 +44,16 @@ export default class Test extends React.Component {
                     <div className='row'>
                         <div className='col-md-10 col-md-offset-1'>
                             <table className='table table-striped table-hover '>
-                                <tr>
-                                    <th>#</th>
-                                    <th>Title</th>
-                                    <th>出題者</th>
-                                </tr>
-                                {testList}
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Title</th>
+                                        <th>出題者</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {testList}
+                                </tbody>
                             </table>
                         </div>
                     </div>
