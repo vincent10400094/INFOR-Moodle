@@ -82,8 +82,13 @@ export default class Bar extends React.Component {
                     $('#progressBar' + id).hide();
                     // console.log('hide: ',id);
                     $('#title' + id).text(file.name);
+                    toastr['success'](`<h3>${file.name}上傳成功</h3>`)
                 }
             }
+        };
+
+        xhr.upload.onerror = function (e) {
+            toastr['error']('<h3>上傳時發生錯誤</h3>')
         };
 
         xhr.onerror = function (e) {
