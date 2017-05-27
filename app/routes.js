@@ -1,19 +1,21 @@
 'use strict'
 
-import React from 'react';
-import { Route, IndexRoute } from 'react-router';
-import App from './components/App';
-import Home from './components/Home';
-import Login from './components/Login';
-import Signin from './components/Signup';
-import NotFoundPage from './components/404';
-import ProfilePage from './components/ProfilePage';
-import Article from './components/Article';
-import history from './components/history';
-import Search from './components/Search';
-import TagPage from './components/TagPage';
+import React from 'react'
+import { Route, IndexRoute } from 'react-router'
+import App from './components/App'
+import Home from './components/Home'
+import Login from './components/Login'
+import Signin from './components/Signup'
+import NotFoundPage from './components/404'
+import ProfilePage from './components/ProfilePage'
+import Article from './components/Article'
+import history from './components/history'
+import Search from './components/Search'
+import TagPage from './components/TagPage'
 import EditPost from './components/EditPost'
 import Test from './components/Test'
+import Rank from './components/Rank'
+import AnswerForm from './components/AnswerForm'
 
 const routes = (
   <Route component={App}>
@@ -24,12 +26,14 @@ const routes = (
     <Route path='search' component={Search} />
     <Route path='tags/:tag' component={TagPage} />
     <Route path='test' component={Test}></Route>
+    <Route path='Ansform/:title' component={AnswerForm}></Route>
+    <Route path='rank/:title' component={Rank}></Route>
     <Route path='user/:user' component={ProfilePage} />
     <Route path='u/:user/:time/:title' component={Article} />
     <Route path='u/:user/:time/:title/edit' component={EditPost} />
     <Route path='remove/:user/:time/:title' component={Article} />
     <Route path='*' component={NotFoundPage} />
   </Route>
-);
+)
 
-export default routes;
+export default routes

@@ -467,6 +467,7 @@ app.post('/uploadfile', function (req, res) {
   })
 })
 
+//題目列表
 app.get('/api/test', function (req, res) {
   Txt.getList({}, function (err, docs) {
     if (err) {
@@ -477,6 +478,28 @@ app.get('/api/test', function (req, res) {
     res.send(docs)
   })
 })
+
+//答題介面
+app.get('/api/test/:txtname', function(req, res) {
+  Txt.get(req.params.txtname, function(err, doc) {
+    if (err) {
+      console.log("err: " + err);
+      return res.status('/');
+    }
+    //console.log("doc: " + doc);
+    res.send(doc)
+  });
+});
+
+app.get('/api/rank/:title', function(req, res) {
+  Txt.Rankget(req.params.title, function(err, userrank, doc) {
+    if (err) {
+      return res.status(500);
+    }
+    //console.log(doc);
+    res.send(userrank)
+  });
+});
 
 app.get('*', (req, res) => {
   match(

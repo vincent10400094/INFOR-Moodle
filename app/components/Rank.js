@@ -3,22 +3,23 @@
 import React from 'react';
 import { Link } from 'react-router';
 
-export default class Test extends React.Component {
+export default class Rank extends React.Component {
     constructor(props) {
         super(props);
         this.componentDidMount = this.componentDidMount.bind(this)
-        this.state = { docs: [] }
+        this.state = { rank: [] }
     }
 
     componentDidMount() {
         // console.log('tag:', this.props.params.tag)
-        document.title = '題目列表'
+        document.title = '排行榜'
+        let title = this.props.params.title
         $.ajax({
-            url: '/api/test/',
+            url: '/api/rank/' + title,
             method: 'GET'
         }).done((data) => {
-            console.log('test data: ', data)
-            this.setState({ docs: data })
+            console.log('rank data: ', data)
+            this.setState({ rank: data })
         }).fail((jqXhr) => {
             console.log(jqXhr);
             toastr['error']('<h3>發生錯誤</h3>')
@@ -28,13 +29,13 @@ export default class Test extends React.Component {
     render() {
 
         console.log('state', this.state)
-        let testList = this.state.docs.map((doc, index) => {
+        let rankList = this.state.rank.map((data, index) => {
             return (
                 <tr>
-                    <th><span>{index + 1}</span></th>
-                    <td><Link to={`/Ansform/${doc.name}`}>{doc.name}</Link></td>
-                    <td><Link to={`/user/${doc.username}`}>{doc.username}</Link></td>
-                    <td><Link to={`/rank/${doc.name}`}> 排行榜 </Link></td>
+                    <th>{index + 1}</th>
+                    <td><Link to={`/user/${data.username}`}>{data.username}</Link></td>
+                    <td>{data.correct / data.testsum}</td>
+                    <td>{data.day}</td>
                 </tr>
             )
         })
@@ -44,16 +45,18 @@ export default class Test extends React.Component {
                 <div className='container'>
                     <div className='row'>
                         <div className='col-md-10 col-md-offset-1'>
+                            <h3>Rank</h3>
                             <table className='table table-striped'>
                                 <thead>
                                     <tr>
                                         <th>#</th>
-                                        <th>Title</th>
-                                        <th>出題者</th>
+                                        <th>使用者</th>
+                                        <th>答對數</th>
+                                        <th>時間</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {testList}
+                                    {rankList}
                                 </tbody>
                             </table>
                         </div>
