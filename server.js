@@ -467,6 +467,17 @@ app.post('/uploadfile', function (req, res) {
   })
 })
 
+app.get('/api/test', function (req, res) {
+  Txt.getList({}, function (err, docs) {
+    if (err) {
+      console.log('err:', err)
+      return res.status(500)
+    }
+    console.log('docs: ', docs)
+    res.send(docs)
+  })
+})
+
 app.get('*', (req, res) => {
   match(
     { routes, location: req.url },

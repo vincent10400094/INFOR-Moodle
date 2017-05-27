@@ -169,7 +169,6 @@ export default class article extends React.Component {
             comments = this.state.comments.map((comment, index) => {
                 return (
                     <div>
-                        <hr style={{ margin: '1px' }} />
                         <div className='list-group-item' style={{ paddingTop: '20px', paddingBottom: '20px' }}>
                             <div className='row-picture'>
                                 <img className='circle' src={comment.head} alt='icon' />
@@ -180,6 +179,7 @@ export default class article extends React.Component {
                                 <small className='grey' style={{ paddingLeft: '5px' }}>{comment.time}</small>
                             </div>
                         </div>
+                         <hr style={{ margin: '1px' }} />
                     </div>
                 )
             })

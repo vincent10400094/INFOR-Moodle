@@ -623,6 +623,7 @@ router.get('/test', function (req, res) {
     })
   })
 })
+
 router.get('/test/:txtname', checkLogin)
 router.get('/test/:txtname', function (req, res) {
 
