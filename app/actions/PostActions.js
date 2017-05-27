@@ -21,15 +21,17 @@ class PostAction {
             url: '/api/post',
             data: data
         })
-            .done((data) => {
-                console.log('post success', data);
-                // this.clearInput();
-                PostListActions.getPost();
-            })
-            .fail((jqXhr) => {
-                // this.clearInput()
-                browserHistory.push('/')
-            });
+        .done((data) => {
+            // console.log('post success', data);
+            // this.clearInput();
+            toastr["success"](`<h3>發布成功</h3>`)
+            PostListActions.getPost();
+        })
+        .fail((jqXhr) => {
+            // this.clearInput()
+            toastr["error"](`<h3>發生錯誤</h3>`)
+            browserHistory.push('/')
+        });
     }
 }
 

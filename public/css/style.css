@@ -19,6 +19,10 @@ body, html {
     height: 100%;
 }
 
+a, a:active, a:visited, a:focus {
+    text-decoration:none;
+}
+
 #custom-btn {
     background-color: #fff!important;
     color: #777;

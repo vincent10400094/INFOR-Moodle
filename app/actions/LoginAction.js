@@ -80,6 +80,7 @@ class LoginAction {
         toastr.options = {
           "preventDuplicates": true,
         }
+        $('#confirmPassword').focus()
         toastr["error"]("<h3>密碼與確認密碼不相符</h3>")
       }
     } else {

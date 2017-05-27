@@ -1,45 +1,47 @@
 'use strict'
 
-import React from 'react';
-import { Link } from 'react-router';
-import PostListActions from '../actions/PostListActions';
-import AppStore from '../stores/AppStore';
+import React from 'react'
+import { Link } from 'react-router'
+import PostListActions from '../actions/PostListActions'
+import AppStore from '../stores/AppStore'
 import AppActions from '../actions/AppActions'
 
 export default class article extends React.Component {
     constructor(props) {
-        super(props);
-        // console.log(this.props);
+        super(props)
+        // console.log(this.props)
         this.submit = this.submit.bind(this)
         this.onChange = this.onChange.bind(this)
-        this.state = { time: {}, tags: [], file: [], comments: [], session: { user: {} } };
+        this.state = { time: {}, tags: [], file: [], comments: [], session: { user: {} }, starname: [] }
         this.componentDidMount = this.componentDidMount.bind(this)
         this.handleCommentChange = this.handleCommentChange.bind(this)
+        this.like = this.like.bind(this)
     }
 
     componentWillUnmount() {
-        AppStore.unlisten(this.onChange);
+        AppStore.unlisten(this.onChange)
     }
 
     componentDidUpdate() {
-        $.material.init();
+        // console.log('state', this.state)
+        $.material.init()
     }
 
     componentDidMount() {
-        let params = this.props.params;
-        document.title = this.props.params.title;
+        let params = this.props.params
+        document.title = this.props.params.title
         $.ajax({
             url: `/api/u/${params.user}/${params.time}/${params.title}`,
             method: 'GET'
         }).done((data) => {
-            // console.log('article data:', data);
-            this.setState(data);
+            // console.log('article data:', data)
+            this.setState(data)
         }).fail((jqXhr) => {
-            // console.log(jqXhr);
-        });
+            // console.log(jqXhr)
+        })
         AppStore.listen(this.onChange)
         AppActions.getSession()
-        
+
         $('textarea').keydown(function (event) {
             if (event.keyCode == 13) {
                 $('#submitButton').click()
@@ -50,8 +52,8 @@ export default class article extends React.Component {
     }
 
     onChange(state) {
-        // console.log('onchange jizz', state);
-        this.setState({ session: state });
+        // console.log('onchange jizz', state)
+        this.setState({ session: state })
     }
 
     submit(e) {
@@ -67,13 +69,13 @@ export default class article extends React.Component {
             method: 'POST',
             data: { content: content }
         }).done((data) => {
-            // console.log('article data:', data);
+            // console.log('article data:', data)
             comments.push(data.comment)
-            this.setState({comments: comments})
+            this.setState({ comments: comments })
         }).fail((jqXhr) => {
             console.log('fail', jqXhr)
-            // console.log(jqXhr);
-        });
+            // console.log(jqXhr)
+        })
     }
 
     handleCommentChange(event) {
@@ -82,17 +84,58 @@ export default class article extends React.Component {
         // console.log('state', this.state)
     }
 
+    like(event) {
+        event.preventDefault()
+        let inc = this.state.starname.indexOf(this.state.session.user.name)
+        if (inc == -1) {
+            inc = 1
+        } else {
+            inc = -1
+        }
+        let data = {
+            postname: this.state.name,
+            day: this.state.time.day,
+            title: this.state.title,
+            username: this.state.session.user.name,
+            inc: inc
+        }
+        // console.log('inc', inc)
+        // console.log('data', data)
+        let starname = this.state.starname
+        let currentUser = this.state.session.user.name
+        $.ajax({
+            url: '/api/post/star/',
+            method: 'POST',
+            data: data
+        }).done((data) => {
+            // console.log('article data:', data)
+            // console.log('data', data)
+            if(data) {
+                // console.log('push')
+                starname.push(currentUser)
+            } else {
+                // console.log('delete')
+                delete starname[starname.indexOf(currentUser)]
+            }
+            // console.log('starname', starname)
+            this.setState({ starname: starname })
+        }).fail((jqXhr) => {
+            toastr["error"]("<h3>發生錯誤</h3>")
+            // console.log(jqXhr)
+        })
+    }
+
     render() {
-        let params = this.props.params;
-        // console.log('state: ', this.state);
+        let params = this.props.params
+        // console.log('state: ', this.state)
 
         let tags = this.state.tags.map((tag, index) => {
             return (
                 <b><span><Link to={`/tags/${tag}`} style={{ paddingRight: '5px' }}>#{tag}</Link></span></b>
-            );
-        });
+            )
+        })
 
-        var files = [];
+        var files = []
         // console.log('atatch file', this.state.file.length)
         if (this.state.file.length > 1) {
             files = this.state.file.map((file, index) => {
@@ -106,21 +149,21 @@ export default class article extends React.Component {
                                 {file}
                             </div>
                             <div className='media-right media-middle'>
-                                <a href={`/files/${file}`} download className='btn btn-default glyphicon glyphicon-download-alt file-btn'></a>
-                                <a href={`/files/${file}`} className='btn btn-default fa fa-eye file-btn' target='_blank'></a>
+                                <a href={`/files/${file}`} download className='btn btn-default glyphicon glyphicon-download-alt file-btn' style={{margin: '1px'}}></a>
+                                <a href={`/files/${file}`} className='btn btn-default fa fa-eye file-btn' target='_blank' style={{margin: '1px'}}></a>
                             </div>
                             <br />
                         </div>
-                    );
+                    )
                 }
-            });
+            })
         } else {
             files.push(
                 <p>無附件</p>
-            );
+            )
         }
 
-        var comments = [];
+        var comments = []
 
         if (this.state.comments.length) {
             comments = this.state.comments.map((comment, index) => {
@@ -138,11 +181,12 @@ export default class article extends React.Component {
                             </div>
                         </div>
                     </div>
-                );
-            });
+                )
+            })
         }
 
-        let state = this.state;
+        let state = this.state
+        // console.log('state', state)
         // console.log('control panel', state)
 
         function controlPanel() {
@@ -150,7 +194,7 @@ export default class article extends React.Component {
                 return (
                     <div>
                         <span> <Link className='edit' to={`/u/${params.user}/${params.time}/${params.title}/edit`}>編輯</Link></span>
-                        <span> <a className='remove' onClick={PostListActions.removePost.bind(state, state.name, state.time.day, state.title)} >刪除</a></span>
+                        <span> <Link className='remove' to='#' onClick={PostListActions.removePost.bind(state, state.name, state.time.day, state.title, state.page)} >刪除</Link></span>
                         <span className='grey' style={{ float: 'right', marginBottom: '5px' }}>瀏覽次數：{state.pv}</span>
                     </div>
                 )
@@ -158,14 +202,30 @@ export default class article extends React.Component {
             else {
                 return (
                     <div>
-                        <span> <a className='edit' >轉載</a></span>
+                        <span> <Link className='reprint' to='#' onClick={PostListActions.reprintPost.bind(state, state.name, state.time.day, state.title)}>轉載</Link></span>
                         <span className='grey' style={{ float: 'right', marginBottom: '5px' }}>瀏覽次數：{state.pv}</span>
                     </div>
                 )
             }
         }
 
-        let d = new Date(this.state.time.date);
+        let d = new Date(this.state.time.date)
+
+        let like = this.like
+
+        function likeButton(like) {
+            if (state.starname) {
+                if (state.starname.indexOf(state.session.user.name) == -1) {
+                    return (
+                        <Link id='fakeButton' to='#' onClick={like}>Like</Link>
+                    )
+                } else {
+                    return (
+                        <Link id='fakeButton' to='#' onClick={like}>Unlike</Link>
+                    )
+                }
+            }
+        }
 
         return (
             <section id='main'>
@@ -182,7 +242,7 @@ export default class article extends React.Component {
                                 <div dangerouslySetInnerHTML={{ __html: this.state.post }}></div>
                                 {tags}
                                 <hr />
-                                <Link id='fakeButton'>Like</Link>
+                                {likeButton(this.like)}
                             </div>
                         </div>
                         <div className='col-md-5 col-md-offset-1'>
@@ -220,6 +280,6 @@ export default class article extends React.Component {
                     </div>
                 </div>
             </section>
-        );
+        )
     }
 }

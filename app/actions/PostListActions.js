@@ -31,8 +31,10 @@ class PostListActions {
         //console.log('data: ',data);
         // console.log('remove post success')
         browserHistory.push('/')
+        toastr["success"]("<h3>刪除成功</h3>")
       })
       .fail((jqXhr) => {
+        toastr["error"]("<h3>發生錯誤</h3>")
         // console.log('remove post fail')
       });
   }
@@ -49,9 +51,29 @@ class PostListActions {
         //console.log('data: ',data);
         // console.log('edit post success')
         browserHistory.push(`/u/${name}/${day}/${title}`)
+        toastr["success"]("<h3>文章編輯成功</h3>")
       })
       .fail((jqXhr) => {
+        toastr["error"]("<h3>發生錯誤</h3>")
         // console.log('edit post fail')
+      });
+  }
+
+  reprintPost(name, day, title, page) {
+    $.ajax({
+      type: 'post',
+      url: `/api/reprint/${name}/${day}/${title}`
+    })
+      .done((data) => {
+        //console.log('data: ',data);
+        // console.log('remove post success')
+        browserHistory.push('/')
+        this.getPost(page)
+        toastr["success"]("<h3>轉載成功</h3>")
+      })
+      .fail((jqXhr) => {
+        toastr["error"]("<h3>發生錯誤</h3>")
+        // console.log('remove post fail')
       });
   }
 

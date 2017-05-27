@@ -18,6 +18,7 @@ export default class Bar extends React.Component {
         this.openPaper = this.openPaper.bind(this);
         this.closePaper = this.closePaper.bind(this);
         this.state.count = 0;
+        this.handlePost = this.handlePost.bind(this)
     }
 
     closePost() {
@@ -38,7 +39,7 @@ export default class Bar extends React.Component {
     }
 
     componetDidMount() {
-        
+
     }
 
     componentDidUpdate() {
@@ -100,14 +101,20 @@ export default class Bar extends React.Component {
 
     handlePost(event) {
         event.preventDefault();
-        let data = PostStore.getState();
-        console.log('handlepost')
-        console.log('data:',data);
-        let title = data.title
-        let tags = data.tags;
-        let files = data.files;
-        // console.log('handle post', this.state)
-        PostActions.handlePost(title, tags, files);
+        if (PostStore.getState().title) {
+            let data = PostStore.getState();
+            console.log('handlepost')
+            console.log('data:', data);
+            let title = data.title
+            let tags = data.tags;
+            let files = data.files;
+            // console.log('handle post', this.state)
+            PostActions.handlePost(title, tags, files);
+            this.closePost()
+        }else {
+            toastr["error"](`<h3>標題不得為空</h3>`)
+        }
+
     }
 
     handleFiles(event) {
@@ -173,7 +180,7 @@ export default class Bar extends React.Component {
                         </Modal.Body>
                         <Modal.Footer>
                             <Button onClick={this.closePost} >Cancel</Button>
-                            <Button type='submit' className='btn btn-primary' onClick={this.closePost}>Post</Button>
+                            <Button type='submit' className='btn btn-primary'>Post</Button>
                         </Modal.Footer>
                     </form>
                 </Modal>
