@@ -18,7 +18,7 @@ import Comment from './models/comment'
 import Pdf from './pdfreader/parse'
 
 //import session from 'cookie-session'
-var MongoStore = require('connect-mongo')(session)
+const MongoStore = require('connect-mongo')(session)
 // import hbs from 'express-handlebars'  //view engine
 
 import index from './app/routes/index'
@@ -29,7 +29,7 @@ import fs from 'fs'
 import _ from 'underscore'
 import skipMap from 'skip-map'
 
-// import debug from 'debug'('blog:server'
+const debug = require('debug')('blog:server');
 import http from 'http'
 
 import React from 'react'
@@ -62,7 +62,7 @@ app.use(flash())
 
 app.use(favicon(path.join(__dirname, 'public', 'favicon.png')))
 
-// app.use(logger('dev'))
+app.use(logger('dev'))
 // app.use(logger('common', {
 //   stream: accessLog
 // }))
@@ -102,7 +102,7 @@ app.use(session({
 }))
 
 app.use(passport.initialize())
-//app.use(passport.session())
+app.use(passport.session())
 
 //getTen 拿到的posts是每十篇文章 
 // total是總共的文章數量，以便計算在前端會不會顯示下一頁或上一頁
@@ -269,9 +269,9 @@ app.post('/api/reprint/:name/:day/:title', function (req, res) {
       var reprint_post = new Post(post.name, post.head, post.title, post.tags, post.post, post.reprint_info)
       reprint_post.ReprintSave(function (err) {
         if (err) {
+          console.log(err)
           return res.status(500)
         }
-
         // req.flash('success', '轉載成功')
         //var url = encodeURI('/u/' + post.name +'/'+ post.time.day +'/'+ post.title)
         res.send({ success: true })
@@ -283,14 +283,14 @@ app.post('/api/reprint/:name/:day/:title', function (req, res) {
 
 //使用者介面資料
 app.get('/api/user/:name', function (req, res) {
-  console.log('username: ', req.params.name)
+  // console.log('username: ', req.params.name)
   User.findOne({
     'name': req.params.name
   }, function (err, user) {
     if (err) {
       console.log('error finding user: ', err)
     } else {
-      console.log(user)
+      // console.log(user)
       res.send(user)
     }
   })
@@ -328,7 +328,7 @@ app.post('/api/comments/star/', function (req, res) {
 app.post('/api/post/star/', function (req, res) {
   console.log('like')
   var data = req.body
-  console.log(data)
+  // console.log(data)
   console.log(typeof data.inc)
   if (data.inc == '1') {
     console.log('star')

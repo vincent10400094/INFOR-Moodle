@@ -69,7 +69,7 @@ export default class PostList extends React.Component {
                     </h4>
                     <span><Link to={link}>繼續閱讀</Link></span>
                     <p style={{ marginTop: '10px' }}>
-                        <span className='glyphicon glyphicon-thumbs-up grey' style={{ paddingRight: '5px' }}></span>{post.star}
+                        <span className='glyphicon glyphicon-thumbs-up grey' style={{ paddingRight: '5px' }}></span>{post.starname.length}
                         <span className='fa fa-eye grey' style={{ paddingRight: '5px', paddingLeft: '15px' }}></span>{post.pv}
                     </p>
                 </div>
