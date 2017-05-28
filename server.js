@@ -27,7 +27,7 @@ import flash from 'connect-flash'
 import multer from 'multer'
 import fs from 'fs'
 import _ from 'underscore'
-import skipMap from 'skip-map'
+// import skipMap from 'skip-map'
 
 const debug = require('debug')('blog:server');
 import http from 'http'
@@ -74,7 +74,7 @@ app.use(bodyParser.urlencoded({
 
 app.use(cookieParser())
 app.use(busboy())
-app.use(skipMap())
+// app.use(skipMap())
 
 app.use(express.static(path.join(__dirname, 'public')))
 
@@ -467,6 +467,7 @@ app.post('/uploadfile', function (req, res) {
   })
 })
 
+//題目列表
 app.get('/api/test', function (req, res) {
   Txt.getList({}, function (err, docs) {
     if (err) {
@@ -477,6 +478,28 @@ app.get('/api/test', function (req, res) {
     res.send(docs)
   })
 })
+
+//答題介面
+app.get('/api/test/:txtname', function(req, res) {
+  Txt.get(req.params.txtname, function(err, doc) {
+    if (err) {
+      console.log("err: " + err);
+      return res.status('/');
+    }
+    //console.log("doc: " + doc);
+    res.send(doc)
+  });
+});
+
+app.get('/api/rank/:title', function(req, res) {
+  Txt.Rankget(req.params.title, function(err, userrank, doc) {
+    if (err) {
+      return res.status(500);
+    }
+    //console.log(doc);
+    res.send(userrank)
+  });
+});
 
 app.get('*', (req, res) => {
   match(

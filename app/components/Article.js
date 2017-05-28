@@ -143,7 +143,7 @@ export default class article extends React.Component {
                     return (
                         <div>
                             <div className='media-left media-middle'>
-                                <img src={`/icon/${file.split('.')[file.split('.').length - 1].toLowerCase()}.png`} style={{ height: '35px', width: 'auto', paddingRight: '10px' }} />
+                                <img src={`/icon/${file.split('.')[file.split('.').length - 1].toLowerCase()}.png`} style={{ height: '35px', width: 'auto', paddingRight: '10px' }} onError={()=>{this.src = '/icon/file.png'}}/>
                             </div>
                             <div className='media-body media-middle'>
                                 {file}

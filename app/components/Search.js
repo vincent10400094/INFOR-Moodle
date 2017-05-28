@@ -10,6 +10,7 @@ export default class Search extends React.Component {
     }
 
     componentDidMount() {
+        console.log('search', this.props.location.query.keyword)
         $.ajax({
             url: 'api/search?keyword=' + this.props.location.query.keyword,
             method: 'GET'
@@ -32,13 +33,23 @@ export default class Search extends React.Component {
             );
         });
 
-        if(!searchResult.length){
-            searchResult.push(
-                <div className='well'>
-                    <h3>No results match "{this.state.keyword}"</h3>
-                </div>
-            );
+        let query = this.props.location.query.keyword
+        function head() {
+            if (!searchResult.length) {
+                return(
+                    <div className='well'>
+                        <h3>No results match "{query}"</h3>
+                    </div>
+                )
+            } else {
+                return (
+                    <h3>No results match "{query}"</h3>
+                )
+            }
+
         }
+
+
 
         console.log('search result', searchResult)
 
@@ -47,6 +58,7 @@ export default class Search extends React.Component {
                 <div className='container'>
                     <div className='row'>
                         <div className='col-md-10 col-md-offset-1'>
+                            {head()}
                             {searchResult}
                         </div>
                     </div>
